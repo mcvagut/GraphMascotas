@@ -3,6 +3,18 @@ class User {
     constructor(session) {
       this.session = session;
     }
+
+    async verificarCredenciales(nombreUsuario, contrasena) {
+      const result = await this.session.run(
+        'MATCH (user:Usuario {usuario: $nombreUsuario, password: $contrasena}) RETURN user',
+        {
+          nombreUsuario,
+          contrasena,
+        }
+      );
+  
+      return result.records[0].get('user').properties;
+    }
   
     async createUser(properties) {
       const result = await this.session.run('CREATE (user:Usuario $properties) RETURN user', {

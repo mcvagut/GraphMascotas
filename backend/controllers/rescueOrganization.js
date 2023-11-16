@@ -23,10 +23,10 @@ export const createRescueOrganization = async (req, res) => {
     if (!nombre || !descripcion || !ubicacion || !contacto || !imagenes || !fechaFundacion) {
       return res.status(400).json({ error: 'Faltan propiedades obligatorias' });
     }
-    const organizationId  = uuidv4();
+    const id  = uuidv4();
 
     const organizationProperties = {
-        id: organizationId ,
+        organizationId: id ,
         nombre,
         descripcion,
         ubicacion,
@@ -133,10 +133,10 @@ export const createRescueOrganization = async (req, res) => {
         const organization = new RescueOrganization(session);
         const pet = new Pet(session);
 
-        const { organizationId, uuid } = req.body;
+        const { organizationId, uuid, estadoAdopcion  } = req.body;
 
         const orgNode = await organization.findOnlyById(organizationId);
-        const petNode = await pet.findOnlyByUUID(uuid);
+        const petNode = await pet.findOnlyByUUID(uuid, estadoAdopcion);
 
         if(!orgNode){
             return res.status(404).json({ error: 'Organización de rescate no encontrada' });

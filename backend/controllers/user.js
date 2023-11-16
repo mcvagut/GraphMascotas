@@ -2,6 +2,7 @@ import neo4j from 'neo4j-driver';
 import User from '../models/User.js';
 import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 dotenv.config();
 
 
@@ -11,6 +12,47 @@ const driver = neo4j.driver(
   neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 );
 const session = driver.session(process.env.NEO4J_DATABASE);
+
+export const iniciarSesion = async (req, res) => {
+  const session = driver.session();
+
+  try {
+    // Lógica para verificar las credenciales del usuario
+    const user = new User(session);
+    const { usuario, password } = req.body;
+
+    const usuarioAutenticado = await user.verificarCredenciales(usuario, password);
+
+    if (usuarioAutenticado) {
+      const { isAdmin } = usuarioAutenticado;
+      // Generar el token JWT
+      const token = jwt.sign({isAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      res.status(200).json({ token });
+    } else {
+      res.status(401).json({ error: 'Credenciales incorrectas' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al iniciar sesión' });
+  } finally {
+    session.close();
+  }
+};
+
+export const cerrarSesion = async (req, res) => {
+  try {
+    // Elimina el token del lado del cliente (por ejemplo, desde las cookies o almacenamiento local)
+    res.clearCookie('token');  // Ejemplo si usas cookies, ajusta según tu configuración
+
+    // Devuelve una respuesta exitosa o redirige a la página de inicio de sesión
+    res.status(200).json({ message: 'Cierre de sesión exitoso' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al cerrar sesión' });
+  }
+};
+
 
 
 export const createUser = async (req, res) => {

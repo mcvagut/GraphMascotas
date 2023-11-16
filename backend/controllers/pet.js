@@ -2,6 +2,7 @@ import neo4j from 'neo4j-driver';
 import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
+import RescueOrganization from '../models/RescueOrganization.js';
 
 const petId = uuidv4();
 
@@ -19,20 +20,42 @@ const session = driver.session(process.env.NEO4J_DATABASE);
 export const createPet = async (req, res) => {
     const session = driver.session();
     try {
+      const { isAdmin } = req.user; // asumiendo que el rol está en req.user
+
+      if (!isAdmin) {
+          return res.status(403).json({ error: 'Acceso no autorizado. Se requiere rol de administrador.' });
+      }
+
       const pet = new Pet(session);
+      const rescueOrganization = new RescueOrganization(session);
       const { nombre, categoria, descripcion, edad, sexo, color, tamaño, fotos, ubicacion, fechaPublicacion } = req.body;
   
+      const mascotaExistente = await pet.findPetByInfo({
+        nombre,
+        categoria,
+        edad,
+        sexo,
+        color,
+        tamaño,
+        ubicacion
+      });
+  
+      if (mascotaExistente) {
+        return res.status(400).json({ error: 'Ya existe una mascota con la misma información.' });
+      }
+
       // Verifica que se proporcionen todas las propiedades obligatorias
       if (!nombre || !categoria || !descripcion || !edad || !sexo) {
         return res.status(400).json({ error: 'Faltan propiedades obligatorias' });
       }
-  
+
+      
       // Genera un ID único para la mascota
       const petId = uuidv4();
   
       // Crea un objeto de propiedades con las propiedades deseadas, incluyendo el ID
       const petProperties = {
-        id: petId,
+        mascotaId: petId,
         nombre,
         categoria,
         descripcion,
@@ -42,11 +65,25 @@ export const createPet = async (req, res) => {
         tamaño,
         fotos,
         ubicacion,
-        fechaPublicacion,
+        fechaPublicacion: new Date().toISOString(),
         estadoAdopcion: 'Disponible',
       };
   
       const newPet = await pet.createPet(petProperties);
+
+      // Obtener la organización (puedes ajustar esto según tu lógica)
+    const organizationId = req.body.organizationId;
+    const orgNode = await rescueOrganization.findOnlyById(organizationId);
+
+    
+ 
+
+    if (!orgNode) {
+      return res.status(404).json({ error: 'Organización de rescate no encontrada' });
+    }
+
+    // Agregar la mascota a la organización y crear la conexión PONE_EN_ADOPCION
+    await rescueOrganization.agregarMascota(orgNode, newPet.mascotaId);
   
       res.status(201).json(newPet);
     } catch (error) {

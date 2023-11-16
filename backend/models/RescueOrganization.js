@@ -11,9 +11,9 @@ class RescueOrganization {
       return result.records[0].get('org').properties;
     }
   
-    async findRescueOrganizationById(organizationId) {
-      const result = await this.session.run('MATCH (org:OrganizacionRescate {id: $id}) RETURN org', {
-        id: organizationId,
+    async findRescueOrganizationById(id) {
+      const result = await this.session.run('MATCH (org:OrganizacionRescate {organizationId: $id}) RETURN org', {
+        organizationId: id,
       });
   
       if (result.records.length === 0) {
@@ -23,16 +23,16 @@ class RescueOrganization {
       return result.records[0].get('org').properties;
     }
 
-    async findOnlyById(organizationId) {
-      const result = await this.session.run('MATCH (org:OrganizacionRescate {id: $organizationId}) RETURN org.id AS organizationId', {
-        organizationId,
+    async findOnlyById(id) {
+      const result = await this.session.run('MATCH (org:OrganizacionRescate {organizationId: $id}) RETURN org', {
+        id,
       });
   
       if (result.records.length === 0) {
         return null; // Organización de rescate no encontrada
       }
   
-      return result.records[0].get('organizationId');
+      return result.records[0].get('org');
     }
     
     async findAllRescueOrganizations() {
@@ -41,13 +41,13 @@ class RescueOrganization {
       return result.records.map((record) => record.get('org').properties);
     }
     
-    async updateRescueOrganization(organizationId, updatedProperties) {
+    async updateRescueOrganization(id, updatedProperties) {
       const result = await this.session.run(
         'MATCH (org:OrganizacionRescate {id: $id}) SET ' +
         Object.keys(updatedProperties).map(key => `org.${key} = $updatedProperties.${key}`).join(', ') +
         ' RETURN org',
         {
-          id: organizationId,
+          organizationId: id,
           updatedProperties,
         }
       );
@@ -57,10 +57,36 @@ class RescueOrganization {
     
   
     async deleteRescueOrganization(organizationId) {
-      await this.session.run('MATCH (org:OrganizacionRescate {id: $id}) DETACH DELETE org', {
-        id: organizationId,
+      await this.session.run('MATCH (org:OrganizacionRescate {organizationId: $id}) DETACH DELETE org', {
+        organizationId: organizationId,
       });
     }
+
+    // En tu modelo RescueOrganization.js
+async agregarMascota(orgNode, petNode) {
+  const transaction = this.session.beginTransaction();
+  console.log("PetNode: ", petNode)
+  console.log("OrgNode: ", orgNode)
+
+  try {
+    await transaction.run(
+      'MATCH (org:OrganizacionRescate {organizationId: $organizationId}), (pet:Mascota {mascotaId: $mascotaId}) ' +
+      'CREATE (org)-[:PONE_EN_ADOPCION]->(pet)',
+      {
+        organizationId: orgNode.properties.organizationId,
+        mascotaId: petNode,
+      }
+    );
+
+    // También puedes crear la relación PONE_EN_ADOPCION aquí si lo deseas
+
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+}
+
 
     async addPetToAdoptionList(organizationId, uuid) {
       const transaction = this.session.beginTransaction();
@@ -68,7 +94,7 @@ class RescueOrganization {
       console.log("PetUUID: ", uuid)
       try{
         await transaction.run(
-          'MATCH (pet:Mascota {id: $uuid}), (org:OrganizacionRescate {id: $organizationId}) CREATE (org)-[:PONE_EN_ADOPCION]->(pet)',
+          'MATCH (pet:Mascota {mascotaId: $uuid}), (org:OrganizacionRescate {organizationId: $organizationId}) CREATE (org)-[:PONE_EN_ADOPCION]->(pet)',
           {
             organizationId,
             uuid,
