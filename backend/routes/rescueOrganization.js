@@ -7,6 +7,7 @@ import {
     deleteRescueOrganizationByUUID,
     getAllRescueOrganizations,
     addPetToAdoptionList,
+    gestionarSolicitudesAdopcion,
     } from '../controllers/rescueOrganization.js';
 
 const router = express.Router();
@@ -17,5 +18,8 @@ router.get('/', getAllRescueOrganizations);
 router.put('/:organizationId', updateRescueOrganization);
 router.delete('/:organizationId', deleteRescueOrganizationByUUID);
 router.post('/addToAdopt', addPetToAdoptionList);
+
+router.post('/adopcion/gestionar-solicitud', gestionarSolicitudesAdopcion);
+
 
 export default router;

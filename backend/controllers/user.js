@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import AdoptionRequest from '../models/AdoptionRequest.js';
 dotenv.config();
 
 
@@ -136,37 +137,19 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-export const adoptPet = async (req, res) => {
+export const solicitarAdopcion = async (req, res) => {
   const session = driver.session();
+
   try {
-    const user = new User(session);
-    const pet = new Pet(session);
-    const { usuario, uuid } = req.body;
-    
-    console.log('Usuario:', usuario);
+    const { usuario, mascotaId } = req.body;
+    const adoptionRequest = new AdoptionRequest(session);
 
+    await adoptionRequest.solicitarAdopcion(usuario, mascotaId);
 
-    const userNode = await user.findOnlyUsername(usuario);
-    console.log('userNode:', userNode);
-
-    if (!userNode) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
-
-    const petNode = await pet.findOnlyByUUID(uuid);
-    console.log('petNode:', petNode);
-
-    if (!petNode) {
-      return res.status(404).json({ error: 'Mascota no encontrada' });
-    }
-
-    // Crea la relación entre el usuario y la mascota, aquí debe estar el fallo!
-    await user.adoptPet(userNode, petNode);
-
-    res.status(200).json({ message: 'Mascota adoptada exitosamente' });
+    res.status(200).json({ message: 'Solicitud de adopción enviada exitosamente' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error al solicitar la adopción' });
   } finally {
     session.close();
   }

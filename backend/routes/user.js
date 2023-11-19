@@ -4,9 +4,9 @@ import {
   getUserByUsername,
   updateUser,
   deleteUser,
-  adoptPet,
   iniciarSesion,
   cerrarSesion,
+  solicitarAdopcion,
 } from '../controllers/user.js';
 
 
@@ -15,11 +15,13 @@ const router = express.Router();
 
 router.post('/', createUser);
 router.get('/:username', getUserByUsername);
-router.put('/:username', updateUser); // Para la actualización
-router.delete('/:username', deleteUser); // Para la eliminación 
-router.post('/adopt', adoptPet);
+router.put('/:username', updateUser);
+router.delete('/:username', deleteUser); 
+
 
 router.post('/login', iniciarSesion)
 router.post('/logout', cerrarSesion)
+
+router.post('/solicitudes-adopcion', solicitarAdopcion);
 
 export default router;

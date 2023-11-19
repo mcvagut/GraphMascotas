@@ -1,61 +1,63 @@
 class AdoptionRequest {
-    constructor(session) {
-      this.session = session;
-    }
+  constructor(session) {
+    this.session = session;
+  }
+
+  async solicitarAdopcion(usuario, mascotaId) {
+    const result = await this.session.run(
+      'MATCH (user:Usuario {usuario: $usuario}), (pet:Mascota {mascotaId: $mascotaId}) ' +
+      'CREATE (user)-[:SOLICITA_ADOPTAR]->(pet) ' +
+      'RETURN user.usuario, pet.mascotaId',
+      {
+        usuario,
+        mascotaId,
+      }
+    );
+
+    return {
+      usuario: result.records[0].get('user.usuario'),
+      mascotaId: result.records[0].get('pet.mascotaId'),
+    };
+  }
+
+  async gestionarSolicitudAdopcion(usuario, mascotaId, aceptar) {
+    const transaction = this.session.beginTransaction();
   
-    async createAdoptionRequest(properties) {
-      const result = await this.session.run('CREATE (request:SolicitudAdopcion $properties) RETURN request', {
-        properties,
-      });
+    try {
+      // Eliminar la solicitud de adopción
+      await transaction.run(
+        'MATCH (user:Usuario {usuario: $usuario})-[r:SOLICITA_ADOPTAR]->(pet:Mascota {mascotaId: $mascotaId}) ' +
+        'DELETE r',
+        {
+          usuario,
+          mascotaId,
+        }
+      );
   
-      return result.records[0].get('request').properties;
-    }
-  
-    async findAdoptionRequestById(requestId) {
-      const result = await this.session.run('MATCH (request:SolicitudAdopcion {id: $id}) RETURN request', {
-        id: requestId,
-      });
-  
-      if (result.records.length === 0) {
-        return null; // Solicitud de adopción no encontrada
+      if (aceptar) {
+        // Crear la relación ADOPTÓ si la organización acepta
+        await transaction.run(
+          'MATCH (user:Usuario {usuario: $usuario}) ' +
+          'MATCH (pet:Mascota {mascotaId: $mascotaId}) ' +
+          'MERGE (user)-[:ADOPTÓ]->(pet)',
+          {
+            usuario,
+            mascotaId,
+          }
+        );
       }
   
-      return result.records[0].get('request').properties;
-    }
-  
-    async updateAdoptionRequest(requestId, updatedProperties) {
-      const result = await this.session.run(
-        'MATCH (request:SolicitudAdopcion {id: $id}) SET request = $updatedProperties RETURN request',
-        {
-          id: requestId,
-          updatedProperties,
-        }
-      );
-  
-      return result.records[0].get('request').properties;
-    }
-  
-    async deleteAdoptionRequest(requestId) {
-      await this.session.run('MATCH (request:SolicitudAdopcion {id: $id}) DETACH DELETE request', {
-        id: requestId,
-      });
-    }
-  
-    async userSendsAdoptionRequest(userId, petId, description) {
-      const result = await this.session.run(
-        'MATCH (user:Usuario {id: $userId}), (pet:Mascota {id: $petId}) ' +
-        'CREATE (user)-[:ENVIO_SOLICITUD]->(request:SolicitudAdopcion {descripcion: $description})-[:ES_PARA]->(pet) ' +
-        'RETURN request',
-        {
-          userId,
-          petId,
-          description,
-        }
-      );
-  
-      return result.records[0].get('request').properties;
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
   }
   
-  export default AdoptionRequest;
   
+  
+
+
+}
+
+export default AdoptionRequest;

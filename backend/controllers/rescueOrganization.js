@@ -1,5 +1,6 @@
 import neo4j from 'neo4j-driver';
 import RescueOrganization from '../models/RescueOrganization.js';
+import AdoptionRequest from '../models/AdoptionRequest.js';
 import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
@@ -154,5 +155,23 @@ export const createRescueOrganization = async (req, res) => {
         res.status(500).json({ error: 'Error al agregar la mascota a la lista de adopción' });
     }
   }
+
+  export const gestionarSolicitudesAdopcion = async (req, res) => {
+    const session = driver.session();
+  
+    try {
+      const { usuario, mascotaId, aceptar } = req.body;
+      const adoptionRequest = new AdoptionRequest(session);
+  
+      await adoptionRequest.gestionarSolicitudAdopcion(usuario, mascotaId, aceptar);
+  
+      res.status(200).json({ message: 'Solicitud de adopción gestionada exitosamente' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al gestionar la solicitud de adopción' });
+    } finally {
+      session.close();
+    }
+  };
   
   
