@@ -162,6 +162,19 @@ export const createRescueOrganization = async (req, res) => {
     try {
       const { usuario, mascotaId, aceptar } = req.body;
       const adoptionRequest = new AdoptionRequest(session);
+      const mascota = new Pet(session);
+    
+      const mascotaAdoptada = await adoptionRequest.verificarMascotaAdoptada(mascotaId);
+
+    if (mascotaAdoptada) {
+      return res.status(400).json({ error: 'Esta mascota ya ha sido adoptada' });
+    }
+
+    const existeMascota = await mascota.findOnlyByUUID(mascotaId);
+    if (!existeMascota) {
+      return res.status(400).json({ error: 'Esta mascota no existe' });
+    }
+
   
       await adoptionRequest.gestionarSolicitudAdopcion(usuario, mascotaId, aceptar);
   

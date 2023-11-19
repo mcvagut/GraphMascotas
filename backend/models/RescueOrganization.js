@@ -120,22 +120,6 @@ class RescueOrganization {
       throw error;
     }
   }
-
-  async gestionarSolicitudesAdopcion(petNode, userNode) {
-    try {
-      // Crear una solicitud de adopción
-      const solicitud = await this.adoptionRequest.createAdoptionRequest({
-        petId: petNode.properties.id,
-        userId: userNode.properties.id,
-        estado: "Pendiente", // Puedes ajustar el estado según tu lógica
-      });
-
-      // Lógica adicional según necesidades específicas
-    } catch (error) {
-      console.error(error);
-      throw new Error("Error al gestionar la solicitud de adopción");
-    }
-  }
 }
 
 export default RescueOrganization;

@@ -141,9 +141,26 @@ export const solicitarAdopcion = async (req, res) => {
   const session = driver.session();
 
   try {
-    const { usuario, mascotaId } = req.body;
     const adoptionRequest = new AdoptionRequest(session);
+    const { usuario, mascotaId } = req.body;
 
+    const mascotaAdoptada = await adoptionRequest.verificarMascotaAdoptada(mascotaId);
+
+    if (mascotaAdoptada) {
+      // Si la mascota ya fue adoptada, retornar un error o manejar de acuerdo a tu lógica
+      return res.status(400).json({ error: 'Esta mascota ya ha sido adoptada' });
+    }
+
+    // Verificar si el usuario ya tiene una solicitud pendiente para esa mascota
+    const existingRequest = await adoptionRequest.verificarSolicitudPendiente(usuario, mascotaId);
+
+    if (existingRequest) {
+      // Si ya tiene una solicitud pendiente, retornar un error o manejar de acuerdo a tu lógica
+      return res.status(400).json({ error: 'Ya existe una solicitud pendiente para esta mascota' });
+    }
+
+    // Si no hay solicitud pendiente, proceder con la solicitud de adopción
+  
     await adoptionRequest.solicitarAdopcion(usuario, mascotaId);
 
     res.status(200).json({ message: 'Solicitud de adopción enviada exitosamente' });
