@@ -2,6 +2,7 @@ import neo4j from 'neo4j-driver';
 import RescueOrganization from '../models/RescueOrganization.js';
 import AdoptionRequest from '../models/AdoptionRequest.js';
 import AdoptionHistory from '../models/AdoptionHistory.js';
+import TrackAdoption from '../models/TrackAdoption.js';
 import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
@@ -164,7 +165,7 @@ export const createRescueOrganization = async (req, res) => {
       const { usuario, mascotaId, aceptar } = req.body;
       const adoptionRequest = new AdoptionRequest(session);
       const adoptionHistory = new AdoptionHistory(session);
-
+      const trackingAdoption = new TrackAdoption(session);
       const mascota = new Pet(session);
     
       const mascotaAdoptada = await adoptionRequest.verificarMascotaAdoptada(mascotaId);
@@ -177,13 +178,22 @@ export const createRescueOrganization = async (req, res) => {
     if (!existeMascota) {
       return res.status(400).json({ error: 'Esta mascota no existe' });
     }
-
-  
-      await adoptionRequest.gestionarSolicitudAdopcion(usuario, mascotaId, aceptar);
+    
+       
+    const infoMascota = await mascota.findOrganizationIdByUUID(mascotaId);
+    const organizationId = infoMascota.organizationId;
+    
+    if (!organizationId) {
+        return res.status(400).json({ error: 'No se pudo obtener el organizationId de la mascota' });
+    }
+    
+    await adoptionRequest.gestionarSolicitudAdopcion(usuario, mascotaId, aceptar);
+   
       
       if (aceptar){
         const fechaAdopcion = new Date().toISOString();
         await adoptionHistory.createAdoptionRecord(usuario, mascotaId, fechaAdopcion);
+        await trackingAdoption.createAdoptionTracking(usuario, mascotaId, organizationId, fechaAdopcion );
       }
       
       res.status(200).json({ message: 'Solicitud de adopción gestionada exitosamente' });

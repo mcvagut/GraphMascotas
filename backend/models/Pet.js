@@ -89,6 +89,23 @@ async findPetByInfo({ nombre, categoria, edad, sexo, color, tamaño, ubicacion }
           return null;
       }
   }
+
+  async findOrganizationIdByUUID(uuid) {
+    const result = await this.session.run(
+        'MATCH (pet:Mascota {mascotaId: $uuid}) RETURN pet',
+        {
+            uuid,
+        }
+    );
+
+    if (result.records.length > 0) {
+      const mascota = result.records[0].get('pet').properties;
+      return mascota;    
+    } else {
+        return null;
+    }
+}
+
     
   
     async updatePet(uuid, updatedProperties) {

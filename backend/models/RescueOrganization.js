@@ -104,8 +104,8 @@ class RescueOrganization {
 
   async addPetToAdoptionList(organizationId, uuid) {
     const transaction = this.session.beginTransaction();
-    console.log("OrganizationUUID: ", organizationId);
-    console.log("PetUUID: ", uuid);
+    // console.log("OrganizationUUID: ", organizationId);
+    // console.log("PetUUID: ", uuid);
     try {
       await transaction.run(
         "MATCH (pet:Mascota {mascotaId: $uuid}), (org:OrganizacionRescate {organizationId: $organizationId}) CREATE (org)-[:PONE_EN_ADOPCION]->(pet)",

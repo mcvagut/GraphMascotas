@@ -2,15 +2,7 @@ class AdoptionHistory {
     constructor(session) {
       this.session = session;
     }
-  
-    async createAdoptionHistory(properties) {
-      const result = await this.session.run('CREATE (history:HistorialAdopciones $properties) RETURN history', {
-        properties,
-      });
-  
-      return result.records[0].get('history').properties;
-    }
-  
+   
     async findAdoptionHistoryById(historyId) {
       const result = await this.session.run('MATCH (history:HistorialAdopciones {id: $id}) RETURN history', {
         id: historyId,
@@ -66,7 +58,7 @@ class AdoptionHistory {
         MATCH (user:Usuario {usuario: $usuario}), (pet:Mascota {mascotaId: $mascotaId})
         
         CREATE (user)-[:REALIZO_ADOPCION {fechaAdopcion: $date}]->(history:HistorialAdopciones {nombreMascota: pet.nombre, fechaAdopcion: $date})
-        CREATE (history)-[:ES_PARA]->(pet)
+        CREATE (pet)-[:FUE_ADOPTADO_PARA]->(history)
         
         RETURN history
         `,

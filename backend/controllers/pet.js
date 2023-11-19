@@ -65,6 +65,7 @@ export const createPet = async (req, res) => {
         tamaño,
         fotos,
         ubicacion,
+        organizationId: req.body.organizationId,
         fechaPublicacion: new Date().toISOString(),
         fechaAdopcion: null,
         estadoAdopcion: 'Disponible',
