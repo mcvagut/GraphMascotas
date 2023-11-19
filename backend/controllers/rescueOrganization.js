@@ -158,8 +158,11 @@ export const createRescueOrganization = async (req, res) => {
     }
   }
 
+  // const colaSolicitudes = [];
+
   export const gestionarSolicitudesAdopcion = async (req, res) => {
     const session = driver.session();
+    const io = req.app.get('io');
   
     try {
       const { usuario, mascotaId, aceptar } = req.body;
@@ -187,14 +190,21 @@ export const createRescueOrganization = async (req, res) => {
         return res.status(400).json({ error: 'No se pudo obtener el organizationId de la mascota' });
     }
     
+    colaSolicitudes.push({ usuario, mascotaId, aceptar });
     await adoptionRequest.gestionarSolicitudAdopcion(usuario, mascotaId, aceptar);
    
       
-      if (aceptar){
-        const fechaAdopcion = new Date().toISOString();
-        await adoptionHistory.createAdoptionRecord(usuario, mascotaId, fechaAdopcion);
-        await trackingAdoption.createAdoptionTracking(usuario, mascotaId, organizationId, fechaAdopcion );
-      }
+    if (aceptar) {
+      const fechaAdopcion = new Date().toISOString();
+      await adoptionHistory.createAdoptionRecord(usuario, mascotaId, fechaAdopcion);
+      await trackingAdoption.createAdoptionTracking(usuario, mascotaId, organizationId, fechaAdopcion);
+
+      // Emitir notificación al usuario que solicitó la adopción
+      io.to(usuario).emit('notificacion', { mensaje: '¡Felicidades! Tu solicitud de adopción ha sido aceptada.' });
+    } else {
+      // Emitir notificación al usuario que solicitó la adopción
+      io.to(usuario).emit('notificacion', { mensaje: 'Lamentablemente, tu solicitud de adopción ha sido rechazada.' });
+    }
       
       res.status(200).json({ message: 'Solicitud de adopción gestionada exitosamente' });
     } catch (error) {

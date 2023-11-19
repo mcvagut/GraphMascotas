@@ -16,6 +16,7 @@ const session = driver.session(process.env.NEO4J_DATABASE);
 
 export const iniciarSesion = async (req, res) => {
   const session = driver.session();
+  const io = req.app.get('io');
 
   try {
     // Lógica para verificar las credenciales del usuario
@@ -26,7 +27,9 @@ export const iniciarSesion = async (req, res) => {
 
     if (usuarioAutenticado) {
       const { isAdmin } = usuarioAutenticado;
-      // Generar el token JWT
+
+      io.to(req.socketId).emit('loginExitoso', { usuario, isAdmin });
+
       const token = jwt.sign({isAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
       res.status(200).json({ token });
@@ -139,6 +142,7 @@ export const deleteUser = async (req, res) => {
 
 export const solicitarAdopcion = async (req, res) => {
   const session = driver.session();
+  const io = req.app.get('io');
 
   try {
     const adoptionRequest = new AdoptionRequest(session);
@@ -159,9 +163,21 @@ export const solicitarAdopcion = async (req, res) => {
       return res.status(400).json({ error: 'Ya existe una solicitud pendiente para esta mascota' });
     }
 
+    const mascota = new Pet(session);
+    const infoMascota = await mascota.findOrganizationIdByUUID(mascotaId);
+    const organizationId = infoMascota.organizationId;
+
+    if (!organizationId) {
+      return res.status(400).json({ error: 'No se pudo obtener el organizationId de la mascota' });
+    }
+
     // Si no hay solicitud pendiente, proceder con la solicitud de adopción
   
     await adoptionRequest.solicitarAdopcion(usuario, mascotaId);
+
+    io.to(organizationId).emit('notificacion', {
+      mensaje: `¡Atención! ${usuario} ha solicitado adoptar la mascota ${mascotaId}.`
+    });
 
     res.status(200).json({ message: 'Solicitud de adopción enviada exitosamente' });
   } catch (error) {
