@@ -41,22 +41,46 @@ class AdoptionHistory {
       });
     }
   
-    async createAdoptionRecord(userId, petId, date, description) {
+    // async createAdoptionRecord(userId, petId, date, description) {
+    //   const result = await this.session.run(
+    //     'MATCH (user:Usuario {id: $userId}), (pet:Mascota {id: $petId}) ' +
+    //     'CREATE (user)-[:ADOPTO {fecha: $date, descripcion: $description}]->(history:HistorialAdopciones) ' +
+    //     'CREATE (history)-[:ES_PARA]->(pet) ' +
+    //     'RETURN history',
+    //     {
+    //       userId,
+    //       petId,
+    //       date,
+    //       description,
+    //     }
+    //   );
+  
+    //   return result.records[0].get('history').properties;
+    // }
+
+    // En tu modelo AdoptionHistory.js
+
+    async createAdoptionRecord(usuario, mascotaId, date) {
       const result = await this.session.run(
-        'MATCH (user:Usuario {id: $userId}), (pet:Mascota {id: $petId}) ' +
-        'CREATE (user)-[:ADOPTO {fecha: $date, descripcion: $description}]->(history:HistorialAdopciones) ' +
-        'CREATE (history)-[:ES_PARA]->(pet) ' +
-        'RETURN history',
+        `
+        MATCH (user:Usuario {usuario: $usuario}), (pet:Mascota {mascotaId: $mascotaId})
+        
+        CREATE (user)-[:REALIZO_ADOPCION {fechaAdopcion: $date}]->(history:HistorialAdopciones {nombreMascota: pet.nombre, fechaAdopcion: $date})
+        CREATE (history)-[:ES_PARA]->(pet)
+        
+        RETURN history
+        `,
         {
-          userId,
-          petId,
+          usuario,
+          mascotaId,
           date,
-          description,
         }
       );
-  
+    
       return result.records[0].get('history').properties;
     }
+    
+
   }
   
   export default AdoptionHistory;

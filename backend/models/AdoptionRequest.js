@@ -62,15 +62,17 @@ class AdoptionRequest {
       );
   
       if (aceptar) {
+        const fechaAdopcion = new Date().toISOString();
         // Crear la relación ADOPTÓ si la organización acepta
         await transaction.run(
           'MATCH (user:Usuario {usuario: $usuario}) ' +
           'MATCH (pet:Mascota {mascotaId: $mascotaId}) ' +
-          'SET pet.estadoAdopcion = "Adoptado" ' +
+          'SET pet.estadoAdopcion = "Adoptado", pet.fechaAdopcion = $fechaAdopcion ' +
           'MERGE (user)-[:ADOPTÓ]->(pet)',
           {
             usuario,
             mascotaId,
+            fechaAdopcion
           }
         );      
         

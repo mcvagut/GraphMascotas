@@ -66,6 +66,7 @@ export const createPet = async (req, res) => {
         fotos,
         ubicacion,
         fechaPublicacion: new Date().toISOString(),
+        fechaAdopcion: null,
         estadoAdopcion: 'Disponible',
       };
   
