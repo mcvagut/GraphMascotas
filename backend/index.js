@@ -24,13 +24,14 @@ const driver = neo4j.driver(
 );
 
 
-// Configura Socket.io
 io.on("connection", (socket) => {
-  // Asigna el id del socket cuando se conecta un cliente
-  socket.on("setSocketId", (data) => {
-    socket.socketId = data.socketId;
-  });
+  console.log("Usuario conectado");
+
+  app.set('socketId', socket.id);
 });
+
+// Asociar io al objeto app
+app.set('io', io);
 
 // Middleware para configurar una sesión de Neo4j
 app.use((req, res, next) => {
