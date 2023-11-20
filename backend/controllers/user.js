@@ -186,7 +186,51 @@ export const solicitarAdopcion = async (req, res) => {
   } finally {
     session.close();
   }
+
+
 };
+//HASH TABLE
+
+const favoritosPorUsuario = {};
+
+export const agregarFavorito = async (req, res) => {
+  try {
+    const { usuario, mascotaId, categoria, raza } = req.body;
+    const userModel = new User(session);
+    // Agregar favorito a la "hash table" en memoria
+    if (!favoritosPorUsuario[usuario]) {
+      favoritosPorUsuario[usuario] = {};
+    }
+
+    favoritosPorUsuario[usuario][mascotaId] = { categoria, raza };
+
+    // Actualizar en la base de datos usando el modelo
+    const exitoso = await userModel.agregarFavorito(usuario, mascotaId, categoria, raza);
+
+    if (exitoso) {
+      res.status(200).json({ mensaje: 'Mascota agregada a favoritos exitosamente' });
+    } else {
+      res.status(500).json({ mensaje: 'Error al agregar la mascota a favoritos' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al agregar la mascota a favoritos' });
+  }
+};
+
+// export const obtenerFavoritosPorUsuario = (req, res) => {
+//   try {
+//     const { usuario } = req.params;
+
+//     // Obtener favoritos desde la "hash table" en memoria
+//     const favoritos = favoritosPorUsuario[usuarioId] || {};
+
+//     res.status(200).json({ favoritos });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ mensaje: 'Error al obtener los favoritos por usuario' });
+//   }
+// };
 
 
 

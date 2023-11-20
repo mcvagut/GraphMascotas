@@ -73,6 +73,46 @@ class User {
         username,
       });
     }
+
+    async agregarFavorito(usuario, mascotaId, categoria, raza) {
+      const cypher = `
+        MATCH (u:Usuario {usuario: $usuario})
+        MERGE (f:Favorito {mascotaId: $mascotaId})
+        ON CREATE SET f.categoria = $categoria, f.raza = $raza
+        MERGE (u)-[:TIENE_FAVORITO]->(f)
+      `;
+    
+      try {
+        await this.session.run(cypher, { usuario, mascotaId, categoria, raza });
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    }
+    
+    
+    
+  
+    // async obtenerFavoritosPorCategoria(usuario, categoria) {
+    //   const cypher = `
+    //     MATCH (u:Usuario {id: $usuario})-[:TIENE_FAVORITO_EN_CATEGORIA]->(m:Mascota)-[:TIENE_FAVORITO]->(c:Categoria {categoria: $categoria})
+    //     RETURN m.id as mascotaId
+    //   `;
+    //   const result = await this.session.run(cypher, { usuario, categoria });
+    //   return result.records.map(record => record.get('mascotaId'));
+    // }
+  
+    // async obtenerFavoritosPorRaza(usuario, raza) {
+    //   const cypher = `
+    //     MATCH (u:Usuario {id: $usuario})-[:TIENE_FAVORITO_EN_RAZA]->(m:Mascota)-[:TIENE_FAVORITO]->(r:Raza {nombre: $raza})
+    //     RETURN m.id as mascotaId
+    //   `;
+    //   const result = await this.session.run(cypher, { usuario, raza });
+    //   return result.records.map(record => record.get('mascotaId'));
+    // }
+
+    
  }
   
   export default User;

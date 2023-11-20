@@ -7,6 +7,7 @@ import {
   iniciarSesion,
   cerrarSesion,
   solicitarAdopcion,
+  agregarFavorito,
 } from '../controllers/user.js';
 
 
@@ -23,5 +24,7 @@ router.post('/login', iniciarSesion)
 router.post('/logout', cerrarSesion)
 
 router.post('/solicitudes-adopcion', solicitarAdopcion);
+
+router.post('/:username/favoritos', agregarFavorito);
 
 export default router;

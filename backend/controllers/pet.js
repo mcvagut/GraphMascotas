@@ -28,11 +28,12 @@ export const createPet = async (req, res) => {
 
       const pet = new Pet(session);
       const rescueOrganization = new RescueOrganization(session);
-      const { nombre, categoria, descripcion, edad, sexo, color, tamaño, fotos, ubicacion, fechaPublicacion } = req.body;
+      const { nombre, categoria,raza, descripcion, edad, sexo, color, tamaño, fotos, ubicacion, fechaPublicacion } = req.body;
   
       const mascotaExistente = await pet.findPetByInfo({
         nombre,
         categoria,
+        raza,
         edad,
         sexo,
         color,
@@ -58,6 +59,7 @@ export const createPet = async (req, res) => {
         mascotaId: petId,
         nombre,
         categoria,
+        raza,
         descripcion,
         edad,
         sexo,
