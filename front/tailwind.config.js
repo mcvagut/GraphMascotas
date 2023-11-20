@@ -12,7 +12,20 @@ export default {
       'purple2':'#7c4fd0'
 
     },
-    extend: {},
+    extend: {
+      spacing: {
+        '128': '32rem', 
+      },
+      boxShadow: {
+        'shadowp': '0 0px 6px 2px rgba(0, 0, 0, 0.3)',
+      },
+      fontFamily: {
+        'sans': ['Roboto', 'sans-serif'],
+      },
+      animation: {
+        'bounce-slow': 'bounce 3s infinite',
+      },
+    },
   },
   plugins: [
     require('tailwindcss-animatecss'),
