@@ -195,8 +195,16 @@ const favoritosPorUsuario = {};
 
 export const agregarFavorito = async (req, res) => {
   try {
-    const { usuario, mascotaId, categoria, raza } = req.body;
-    const userModel = new User(session);
+    const { mascota } = req.body;
+    const usuario = req.user.username; // Obtener el usuario desde el token o sesión (ajusta según tu lógica de autenticación)
+    
+    // Verificar que la información de la mascota está presente
+    if (!mascota || !mascota.mascotaId || !mascota.categoria || !mascota.raza) {
+      return res.status(400).json({ mensaje: 'Información de la mascota incompleta' });
+    }
+
+    const { id: mascotaId, categoria, raza } = mascota;
+
     // Agregar favorito a la "hash table" en memoria
     if (!favoritosPorUsuario[usuario]) {
       favoritosPorUsuario[usuario] = {};
@@ -205,6 +213,7 @@ export const agregarFavorito = async (req, res) => {
     favoritosPorUsuario[usuario][mascotaId] = { categoria, raza };
 
     // Actualizar en la base de datos usando el modelo
+    const userModel = new User(session);
     const exitoso = await userModel.agregarFavorito(usuario, mascotaId, categoria, raza);
 
     if (exitoso) {
