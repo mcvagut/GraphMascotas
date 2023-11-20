@@ -42,7 +42,7 @@ const Login = () => {
         </form>
         <p className="mt-5 text-lg text-gray-600">
           ¿Aún no tienes una cuenta?
-          <a href="#" className="text-purple ml-1 hover:underline">
+          <a href="/registro" className="text-purple ml-1 hover:underline">
             Regístrate aquí
           </a>
         </p>

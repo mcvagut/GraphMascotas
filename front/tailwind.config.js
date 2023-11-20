@@ -9,7 +9,8 @@ export default {
       'purple':'#351f67',
       'white':'#ffffff',
       'black':'#3D3D3D',
-      'purple2':'#7c4fd0'
+      'purple2':'#7c4fd0',
+      'fav':'#64ad6b'
 
     },
     extend: {

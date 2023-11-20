@@ -6,7 +6,7 @@ const Footer = () => {
 
   return (
     <footer
-      className={`bg-gradient-to-t from-purple to-purple2 p-12 text-white relative overflow-hidden ${
+      className={`bg-purple2 p-12 text-white relative overflow-hidden ${
         isExpanded ? "h-auto animate__animated animate__slideInUp" : "h-16 animate__animated animate__slideOutDown" 
       }`}
     >
@@ -38,13 +38,13 @@ const Footer = () => {
               Síguenos en Redes Sociales
             </h2>
             <div className="flex space-x-4">
-              <a href="#" className="text-lg hover:text-gray-300">
+              <a href="facebook.com" className="text-lg hover:text-gray-300">
                 Facebook
               </a>
-              <a href="#" className="text-lg hover:text-gray-300">
+              <a href="twitter.com" className="text-lg hover:text-gray-300">
                 Twitter
               </a>
-              <a href="#" className="text-lg hover:text-gray-300">
+              <a href="instagram.com" className="text-lg hover:text-gray-300">
                 Instagram
               </a>
             </div>

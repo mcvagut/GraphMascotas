@@ -5,23 +5,24 @@ const Sidebar = () => {
   return (
     <nav className="bg-purple w-64 h-full p-4 text-white">
       <h1 className="text-2xl font-extrabold mb-8">Adopción de Mascotas</h1>
-      <ul>
-        <li className="mb-4">
-          <Link to="/" className="block text-lg hover:text-gray-300">Inicio</Link>
-        </li>
-        <li className="mb-4">
-          <Link to="/adoptar" className="block text-lg hover:text-gray-300">Adoptar</Link>
-        </li>
-        <li className="mb-4">
-          <Link to="/donar" className="block text-lg hover:text-gray-300">Donar</Link>
-        </li>
-        <li className="mb-4">
-          <Link to="/voluntariado" className="block text-lg hover:text-gray-300">Voluntariado</Link>
-        </li>
-        <li className="mb-4">
-          <Link to="/contacto" className="block text-lg hover:text-gray-300">Contacto</Link>
-        </li>
-      </ul>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+        <Link to="/">Organizaciones/Albergues</Link>
+      </button>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+        <Link to="/">Solicitudes de Adopción</Link>
+      </button>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+        <Link to="/">Seguimiento de Adopción</Link>
+      </button>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+        <Link to="/">Historial de Adopción</Link>
+      </button>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+        <Link to="/">Favoritos</Link>
+      </button>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+        <Link to="/">Cerrar Sesión</Link>
+      </button>
     </nav>
   );
 };
