@@ -1,0 +1,32 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  
+  .animate-expandFooter {
+    animation: slideUp 0.8s ease-in-out;
+  }
+  
+  .animate-contractFooter {
+    animation: slideDown 0.8s ease-in-out;
+  }
+  
+  
+  
