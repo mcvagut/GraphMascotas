@@ -4,6 +4,7 @@ import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import AdoptionRequest from '../models/AdoptionRequest.js';
+import {crearError} from '../extra/error.js';
 dotenv.config();
 
 
@@ -19,22 +20,31 @@ export const iniciarSesion = async (req, res) => {
   const io = req.app.get('io');
 
   try {
-    // Lógica para verificar las credenciales del usuario
     const user = new User(session);
     const { usuario, password } = req.body;
 
     const usuarioAutenticado = await user.verificarCredenciales(usuario, password);
 
+    if (!password) {
+      res.status(400).json({ error: 'Ingrese su contraseña' });
+      return;
+    }
+
     if (usuarioAutenticado) {
       const { isAdmin } = usuarioAutenticado;
 
+      if (isAdmin) {
+        res.status(403).json({ error: 'No autorizado para iniciar sesión' });
+        return;
+      }
+
       io.to(req.socketId).emit('loginExitoso', { usuario, isAdmin });
 
-      const token = jwt.sign({isAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
       res.status(200).json({ token });
     } else {
-      res.status(401).json({ error: 'Credenciales incorrectas' });
+      res.status(401).json({ error: 'Contraseña incorrecta' });
     }
   } catch (error) {
     console.error(error);
@@ -43,6 +53,7 @@ export const iniciarSesion = async (req, res) => {
     session.close();
   }
 };
+
 
 export const cerrarSesion = async (req, res) => {
   try {
