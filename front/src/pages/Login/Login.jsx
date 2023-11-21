@@ -26,7 +26,9 @@ const Login = () => {
         login(token);
         console.log('Inicio de sesión exitoso');
         toast.success('Inicio de sesión exitoso');
-        navigate('/');
+        setTimeout(() => {
+          navigate('/');
+          }, 2000);
       } else {
         console.error('Error al iniciar sesión: Respuesta no válida');
         toast.error('Error al iniciar sesión: Respuesta no válida');

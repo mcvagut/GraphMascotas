@@ -8,6 +8,7 @@ import {
   cerrarSesion,
   solicitarAdopcion,
   agregarFavorito,
+  registro,
 } from '../controllers/user.js';
 
 
@@ -22,6 +23,7 @@ router.delete('/:username', deleteUser);
 
 router.post('/login', iniciarSesion)
 router.post('/logout', cerrarSesion)
+router.post('/registro', registro)
 
 router.post('/solicitudes-adopcion', solicitarAdopcion);
 

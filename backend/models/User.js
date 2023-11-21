@@ -46,6 +46,26 @@ class User {
     
       return result.records[0].get('usuario');
     }
+
+    async findByEmailOrUsername(session, email, usuario) {
+      const result = await session.run(
+        'MATCH (user:User) WHERE user.email = $email OR user.usuario = $usuario RETURN user',
+        { email, usuario }
+      );
+  
+      const existingUser = result.records[0]?.get('user');
+  
+      return existingUser;
+    }
+
+    async create (session, { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin }) {
+      const result = await session.run(
+        'CREATE (user:Usuario {nombre: $nombre, apellido: $apellido, email: $email, usuario: $usuario, password: $password, pais: $pais, ciudad: $ciudad, telefono: $telefono, fecha_nacimiento: $fecha_nacimiento, isAdmin: $isAdmin}) RETURN user',
+        { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin }
+      );
+  
+      return result.records[0].get('user').properties;
+    }
     
   
     async updateUser(username, updatedProperties) {

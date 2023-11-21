@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { toast, Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,14 +16,40 @@ const Register = () => {
     fecha_nacimiento: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes realizar las acciones necesarias al enviar el formulario
-    console.log('Datos del formulario:', formData);
+
+    try {
+      const response = await axios.post('http://localhost:8800/api/users/registro', formData);
+
+      if (response && response.data) {
+        // Registration successful
+        toast.success('Registro exitoso');
+        setTimeout(() => {
+
+        navigate('/login');
+        }, 2000);
+        // You can redirect the user to the login page or any other page
+      }
+    } catch (error) {
+      console.error('Error al registrar:', error.response ? error.response.data.error : error.message);
+      const errorMessage = error.response ? error.response.data.error : 'Error al registrar';
+
+      switch (errorMessage) {
+        case 'El usuario o email ya está registrado.':
+          toast.error('El usuario o email ya está registrado.');
+          break;
+        // Handle other registration errors as needed
+        default:
+          toast.error('Error al registrar');
+      }
+    }
   };
 
   return (
@@ -182,6 +211,7 @@ const Register = () => {
           </button>
         </form>
       </div>
+      <Toaster />
     </div>
   );
 };

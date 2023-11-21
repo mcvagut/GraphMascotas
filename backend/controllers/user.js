@@ -87,6 +87,54 @@ export const createUser = async (req, res) => {
   }
 };
 
+export const registro = async (req, res) => {
+  const session = driver.session();
+
+  const user= new User(session);
+
+  try {
+    const {
+      nombre,
+      apellido,
+      email,
+      usuario,
+      password,
+      pais,
+      ciudad,
+      telefono,
+      fecha_nacimiento,
+    } = req.body;
+
+    // Check if the user with the same email or username already exists
+    const existingUser = await user.findByEmailOrUsername(session, email, usuario);
+
+    if (existingUser) {
+      // User with the same email or username already exists
+      throw crearError(400, 'El usuario o email ya está registrado.');
+    }
+    const userData = { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin: false };
+    
+    const createdUser = await user.create(session, userData);
+
+    res.status(201).json({ message: 'Registro exitoso', user: createdUser });
+  } catch (error) {
+    console.error(error);
+
+    if (error.status) {
+      // If it's a known error (e.g., user already exists), send appropriate status and message
+      res.status(error.status).json({ error: error.message });
+    } else {
+      // If it's an unknown error, send a generic 500 status and message
+      res.status(500).json({ error: 'Error al registrar el usuario' });
+    }
+  } finally {
+    session.close();
+  }
+};
+   
+
+
+
 export const getUserByUsername = async (req, res) => {
   const session = driver.session();
   try {
