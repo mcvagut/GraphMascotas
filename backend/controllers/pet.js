@@ -47,9 +47,11 @@ export const createPet = async (req, res) => {
       }
 
       // Verifica que se proporcionen todas las propiedades obligatorias
-      if (!nombre || !categoria || !descripcion || !edad || !sexo) {
+      if (!nombre || !categoria || !raza ||!descripcion || !edad || !sexo || !color || !tamaño || !ubicacion) {
         return res.status(400).json({ error: 'Faltan propiedades obligatorias' });
       }
+
+      const organizationId = req.body.organizationId;
 
       
       // Genera un ID único para la mascota
@@ -68,7 +70,7 @@ export const createPet = async (req, res) => {
         tamaño,
         fotos,
         ubicacion,
-        organizationId: req.body.organizationId,
+        organizationId:req.body.organizationId,
         fechaPublicacion: new Date().toISOString(),
         fechaAdopcion: null,
         estadoAdopcion: 'Disponible',
@@ -77,7 +79,6 @@ export const createPet = async (req, res) => {
       const newPet = await pet.createPet(petProperties);
 
       // Obtener la organización (puedes ajustar esto según tu lógica)
-    const organizationId = req.body.organizationId;
     const orgNode = await rescueOrganization.findOnlyById(organizationId);
 
     
@@ -150,7 +151,7 @@ export const createPet = async (req, res) => {
   export const deletePet = async (req, res) => {
     const session = driver.session();
     try {
-      const categoriaModel = new Category(session);
+      const categoriaModel = new Categoria(session);
       const pet = new Pet(session);
       const petId = req.params.id; 
   
@@ -218,6 +219,28 @@ export const createPet = async (req, res) => {
     }
   };
 
+ 
+  export const getAllPetsByUUID = async (req, res) => {
+    const session = driver.session();
+    try {
+      const pet = new Pet(session);
+      const { uuid } = req.params;
+  
+      // Realiza una búsqueda en la base de datos por el UUID
+      const foundPet = await pet.getAllPetsByUUID(uuid);
+  
+      if (foundPet) {
+        res.status(200).json(foundPet);
+      } else {
+        res.status(404).json({ error: 'Mascota no encontrada' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al obtener la mascota' });
+    } finally {
+      session.close();
+    }
+  }
   
 
 

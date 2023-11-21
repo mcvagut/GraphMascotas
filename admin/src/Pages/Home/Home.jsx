@@ -19,15 +19,9 @@ const Home = () => {
   }
     return (
         <div className="flex h-screen">
-          {/* Sidebar */}
           <Sidebar />
-    
-          {/* Main Content */}
           <div className="flex flex-col flex-1 overflow-hidden">
-            {/* Header */}
             <Header />
-    
-            {/* Page Content */}
             <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-8">
             
             </main>

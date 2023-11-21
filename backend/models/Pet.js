@@ -187,6 +187,13 @@ async findPetByInfo({ nombre, categoria, edad, sexo, color, tamaño, ubicacion }
         throw error;
       }
     };
+
+    async getAllPetsByUUID() {
+      const result = await this.session.run('MATCH (pet:Mascota) RETURN pet');
+    
+      return result.records.map(record => record.get('pet').properties);
+    }
+
     
     
     
