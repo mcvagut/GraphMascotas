@@ -54,7 +54,7 @@ const Footer = () => {
         {/* Botón para expandir/reducir el footer */}
         <button
           onClick={() => setExpanded(!isExpanded)}
-          className="text-5xl mt-0 focus:outline-none absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          className="text-5xl mt-0 focus:outline-none absolute bottom-14 left-1/2 transform -translate-x-1/2"
           style={{ color: "white" }} // Cambiar el color a rojo (#ff0000), ajusta según sea necesario
         >
           {isExpanded ? <IoIosArrowDown /> : <IoIosArrowUp />}

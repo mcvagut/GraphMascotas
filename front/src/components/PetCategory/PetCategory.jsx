@@ -9,12 +9,13 @@ const PetCategory = ({ categoryName, pets, onAddToFavorites }) => {
         {pets.map((pet) => (
           <PetCard
             key={pet.id}
+            mascotaId={pet.mascotaId}
             image={pet.image}
             raza={pet.raza}
             edad={pet.edad}
             color={pet.color}
             tamaño={pet.tamaño}
-            onAddToFavorites={() => onAddToFavorites(pet.id)}
+            onAddToFavorites={() => onAddToFavorites(pet.mascotaId)}
           />
         ))}
       </div>
