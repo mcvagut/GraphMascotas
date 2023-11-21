@@ -54,6 +54,46 @@ export const iniciarSesion = async (req, res) => {
   }
 };
 
+export const iniciarSesionAdmin = async (req, res) => {
+  const session = driver.session();
+  const io = req.app.get('io');
+
+  try {
+    const user = new User(session);
+    const { usuario, password } = req.body;
+
+    const usuarioAutenticado = await user.verificarCredenciales(usuario, password);
+
+    if (!password) {
+      res.status(400).json({ error: 'Ingrese su contraseña' });
+      return;
+    }
+
+    if (usuarioAutenticado) {
+      const { isAdmin } = usuarioAutenticado;
+
+      if (isAdmin) {
+        io.to(req.socketId).emit('loginExitoso', { usuario, isAdmin });
+
+      const token = jwt.sign({ isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      res.status(200).json({ token });
+      }else{
+        res.status(403).json({ error: 'No autorizado para iniciar sesión' });
+        return;
+      }
+      
+    } else {
+      res.status(401).json({ error: 'Contraseña incorrecta' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al iniciar sesión' });
+  } finally {
+    session.close();
+  }
+};
+
 
 export const cerrarSesion = async (req, res) => {
   try {

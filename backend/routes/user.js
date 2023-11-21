@@ -9,6 +9,7 @@ import {
   solicitarAdopcion,
   agregarFavorito,
   registro,
+  iniciarSesionAdmin,
 } from '../controllers/user.js';
 
 
@@ -20,6 +21,7 @@ router.get('/:username', getUserByUsername);
 router.put('/:username', updateUser);
 router.delete('/:username', deleteUser); 
 
+router.post('/loginAdmin', iniciarSesionAdmin)
 
 router.post('/login', iniciarSesion)
 router.post('/logout', cerrarSesion)
