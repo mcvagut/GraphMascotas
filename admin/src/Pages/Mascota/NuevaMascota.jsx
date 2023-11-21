@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContexto';
 
 
-const NuevaMascota = ({closeModal }) => {
+const NuevaMascota = ({closeModal, actualizarMascotas }) => {
+  const [files, setFiles] = useState([]);
   const [nombre, setNombre] = useState('');
   const [raza, setRaza] = useState('');
   const [categoria, setCategoria] = useState('');
@@ -13,14 +14,13 @@ const NuevaMascota = ({closeModal }) => {
   const [sexo, setSexo] = useState('');
   const [color, setColor] = useState('');
   const [tamaño, setTamaño] = useState('');
-  const [fotos, setFotos] = useState([]);
   const [ubicacion, setUbicacion] = useState('');
   const [organizacion, setOrganizacion] = useState(null);
 
   const [organizaciones, setOrganizaciones] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
-  const [imagenPrevia, setImagenPrevia] = useState([]);
+  const [imagenPrevia] = useState([]);
 
     const { token } = useAuth();
     const navigate = useNavigate();
@@ -71,78 +71,64 @@ const NuevaMascota = ({closeModal }) => {
   };
 
   const handleSeleccionImagenes = (e) => {
-    const archivos = e.target.files;
-    const urls = [];
-  
-    for (let i = 0; i < archivos.length; i++) {
-      const url = URL.createObjectURL(archivos[i]);
-      urls.push(url);
-    }
-  
-    setImagenPrevia(urls);
-    setFotos(archivos);
+    setFiles([...files, ...e.target.files]);
   };
-  
+
 
   const handleSubmit = async () => {
     try {
-      // Subir imágenes a Cloudinary
-      const formData = new FormData();
-      for (let i = 0; i < fotos.length; i++) {
-        formData.append('file', fotos[i]);
-        formData.append('upload_preset', 'upload'); // Reemplaza 'tu-upload-preset' con tu configuración de Cloudinary
-      }
+      const promesasSubida = await Promise.all(
+        Object.values(files).map(async (file) => {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', 'upload');
   
-      const responseCloudinary = await axios.post(
-        'https://api.cloudinary.com/v1_1/dwwj8mhse/image/upload', // Reemplaza 'tu-cloud-name' con tu nombre de nube de Cloudinary
-        formData
+          const responseCloudinary = await axios.post(
+            'https://api.cloudinary.com/v1_1/dwwj8mhse/image/upload',
+            formData
+          );
+
+          const { url } = responseCloudinary.data;
+
+          return url;
+        })
       );
+
+      const nuevaMascota = {
+        nombre,
+        raza,
+        categoria,
+        descripcion,
+        edad,
+        sexo,
+        color,
+        tamaño,        
+        fotos: promesasSubida,
+        ubicacion,
+        organizationId: organizacion.organizationId,
+
+      };
   
-      if (responseCloudinary.status === 200) {
-        const imagenesCargadas = responseCloudinary.data.resources
-        ? responseCloudinary.data.resources.map((resource) => resource.secure_url)
-        : [];
-        console.log('Enlaces de imágenes cargadas:', imagenesCargadas);
+      const responseNeo4j = await axios.post('http://localhost:8800/api/pets/', nuevaMascota, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
   
-        // Crear la mascota en la base de datos Neo4j utilizando tu función createPet
-        const responseNeo4j = await fetch('http://localhost:8800/api/pets/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization' : `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            nombre,
-            raza,
-            categoria,
-            descripcion,
-            edad,
-            sexo,
-            color,
-            tamaño,
-            fotos: imagenesCargadas,
-            ubicacion,
-            organizationId: organizacion.organizationId, // Asegúrate de tener organizacionId disponible
-          }),
-        });
-  
-        if (responseNeo4j.ok) {
-          // Manejar la respuesta exitosa, como cerrar el modal o redirigir a otra página
-          console.log('Mascota creada exitosamente');
-          closeModal();
-        } else {
-          // Manejar errores de la respuesta de Neo4j
-          console.error('Error al crear la mascota en Neo4j:', responseNeo4j.statusText);
-        }
+      if (responseNeo4j.status === 201) {
+        console.log('Mascota creada exitosamente');
+        actualizarMascotas();
+        closeModal();
       } else {
-        // Manejar errores de la respuesta de Cloudinary
-        console.error('Error al cargar imágenes a Cloudinary:', responseCloudinary.statusText);
+        console.error('Error al crear la mascota en Neo4j:', responseNeo4j.statusText);
       }
+  
     } catch (error) {
-      // Manejar errores durante el proceso
       console.error('Error al procesar la solicitud:', error.message);
     }
   };
+  
+  
   
 
   return (
@@ -248,6 +234,7 @@ const NuevaMascota = ({closeModal }) => {
   <input
     required
     type="file"
+    id='fotos'
     className="mt-1 p-2 border border-gray-300 rounded-md w-full"
     onChange={handleSeleccionImagenes}
     multiple
@@ -304,13 +291,13 @@ const NuevaMascota = ({closeModal }) => {
         >
           Agregar Mascota
         </button>
-        <button
+        {/* <button
           type="button"
-          onClick={closeModal}
+          onClick={handleClose()}
           className="col-span-2 border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors duration-300"
         >
           Cerrar
-        </button>
+        </button> */}
       </form>
     </div>
   );

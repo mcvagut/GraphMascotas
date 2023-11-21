@@ -12,6 +12,7 @@ const Mascota = () => {
     const [mascotas, setMascotas] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,6 +38,16 @@ const Mascota = () => {
       if (!token) {
         return <div>Redirecting...</div>;
       }
+      
+      const actualizarMascotas = async () => {
+        try {
+          const response = await axios.get('http://localhost:8800/api/pets/');
+          setMascotas(response.data);
+        } catch (error) {
+          console.error('Error al obtener las mascotas:', error);
+        }
+      };
+      
 
         const handleEliminarMascota = async (mascotaId) => {
             try {
@@ -48,12 +59,10 @@ const Mascota = () => {
             }
           }
           const handleAgregarMascota = () => {
-            // Abre el modal al hacer clic en el botón "Agregar Mascota"
             setModalIsOpen(true);
           };
         
           const closeModal = () => {
-            // Cierra el modal al hacer clic en el botón de cerrar o fuera del modal
             setModalIsOpen(false);
           };
 
@@ -111,7 +120,7 @@ const Mascota = () => {
             contentLabel="Agregar Mascota"
           >
             <h2>Agregar Mascota</h2>
-            <NuevaMascota/>
+            <NuevaMascota closeModal={closeModal} actualizarMascotas={actualizarMascotas}/>
             <button onClick={closeModal}>Cerrar</button>
           </Modal>
         </main>

@@ -26,6 +26,13 @@ export default {
       animation: {
         'bounce-slow': 'bounce 3s infinite',
       },
+      width: {
+        'pet-image': '400px', // Define el ancho que desees
+      },
+      height: {
+        'pet-image': '200px', // Define la altura que desees
+      },
+  
     },
   },
   plugins: [

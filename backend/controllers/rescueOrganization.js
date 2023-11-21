@@ -74,9 +74,7 @@ export const updateRescueOrganization = async (req, res) => {
     const { organizationId } = req.params;
     const updatedProperties = req.body;
 
-    const foundOrg = await rescueOrganization.findRescueOrganizationById(
-      organizationId
-    );
+    const foundOrg = await rescueOrganization.findRescueOrganizationById(organizationId);
 
     if (!foundOrg) {
       return res
@@ -105,9 +103,7 @@ export const getRescueOrganizationByUUID = async (req, res) => {
     const rescueOrganization = new RescueOrganization(session);
     const { organizationId } = req.params; // Suponiendo que el UUID se pasa como parámetro en la URL
 
-    const organization = await rescueOrganization.findRescueOrganizationById(
-      organizationId
-    );
+    const organization = await rescueOrganization.findRescueOrganizationById(organizationId);
 
     if (organization) {
       res.json(organization);

@@ -19,86 +19,77 @@ const session = driver.session(process.env.NEO4J_DATABASE);
 
 
 export const createPet = async (req, res) => {
-    const session = driver.session();
-    try {
-      const { isAdmin } = req.user; // asumiendo que el rol está en req.user
+  const session = driver.session();
+  try {
+    const { isAdmin } = req.user;
 
-      if (!isAdmin) {
-          return res.status(403).json({ error: 'Acceso no autorizado. Se requiere rol de administrador.' });
-      }
+    if (!isAdmin) {
+      return res.status(403).json({ error: 'Acceso no autorizado. Se requiere rol de administrador.' });
+    }
 
-      const pet = new Pet(session);
-      const rescueOrganization = new RescueOrganization(session);
-      const { nombre, categoria,raza, descripcion, edad, sexo, color, tamaño, fotos, ubicacion, fechaPublicacion } = req.body;
-  
-      const mascotaExistente = await pet.findPetByInfo({
-        nombre,
-        categoria,
-        raza,
-        edad,
-        sexo,
-        color,
-        tamaño,
-        ubicacion
-      });
-  
-      if (mascotaExistente) {
-        return res.status(400).json({ error: 'Ya existe una mascota con la misma información.' });
-      }
+    const pet = new Pet(session);
+    const rescueOrganization = new RescueOrganization(session);
+    const { nombre, categoria, raza, descripcion, edad, sexo, color, tamaño, fotos, ubicacion, fechaPublicacion } = req.body;
 
-      // Verifica que se proporcionen todas las propiedades obligatorias
-      if (!nombre || !categoria || !raza ||!descripcion || !edad || !sexo || !color || !tamaño || !ubicacion) {
-        return res.status(400).json({ error: 'Faltan propiedades obligatorias' });
-      }
+    console.log('Buscando mascota existente...');
+    const mascotaExistente = await pet.findPetByInfo({
+      nombre,
+      categoria,
+      raza,
+      edad,
+      sexo,
+      color,
+      tamaño,
+      ubicacion
+    });
 
-      const organizationId = req.body.organizationId;
+    if (mascotaExistente) {
+      return res.status(400).json({ error: 'Ya existe una mascota con la misma información.' });
+    }
 
-      
-      // Genera un ID único para la mascota
-      const petId = uuidv4();
-  
-      // Crea un objeto de propiedades con las propiedades deseadas, incluyendo el ID
-      const petProperties = {
-        mascotaId: petId,
-        nombre,
-        categoria,
-        raza,
-        descripcion,
-        edad,
-        sexo,
-        color,
-        tamaño,
-        fotos,
-        ubicacion,
-        organizationId:req.body.organizationId,
-        fechaPublicacion: new Date().toISOString(),
-        fechaAdopcion: null,
-        estadoAdopcion: 'Disponible',
-      };
-  
-      const newPet = await pet.createPet(petProperties);
+    const organizationId = req.body.organizationId;
+    const petId = uuidv4();
+    const petProperties = {
+      mascotaId: petId,
+      nombre,
+      categoria,
+      raza,
+      descripcion,
+      edad,
+      sexo,
+      color,
+      tamaño,
+      fotos,
+      ubicacion,
+      organizationId: req.body.organizationId,
+      fechaPublicacion: new Date().toISOString(),
+      fechaAdopcion: null,
+      estadoAdopcion: 'Disponible',
+    };
 
-      // Obtener la organización (puedes ajustar esto según tu lógica)
+    console.log('Creando mascota en Neo4j...');
+    const newPet = await pet.createPet(petProperties);
+    console.log('Mascota creada exitosamente:', newPet);
+
+    console.log('Obteniendo detalles de la organización...');
     const orgNode = await rescueOrganization.findOnlyById(organizationId);
-
-    
- 
 
     if (!orgNode) {
       return res.status(404).json({ error: 'Organización de rescate no encontrada' });
     }
 
-    // Agregar la mascota a la organización y crear la conexión PONE_EN_ADOPCION
+    console.log('Agregando la mascota a la organización y creando la conexión PONE_EN_ADOPCION...');
     await rescueOrganization.agregarMascota(orgNode, newPet.mascotaId);
-  
-      res.status(201).json(newPet);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error al crear la mascota' });
-    } finally {
-      session.close();
-    }
-  };
+
+    res.status(201).json(newPet);
+  } catch (error) {
+    console.error('Error al crear la mascota:', error);
+    res.status(500).json({ error: 'Error al crear la mascota' });
+  } finally {
+    session.close();
+  }
+};
+
   
 
   export const getPetByUUID = async (req, res) => {

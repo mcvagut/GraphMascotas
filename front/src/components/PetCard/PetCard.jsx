@@ -16,7 +16,7 @@ const PetCard = ({ mascota }) => {
   
   return (
     <div className="max-w-xs rounded overflow-hidden shadow-shadowp m-4 ">
-      <img className="w-full h-auto cursor-pointer" src={mascota.image} alt={`Imagen de ${mascota.raza}`} onClick={handleNavigate()} />
+      <img className="w-full h-auto cursor-pointer" src={mascota.fotos[0]} alt={`Imagen de ${mascota.raza}`} onClick={handleNavigate()} />
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{mascota.raza}</div>
         <p>

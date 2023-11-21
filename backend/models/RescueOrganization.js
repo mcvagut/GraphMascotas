@@ -14,11 +14,11 @@ class RescueOrganization {
     return result.records[0].get("org").properties;
   }
 
-  async findRescueOrganizationById(id) {
+  async findRescueOrganizationById(organizationId) {
     const result = await this.session.run(
-      "MATCH (org:OrganizacionRescate {organizationId: $id}) RETURN org",
+      "MATCH (org:OrganizacionRescate {organizationId: $organizationId}) RETURN org",
       {
-        organizationId: id,
+        organizationId: organizationId,
       }
     );
 

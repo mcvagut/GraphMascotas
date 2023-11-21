@@ -34,22 +34,29 @@ const Navbar = () => {
             </svg>
           )}
         </button>
-
-        {/* Menú de navegación */}
         <ul className={`lg:flex lg:space-x-4 mt-4 lg:mt-0 ${isMenuOpen ? 'block' : 'hidden'}`}>
-          <li className="text-white text-2xl font-bold tracking-wider py-2 px-8 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
-            Inicio
-          </li>
-          <li className="text-white text-2xl font-bold tracking-wider py-2 px-4 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
-            Acerca de
-          </li>
-          <li className="text-white text-2xl font-bold tracking-wider py-2 px-4 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
-            Servicios
-          </li>
-          <li className="text-white text-2xl font-bold tracking-wider py-2 px-4 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
-            Contacto
-          </li>
-        </ul>
+  <li className="text-white text-2xl font-bold tracking-wider py-2 px-8 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
+    <a href="/" className="block py-2 px-8 rounded-md bg-purple-500 hover:bg-purple text-white text-center text-xl font-bold tracking-wider">
+      Inicio
+    </a>
+  </li>
+  <li className="text-white text-2xl font-bold tracking-wider py-2 px-4 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
+    <a href="/" className="block py-2 px-4 rounded-md bg-purple-500 hover:bg-purple text-white text-center text-xl font-bold tracking-wider">
+      Acerca de
+    </a>
+  </li>
+  <li className="text-white text-2xl font-bold tracking-wider py-2 px-4 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
+    <a href="/" className="block py-2 px-4 rounded-md bg-purple-500 hover:bg-purple text-white text-center text-xl font-bold tracking-wider">
+      Servicios
+    </a>
+  </li>
+  <li className="text-white text-2xl font-bold tracking-wider py-2 px-4 rounded-md bg-purple-500 hover:bg-purple cursor-pointer">
+    <a href="/" className="block py-2 px-4 rounded-md bg-purple-500 hover:bg-purple text-white text-center text-xl font-bold tracking-wider">
+      Contacto
+    </a>
+  </li>
+</ul>
+
       </div>
     </nav>
   );

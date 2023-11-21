@@ -31,7 +31,7 @@ useEffect(() => {
   const obtenerDatos = async () => {
     try {
       const response = await axios.get("http://localhost:8800/api/categorias");
-      console.log("Respuesta de categorías:", response.data);
+      //console.log("Respuesta de categorías:", response.data);
 
       const categoriasConMascotasPromises = response.data.map(async (categoria) => {
         const mascotasResponse = await axios.get(`http://localhost:8800/api/pets/categoria/${categoria.tipo}`);
@@ -60,7 +60,7 @@ return (
       <Search />
       <Sorting />
       {categorias.map((categoria) => (
-        <div key={categoria.id} className="mb-8">
+        <div key={categoria.categoriaId} className="mb-8">
           <h2 className="text-2xl font-bold mb-4">{categoria.tipo}</h2>
           <div className="flex flex-wrap justify-center">
             {categoria.mascotas.map((mascota) => (
