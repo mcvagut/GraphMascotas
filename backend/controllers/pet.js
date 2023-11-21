@@ -3,6 +3,7 @@ import Pet from '../models/Pet.js';
 import dotenv from 'dotenv';
 import { v4 as uuidv4 } from 'uuid';
 import RescueOrganization from '../models/RescueOrganization.js';
+import Categoria from '../models/Category.js';
 
 const petId = uuidv4();
 
@@ -149,6 +150,7 @@ export const createPet = async (req, res) => {
   export const deletePet = async (req, res) => {
     const session = driver.session();
     try {
+      const categoriaModel = new Category(session);
       const pet = new Pet(session);
       const petId = req.params.id; 
   
@@ -162,5 +164,62 @@ export const createPet = async (req, res) => {
       session.close();
     }
   };
+
+
+  export const obtenerCategorias = async (req, res) => {
+    const session = driver.session();
+    try {
+      const categoriaModel = new Categoria(session);
+      const categorias = await categoriaModel.obtenerCategorias();
+      res.status(200).json(categorias);
+    } catch (error) {
+      console.error('Error al obtener categorías:', error);
+      res.status(500).json({ error: 'Error al obtener categorías' });
+    }finally {
+      session.close();
+    }
+  };
+  
+  export const crearCategoria = async (req, res) => {
+    const session = driver.session();
+  
+    try {
+      const categoriaModel = new Categoria(session);
+      const { tipo } = req.body;
+      if (!tipo) {
+        return res.status(400).json({ error: 'El campo "tipo" es requerido.' });
+      }
+      
+      await categoriaModel.crearCategoria(tipo);
+      
+      res.status(201).json({ message: 'Categoría creada exitosamente.' });    
+    }catch (error) {
+      console.error('Error al crear categoría:', error);
+      res.status(500).json({ error: 'Error al crear categoría' });
+    }finally {
+      session.close();
+    }
+  };
+
+  export const getPetsByCategory = async (req, res) => {
+    const session = driver.session();
+    try {
+      const petCategory = new Pet(session);
+      const categoria = req.params.categoria;
+      // Realiza la lógica necesaria para obtener las mascotas por la categoría
+      const mascotas = await petCategory.obtenerMascotasPorCategoria(categoria);
+      
+      res.status(200).json(mascotas);
+    } catch (error) {
+      console.error("Error al obtener mascotas por categoría:", error);
+      res.status(500).json({ error: "Error interno del servidor" });
+    }finally {
+      session.close();
+    }
+  };
+
+  
+
+
 
 

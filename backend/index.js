@@ -6,6 +6,8 @@ import neo4j from "neo4j-driver";
 import userRoutes from "./routes/user.js";
 import petRoutes from "./routes/pet.js";
 import rescueOrganizationRoutes from "./routes/rescueOrganization.js";
+import categoriaRoutes from "./routes/categoria.js";
+
 import { Server } from "socket.io";
 import http from "http";
 
@@ -52,6 +54,7 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/rescueOrganizations", rescueOrganizationRoutes);
+app.use("/api/categorias", categoriaRoutes);
 
 
 

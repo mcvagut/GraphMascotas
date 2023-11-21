@@ -1,7 +1,7 @@
 import React from 'react';
 import PetCard from '../PetCard/PetCard';
 
-const PetCategory = ({ categoryName, pets, onAddToFavorites }) => {
+const Pet = ({ categoryName, pets, onAddToFavorites }) => {
   return (
     <div className="mb-8">
       <h2 className="text-2xl font-bold mb-4">{categoryName}</h2>
@@ -23,4 +23,4 @@ const PetCategory = ({ categoryName, pets, onAddToFavorites }) => {
   );
 };
 
-export default PetCategory;
+export default Pet;

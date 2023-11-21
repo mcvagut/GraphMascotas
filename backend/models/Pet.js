@@ -165,7 +165,33 @@ async findPetByInfo({ nombre, categoria, edad, sexo, color, tamaño, ubicacion }
         }
       );
     }
+  
+    async  obtenerMascotasPorCategoria (categoria) {
+      const transaction = this.session.beginTransaction();
+    
+      try {
+        const query = `
+          MATCH (m:Mascota {categoria: $categoria})
+          RETURN m
+        `;
+    
+        const result = await transaction.run(query, { categoria });
+        const mascotas = result.records.map(record => record.get('m').properties);
+    
+        await transaction.commit();
+    
+        return mascotas;
+      } catch (error) {
+        await transaction.rollback();
+        console.error("Error al ejecutar la consulta Cypher:", error);
+        throw error;
+      }
+    };
+    
+    
+    
   }
+
   
   export default Pet;
   
