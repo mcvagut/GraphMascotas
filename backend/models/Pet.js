@@ -195,7 +195,16 @@ async findPetByInfo({ nombre, categoria, edad, sexo, color, tamaño, ubicacion }
     }
 
     
+    async getAllPetsByOrganizationId(organizationId) {
+      const result = await this.session.run(
+        'MATCH (org:OrganizacionRescate {organizationId: $organizationId})-[:PONE_EN_ADOPCION]->(pet:Mascota) RETURN pet',
+        { organizationId }
+      );
     
+      return result.records.map((record) => record.get('pet').properties);
+    }
+    
+  
     
   }
 

@@ -7,21 +7,64 @@ import Register from './pages/Register/Register.jsx';
 import RegisterOrg from './pages/RegisterOrg/RegisterOrg.jsx';
 import PetDetail from './pages/PetDetail/PetDetail.jsx';
 import HomeOrg from './pages/Home/HomeOrg.jsx';
+import PetDetail2 from './pages/PetDetail/PetDetail2.jsx';
+import { useAuth } from './context/AuthContexto.js';
+import { Navigate } from 'react-router-dom';
+import { jwtDecode as decode } from 'jwt-decode';
+
+
+const RutaPrivadaUsuario = ({ element }) => {
+  const { token } = useAuth();
+
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+
+  const decodedToken = decode(token);
+
+  if (decodedToken.isOrganization) {
+    
+    return <Navigate to="/login" />;
+
+  }
+
+  return element;
+};
+
+const RutaPrivadaOrganizacion = ({ element }) => {
+  const { token } = useAuth();
+
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+
+  const decodedToken = decode(token);
+
+  if (!decodedToken.isOrganization) {
+    return <Navigate to="/login" />;
+  }
+
+  return element;
+};
+
 
 
 function App() {
   return (
     <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/registro" element={<Register/>} />
-          <Route path="/pets/:mascotaId" element={<PetDetail />} />
-          <Route path="/registroOrg" element={<RegisterOrg/>} />
-          <Route path="/homeOrg" element={<HomeOrg/>} />
-        </Routes>
+      <Routes>
+        {/* Rutas de usuario */}
+        <Route path="/" element={<RutaPrivadaUsuario element={ <Home />} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<RutaPrivadaUsuario element={ <Register />} />} />
+        <Route path="/pets/:mascotaId" element={<RutaPrivadaUsuario element={ <PetDetail />} />} />
+
+        {/* Rutas de organizaciones */}
+        <Route path="/registroOrg" element={<RutaPrivadaOrganizacion element={<RegisterOrg />} />} />
+        <Route path="/homeOrg" element={<RutaPrivadaOrganizacion element={<HomeOrg />} />} />
+        <Route path="/pets2/:mascotaId" element={<RutaPrivadaOrganizacion element={<PetDetail2 />} />} />
+      </Routes>
     </BrowserRouter>
-    
   );
 }
 

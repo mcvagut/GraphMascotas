@@ -1,6 +1,8 @@
+// AuthContext.js
 import React, { createContext, useContext, useState } from 'react';
+import { jwtDecode as decode } from 'jwt-decode';
 
-const AuthContexto = createContext();
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
@@ -15,13 +17,21 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
   };
 
+  const getOrganizationId = () => {
+    if (token) {
+      const decodedToken = decode(token);
+      return decodedToken.organizationId;
+    }
+    return null;
+  };
+
   return (
-    <AuthContexto.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, login, logout, getOrganizationId }}>
       {children}
-    </AuthContexto.Provider>
+    </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  return useContext(AuthContexto);
+  return useContext(AuthContext);
 };

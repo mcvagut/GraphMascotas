@@ -6,12 +6,10 @@ import Search from "../../components/Search/Search";
 import Sorting from "../../components/Sorting/Sorting";
 import PetCard from "../../components/PetCard/PetCard";
 // import { useAuth } from "../../context/AuthContexto";
-// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Home = () => {
-  
-  // const navigate = useNavigate();
+
 
   // const { token } = useAuth();
 
@@ -31,7 +29,6 @@ useEffect(() => {
   const obtenerDatos = async () => {
     try {
       const response = await axios.get("http://localhost:8800/api/categorias");
-      //console.log("Respuesta de categorías:", response.data);
 
       const categoriasConMascotasPromises = response.data.map(async (categoria) => {
         const mascotasResponse = await axios.get(`http://localhost:8800/api/pets/categoria/${categoria.tipo}`);

@@ -135,8 +135,8 @@ class RescueOrganization {
   // En tu modelo RescueOrganization.js
   async agregarMascota(orgNode, petNode) {
     const transaction = this.session.beginTransaction();
-    console.log("PetNode: ", petNode);
-    console.log("OrgNode: ", orgNode);
+    //console.log("PetNode: ", petNode);
+    //console.log("OrgNode: ", orgNode);
 
     try {
       await transaction.run(

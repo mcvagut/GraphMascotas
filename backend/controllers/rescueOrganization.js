@@ -24,18 +24,18 @@ export const createRescueOrganization = async (req, res) => {
     const {
       nombre,
       descripcion,
-      ubicacion,
-      contacto,
-      imagenes,
+      email,
+      calle,
+      ciudad,
+      usuario,
+      password,
+      telefono,
       fechaFundacion,
     } = req.body;
 
     if (
       !nombre ||
       !descripcion ||
-      !ubicacion ||
-      !contacto ||
-      !imagenes ||
       !fechaFundacion
     ) {
       return res.status(400).json({ error: "Faltan propiedades obligatorias" });
@@ -44,11 +44,14 @@ export const createRescueOrganization = async (req, res) => {
 
     const organizationProperties = {
       organizationId: id,
+      calle,
+      email,
+      usuario,
+      password,
+      ciudad,
+      telefono,
       nombre,
       descripcion,
-      ubicacion,
-      contacto,
-      imagenes,
       fechaFundacion,
       estado: "Activa",
     };

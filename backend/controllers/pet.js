@@ -232,6 +232,28 @@ export const createPet = async (req, res) => {
       session.close();
     }
   }
+
+  export const getAllPetsByOrganizationId = async (req, res) => {
+    const session = driver.session();
+    try {
+      const pet = new Pet(session);
+      const { organizationId } = req.params;
+
+      const foundPets = await pet.getAllPetsByOrganizationId(organizationId);
+  
+      if (foundPets.length > 0) {
+        res.status(200).json(foundPets);
+      } else {
+        res.status(404).json({ error: 'No se encontraron mascotas para la organización' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al obtener las mascotas' });
+    } finally {
+      session.close();
+    }
+  };
+  
   
 
 

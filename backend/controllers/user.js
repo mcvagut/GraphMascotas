@@ -51,7 +51,7 @@ export const iniciarSesion = async (req, res) => {
       res.status(200).json({ token, isOrganization: false });
     } else if (orgAutenticada && orgAutenticada.isOrganization) {
       io.to(req.socketId).emit('loginExitoso', { usuario, isOrganization: true });
-      const token = jwt.sign({ isOrganization: orgAutenticada.isOrganization }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ isOrganization: orgAutenticada.isOrganization, organizationId: orgAutenticada.organizationId }, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.status(200).json({ token, isOrganization: true });
     } else {
       res.status(401).json({ error: 'Contraseña incorrecta o usuario no autorizado' });

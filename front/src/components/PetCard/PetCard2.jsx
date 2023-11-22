@@ -1,6 +1,5 @@
 import React from 'react';
 import { BsStar } from 'react-icons/bs';
-import { MdOutlinePets } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
 const PetCard = ({ mascota }) => {
@@ -29,16 +28,16 @@ const PetCard = ({ mascota }) => {
           
           className="bg-fav flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
         >
-          <BsStar className="mr-2" /> Agregar a Favoritos
+          <BsStar className="mr-2" /> Gestionar Solicitud
         </button>
         </div>
         <div>
-        <button
+        {/* <button
           onClick={handleNavigate()}
           className="bg-fav mt-4 flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
         >
           <MdOutlinePets className="mr-2" /> Quiero saber más!
-        </button>
+        </button> */}
         </div>
       </div>
     </div>
