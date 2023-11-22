@@ -44,9 +44,9 @@ export const iniciarSesion = async (req, res) => {
         return;
       }
 
-      io.to(req.socketId).emit('loginExitoso', { usuario, isAdmin });
+      
 
-      const token = jwt.sign({ isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ usuario, isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
       res.status(200).json({ token, isOrganization: false });
     } else if (orgAutenticada && orgAutenticada.isOrganization) {
@@ -286,9 +286,11 @@ export const solicitarAdopcion = async (req, res) => {
   
     await adoptionRequest.solicitarAdopcion(usuario, mascotaId);
 
-    io.to(organizationId).emit('notificacion', {
-      mensaje: `¡Atención! ${usuario} ha solicitado adoptar la mascota ${mascotaId}.`
+    io.emit('notificacion', {
+      mensaje: `¡Atención! ha solicitado adoptar la mascota.`
     });
+
+    console.log(`Notificación emitida a la organización ${organizationId}`);
 
     res.status(200).json({ message: 'Solicitud de adopción enviada exitosamente' });
   } catch (error) {

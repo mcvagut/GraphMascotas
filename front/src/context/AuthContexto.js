@@ -25,8 +25,16 @@ export const AuthProvider = ({ children }) => {
     return null;
   };
 
+  const usuario = () => {
+    if (token) {
+      const decodedToken = decode(token);
+      return decodedToken;
+    }
+    return null;
+  }
+
   return (
-    <AuthContext.Provider value={{ token, login, logout, getOrganizationId }}>
+    <AuthContext.Provider value={{ token, login, logout, getOrganizationId, usuario }}>
       {children}
     </AuthContext.Provider>
   );

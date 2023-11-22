@@ -6,6 +6,11 @@ import { useAuth } from '../../context/AuthContexto';
 import PetCard2 from '../../components/PetCard/PetCard2';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import io from 'socket.io-client'
+import {toast, Toaster} from 'react-hot-toast';
+import { useRef } from 'react';
+
+
 
 
 const HomeOrg = () => {
@@ -14,6 +19,38 @@ const HomeOrg = () => {
   const [pets, setPets] = useState([])
 
   const [categorias, setCategorias] = useState([]);
+  const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:8800');
+    socketRef.current = newSocket;
+
+    newSocket.on('connect', () => {
+      console.log('Socket conectado');
+      newSocket.emit('prueba', 'Hola desde el frontend');
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Socket desconectado');
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+      console.log('Socket cerrado');
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.on('notificacion', (data) => {
+        console.log('Notificación recibida en HomeOrg:', data);
+        toast.success(`¡Atención! ${data.usuario} ha solicitado adoptar la mascota ${data.mascotaId}.`);
+      });
+    }
+  }, [socketRef.current]);
 
 
 useEffect(() => {
@@ -77,6 +114,7 @@ useEffect(() => {
 </main>
 
     </main>
+    <Toaster />
     </div>
       <Footer />
   </div>

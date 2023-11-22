@@ -8,15 +8,21 @@ import petRoutes from "./routes/pet.js";
 import rescueOrganizationRoutes from "./routes/rescueOrganization.js";
 import categoriaRoutes from "./routes/categoria.js";
 
-import { Server } from "socket.io";
-import http from "http";
+import http from 'http';
+import { Server } from 'socket.io';
+
 
 
 const app = express();
 
 const server = http.createServer(app);
-const io = new Server(server);
-
+const io = new Server(server, {
+  cors: {
+    origin: 'http://192.168.1.8:3000', // Cambia esto según tu URL de frontend
+    methods: ['GET', 'POST'],
+    credentials: true,
+  }, // Habilita WebSocket
+});
 dotenv.config();
 
 // Configura la conexión a Neo4j
@@ -27,9 +33,9 @@ const driver = neo4j.driver(
 
 
 io.on("connection", (socket) => {
-  console.log("Usuario conectado");
-
-  app.set('socketId', socket.id);
+  console.log(`Usuario conectado con ID: ${socket.id}`);
+  
+  socket.emit('prueba', 'Hola desde el backend');
 });
 
 // Asociar io al objeto app
