@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import AdoptionRequest from '../models/AdoptionRequest.js';
 import {crearError} from '../extra/error.js';
+import RescueOrganization from '../models/RescueOrganization.js';
 dotenv.config();
 
 
@@ -21,16 +22,21 @@ export const iniciarSesion = async (req, res) => {
 
   try {
     const user = new User(session);
+    const org = new RescueOrganization(session);
     const { usuario, password } = req.body;
 
     const usuarioAutenticado = await user.verificarCredenciales(usuario, password);
+    const orgAutenticada = await org.verificarCredenciales(usuario, password);
+
+    console.log('Usuario autenticado:', usuarioAutenticado);
+    console.log('Organización autenticada:', orgAutenticada);
 
     if (!password) {
       res.status(400).json({ error: 'Ingrese su contraseña' });
       return;
     }
 
-    if (usuarioAutenticado) {
+    if (usuarioAutenticado && !usuarioAutenticado.isOrganization) {
       const { isAdmin } = usuarioAutenticado;
 
       if (isAdmin) {
@@ -42,9 +48,13 @@ export const iniciarSesion = async (req, res) => {
 
       const token = jwt.sign({ isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-      res.status(200).json({ token });
+      res.status(200).json({ token, isOrganization: false });
+    } else if (orgAutenticada && orgAutenticada.isOrganization) {
+      io.to(req.socketId).emit('loginExitoso', { usuario, isOrganization: true });
+      const token = jwt.sign({ isOrganization: orgAutenticada.isOrganization }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.status(200).json({ token, isOrganization: true });
     } else {
-      res.status(401).json({ error: 'Contraseña incorrecta' });
+      res.status(401).json({ error: 'Contraseña incorrecta o usuario no autorizado' });
     }
   } catch (error) {
     console.error(error);
@@ -53,6 +63,8 @@ export const iniciarSesion = async (req, res) => {
     session.close();
   }
 };
+
+
 
 export const iniciarSesionAdmin = async (req, res) => {
   const session = driver.session();
@@ -146,15 +158,15 @@ export const registro = async (req, res) => {
     } = req.body;
 
     // Check if the user with the same email or username already exists
-    const existingUser = await user.findByEmailOrUsername(session, email, usuario);
+    const existingUser = await user.findByEmailOrUsername(email, usuario);
 
     if (existingUser) {
       // User with the same email or username already exists
       throw crearError(400, 'El usuario o email ya está registrado.');
     }
-    const userData = { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin: false };
+    const userData = { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin: false, isOrganization: false };
     
-    const createdUser = await user.create(session, userData);
+    const createdUser = await user.create(userData);
 
     res.status(201).json({ message: 'Registro exitoso', user: createdUser });
   } catch (error) {

@@ -1,7 +1,25 @@
+import { v4 as uuidv4 } from 'uuid';
 class RescueOrganization {
   constructor(session) {
     this.session = session;
   }
+
+  async verificarCredenciales(usuario, password) {
+    const result = await this.session.run(
+      'MATCH (org:OrganizacionRescate {usuario: $usuario, password: $password}) RETURN org',
+      {
+        usuario,
+        password,
+      }
+    );
+  
+    if (result.records.length > 0) {
+      return result.records[0].get('org').properties;
+    } else {
+      return null;
+    }
+  }
+  
 
   async createRescueOrganization(properties) {
     const result = await this.session.run(
@@ -27,6 +45,43 @@ class RescueOrganization {
     }
 
     return result.records[0].get("org").properties;
+  }
+
+  async findRescueOrganizationByUser(email,usuario) {
+    const result = await this.session.run(
+      "MATCH (org:OrganizacionRescate {email: $email, usuario: $usuario}) RETURN org",
+      {
+        email,
+        usuario,
+      }
+    );
+
+    if (result.records.length === 0) {
+      return null;
+    }
+
+    return result.records[0].get("org").properties;
+  }
+
+  async crearOrg({nombre, email, usuario, password, ciudad, descripcion, calle, telefono, isOrganization, isAdmin}) {  
+    const organizationId = uuidv4();
+    await this.session.run(
+      "CREATE (org:OrganizacionRescate {organizationId: $organizationId, nombre: $nombre, email: $email, usuario: $usuario, password: $password, telefono: $telefono, calle: $calle, ciudad:$ciudad,  descripcion: $descripcion, isOrganization: $isOrganization, isAdmin: $isAdmin}) RETURN org",
+      {
+        organizationId,
+        nombre,
+        email,
+        usuario,
+        password,
+        telefono,
+        descripcion,
+        ciudad,
+        calle,
+        telefono,
+        isOrganization,
+        isAdmin,
+      }
+    );
   }
 
   async findOnlyById(id) {

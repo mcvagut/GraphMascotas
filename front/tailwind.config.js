@@ -10,8 +10,10 @@ export default {
       'white':'#ffffff',
       'black':'#3D3D3D',
       'purple2':'#7c4fd0',
-      'fav':'#64ad6b'
-
+      'fav':'#64ad6b',
+      'bluefav':'#435585',
+      'redfav':'#CE5A67',
+      'orangefav':'#EC8F5E'
     },
     extend: {
       spacing: {

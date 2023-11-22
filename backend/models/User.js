@@ -4,17 +4,22 @@ class User {
       this.session = session;
     }
 
-    async verificarCredenciales(nombreUsuario, contrasena) {
+    async verificarCredenciales(usuario, password) {
       const result = await this.session.run(
-        'MATCH (user:Usuario {usuario: $nombreUsuario, password: $contrasena}) RETURN user',
+        'MATCH (user:Usuario {usuario: $usuario, password: $password}) RETURN user',
         {
-          nombreUsuario,
-          contrasena,
+          usuario,
+          password,
         }
       );
-  
-      return result.records[0].get('user').properties;
+    
+      if (result.records.length > 0) {
+        return result.records[0].get('user').properties;
+      } else {
+        return null; // Devuelve null si no hay coincidencias
+      }
     }
+    
   
     async createUser(properties) {
       const result = await this.session.run('CREATE (user:Usuario $properties) RETURN user', {
@@ -47,9 +52,9 @@ class User {
       return result.records[0].get('usuario');
     }
 
-    async findByEmailOrUsername(session, email, usuario) {
-      const result = await session.run(
-        'MATCH (user:User) WHERE user.email = $email OR user.usuario = $usuario RETURN user',
+    async findByEmailOrUsername(email, usuario) {
+      const result = await this.session.run(
+        'MATCH (user:Usuario) WHERE user.email = $email OR user.usuario = $usuario RETURN user',
         { email, usuario }
       );
   
@@ -58,10 +63,10 @@ class User {
       return existingUser;
     }
 
-    async create (session, { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin }) {
-      const result = await session.run(
-        'CREATE (user:Usuario {nombre: $nombre, apellido: $apellido, email: $email, usuario: $usuario, password: $password, pais: $pais, ciudad: $ciudad, telefono: $telefono, fecha_nacimiento: $fecha_nacimiento, isAdmin: $isAdmin}) RETURN user',
-        { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin }
+    async create ({nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin, isOrganization} ) {
+      const result = await this.session.run(
+        'CREATE (user:Usuario {nombre: $nombre, apellido: $apellido, email: $email, usuario: $usuario, password: $password, pais: $pais, ciudad: $ciudad, telefono: $telefono, fecha_nacimiento: $fecha_nacimiento, isAdmin: $isAdmin, isOrganization: $isOrganization}) RETURN user',
+        { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin, isOrganization, }
       );
   
       return result.records[0].get('user').properties;

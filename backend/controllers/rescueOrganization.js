@@ -335,3 +335,41 @@ export const procesarColaSolicitudes = async (io) => {
     session.close();
   }
 };
+
+export const registroOrganizacionRescate = async (req, res) => {
+  const session = driver.session();
+  const org = new RescueOrganization(session);
+  try {
+    const { usuario, password, email, descripcion, fechaFundacion, nombre, ciudad, calle, telefono} = req.body;
+
+    const existingOrg = await org.findRescueOrganizationByUser(email, usuario);
+    
+    if (existingOrg) {
+      return res.status(400).json({ error: 'Esta organizacion ya se encuentra registrada' });
+    }
+
+    const orgnizationData = {
+      usuario,
+      password,
+      email,
+      descripcion,
+      fechaFundacion,
+      nombre,
+      ciudad,
+      calle,
+      telefono,
+      isOrganization: true,
+      isAdmin: false,
+      creacionCuenta: new Date().toISOString(),      
+    };
+
+    const createdOrg= await org.crearOrg(orgnizationData);
+
+    res.status(200).json({ message: 'Organización registrada exitosamente', org: createdOrg });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al registrar el usuario' });
+  } finally {
+    session.close();
+  }
+}

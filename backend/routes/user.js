@@ -23,7 +23,9 @@ router.delete('/:username', deleteUser);
 
 router.post('/loginAdmin', iniciarSesionAdmin)
 
+
 router.post('/login', iniciarSesion)
+router.post('/loginOrg',iniciarSesion)
 router.post('/logout', cerrarSesion)
 router.post('/registro', registro)
 
