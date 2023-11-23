@@ -302,31 +302,28 @@ export const solicitarAdopcion = async (req, res) => {
 
 
 };
-//HASH TABLE
 
+
+//HASH TABLE
 const favoritosPorUsuario = {};
 
 export const agregarFavorito = async (req, res) => {
   try {
     const { mascota } = req.body;
-    const usuario = req.user.username; // Obtener el usuario desde el token o sesión (ajusta según tu lógica de autenticación)
-    
-    // Verificar que la información de la mascota está presente
+    const usuario = req.user.username; 
     if (!mascota || !mascota.mascotaId || !mascota.categoria || !mascota.raza) {
       return res.status(400).json({ mensaje: 'Información de la mascota incompleta' });
     }
 
     const { id: mascotaId, categoria, raza } = mascota;
 
-    // Agregar favorito a la "hash table" en memoria
     if (!favoritosPorUsuario[usuario]) {
       favoritosPorUsuario[usuario] = {};
     }
 
     favoritosPorUsuario[usuario][mascotaId] = { categoria, raza };
 
-    // Actualizar en la base de datos usando el modelo
-    const userModel = new User(session);
+    const userModel = new User(session); //Actualiza
     const exitoso = await userModel.agregarFavorito(usuario, mascotaId, categoria, raza);
 
     if (exitoso) {
