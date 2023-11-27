@@ -19,7 +19,7 @@ const HomeOrg = () => {
   const [pets, setPets] = useState([])
 
   const [categorias, setCategorias] = useState([]);
-  const [socket, setSocket] = useState(null);
+  const [, setSocket] = useState(null);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const HomeOrg = () => {
         toast.success(`¡Atención! ${data.usuario} ha solicitado adoptar la mascota ${data.mascotaId}.`);
       });
     }
-  }, [socketRef.current]);
+  }, []);
 
 
 useEffect(() => {

@@ -18,7 +18,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://192.168.1.8:3000', // Cambia esto según tu URL de frontend
+    origin: 'http://localhost:3000', // Cambia esto según tu URL de frontend
     methods: ['GET', 'POST'],
     credentials: true,
   }, // Habilita WebSocket

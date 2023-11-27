@@ -20,7 +20,7 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
   const [organizaciones, setOrganizaciones] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
-  const [imagenPrevia] = useState([]);
+  const [imagenPrevia, setImagenPrevia] = useState([]);
 
     const { token } = useAuth();
     const navigate = useNavigate();
@@ -72,6 +72,7 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
 
   const handleSeleccionImagenes = (e) => {
     setFiles([...files, ...e.target.files]);
+    setImagenPrevia([...imagenPrevia, ...Object.values(e.target.files).map((file) => URL.createObjectURL(file))]);
   };
 
 
