@@ -203,6 +203,16 @@ async findPetByInfo({ nombre, categoria, edad, sexo, color, tamaño, ubicacion }
     
       return result.records.map((record) => record.get('pet').properties);
     }
+
+    async getPetsByAdoptionStatus() {
+      const result = await this.session.run(
+        'MATCH (pet:Mascota) WHERE pet.estadoAdopcion = "Pendiente" OR pet.estadoAdopcion = "Disponible" RETURN pet'
+      );
+    
+      return result.records.map((record) => record.get('pet').properties);
+    }
+    
+    
     
   
     

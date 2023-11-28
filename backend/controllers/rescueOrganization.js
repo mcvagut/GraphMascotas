@@ -322,13 +322,15 @@ export const procesarColaSolicitudes = async (io) => {
         await trackingAdoption.createAdoptionTracking(usuario, mascotaId, organizationId, fechaAdopcion);
 
         // Emitir notificación al usuario que solicitó la adopción
-        io.to(usuario).emit("notificacion", {
+        io.emit("notificacion2", {
           mensaje: "¡Felicidades! Tu solicitud de adopción ha sido aceptada.",
+          aceptar: true,
         });
       } else {
         // Emitir notificación al usuario que solicitó la adopción
-        io.to(usuario).emit("notificacion", {
+        io.emit("notificacion2", {
           mensaje: "Lamentablemente, tu solicitud de adopción ha sido rechazada.",
+          aceptar: false,
         });
       }
     }
@@ -376,3 +378,27 @@ export const registroOrganizacionRescate = async (req, res) => {
     session.close();
   }
 }
+
+export const getAllAdoptionRequestsByOrganization = async (req, res) => {
+  const session = driver.session();
+  const { organizationId } = req.params;
+  const adoptionRequest = new AdoptionRequest(session);
+
+  try {
+    //console.log('Iniciando la obtención de solicitudes para la organización:', organizationId);
+
+    const requests = await adoptionRequest.getAllAdoptionRequestsByOrganization(organizationId);
+
+    //console.log('Solicitudes obtenidas correctamente:', requests);
+
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error('Error al obtener las solicitudes de adopción:', error);
+    res.status(500).json({ error: 'Error al obtener las solicitudes de adopción', details: error.message });
+  } finally {
+    //console.log('Cerrando la sesión de Neo4j.');
+    session.close();
+  }
+};
+
+ 

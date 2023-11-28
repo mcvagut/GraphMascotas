@@ -6,6 +6,9 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Footer from "../../components/Footer/Footer";
 import { useAuth } from "../../context/AuthContexto";
 import { IoCloseCircle, IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { useRef } from "react";
+import io from "socket.io-client";
+import { toast,Toaster } from "react-hot-toast";
 
 const PetDetail = () => {
   const [petDetails, setPetDetails] = useState("");
@@ -20,6 +23,41 @@ const PetDetail = () => {
 
   const { usuario } = useAuth();
   const us = usuario();
+
+  const [, setSocket] = useState(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:8800');
+    socketRef.current = newSocket;
+
+    newSocket.on('connect', () => {
+      console.log('Socket conectado');
+      newSocket.emit('prueba', 'Hola desde el frontend');
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Socket desconectado');
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+      console.log('Socket cerrado');
+    };
+  }, []);
+
+
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.on('notificacion2', (data) => {
+        console.log('Resultado de adopción recibido en HomeOrg:', data);
+        toast[data.aceptar ? 'success' : 'error'](data.mensaje);
+      });
+    }
+  }, []);
+  
 
   useEffect(() => {
     const fetchPetDetails = async () => {
@@ -194,6 +232,7 @@ const PetDetail = () => {
         />
       </div>
     </div>
+    <Toaster/>
   </div>
 )}
 

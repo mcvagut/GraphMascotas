@@ -84,10 +84,21 @@ class AdoptionRequest {
       throw error;
     }
   }
-  
-  
-  
 
+  async getAllAdoptionRequestsByOrganization(organizationId) {
+    const result = await this.session.run(
+      'MATCH (user:Usuario)-[:SOLICITA_ADOPTAR]->(pet:Mascota {estadoAdopcion: "Pendiente", organizationId: $organizationId}) ' +
+      'RETURN user.usuario, pet.mascotaId',
+      {
+        organizationId,
+      }
+    );
+  
+    return result.records.map((record) => ({
+      usuario: record.get('user.usuario'),
+      mascotaId: record.get('pet.mascotaId'),
+    }));
+  }
 
 }
 

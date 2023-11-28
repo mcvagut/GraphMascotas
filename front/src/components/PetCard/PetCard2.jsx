@@ -8,7 +8,7 @@ const PetCard = ({ mascota }) => {
   
   const handleNavigate = () => {
     return () => {
-      navigate(`/pets/${mascota.mascotaId}`);
+      navigate(`/administrarSolicitud`);
     };
   }
 
@@ -25,7 +25,7 @@ const PetCard = ({ mascota }) => {
       <div className="px-6 py-4 flex flex-col items-center mb-4 place-content-center ">
         <div>
         <button
-          
+          onClick={handleNavigate()}
           className="bg-fav flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
         >
           <BsStar className="mr-2" /> Gestionar Solicitud

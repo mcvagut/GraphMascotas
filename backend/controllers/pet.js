@@ -233,6 +233,26 @@ export const createPet = async (req, res) => {
     }
   }
 
+  export const getPetsByAdoptionStatus = async (req, res) => {
+    const session = driver.session();
+  
+    try {
+      const pet = new Pet(session);
+      console.log("Obteniendo mascotas por estado de adopción...")
+  
+      const pets = await pet.getPetsByAdoptionStatus();
+      console.log("Mascotas por estado de adopción:", pets)
+  
+      res.status(200).json(pets);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al obtener mascotas por estado de adopción' });
+    } finally {
+      session.close();
+    }
+  };
+  
+
   export const getAllPetsByOrganizationId = async (req, res) => {
     const session = driver.session();
     try {

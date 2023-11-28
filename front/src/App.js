@@ -11,6 +11,7 @@ import PetDetail2 from './pages/PetDetail/PetDetail2.jsx';
 import { useAuth } from './context/AuthContexto.js';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode as decode } from 'jwt-decode';
+import AdministrarSolicitud from './pages/AdministrarSolicitud/AdministrarSolicitud.jsx';
 
 
 const RutaPrivadaUsuario = ({ element }) => {
@@ -63,6 +64,7 @@ function App() {
         <Route path="/registroOrg" element={<RutaPrivadaOrganizacion element={<RegisterOrg />} />} />
         <Route path="/homeOrg" element={<RutaPrivadaOrganizacion element={<HomeOrg />} />} />
         <Route path="/pets2/:mascotaId" element={<RutaPrivadaOrganizacion element={<PetDetail2 />} />} />
+        <Route path="/administrarSolicitud" element={<RutaPrivadaOrganizacion element={<AdministrarSolicitud />} />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import { BsStar } from 'react-icons/bs';
 import { MdOutlinePets } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 const PetCard = ({ mascota }) => {
   
   const navigate = useNavigate();
+
+
+
   
   const handleNavigate = () => {
     return () => {
