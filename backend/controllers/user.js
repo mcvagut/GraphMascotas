@@ -304,18 +304,18 @@ export const solicitarAdopcion = async (req, res) => {
 };
 
 
-//HASH TABLE
+// HASH TABLE
 const favoritosPorUsuario = {};
 
 export const agregarFavorito = async (req, res) => {
+  const session = driver.session();
   try {
-    const { mascota } = req.body;
-    const usuario = req.user.username; 
-    if (!mascota || !mascota.mascotaId || !mascota.categoria || !mascota.raza) {
-      return res.status(400).json({ mensaje: 'Información de la mascota incompleta' });
-    }
+    const { mascotaId, categoria, raza } = req.body;
+    const usuario = req.body.usuario || req.params.usuario;
 
-    const { id: mascotaId, categoria, raza } = mascota;
+    if (!mascotaId || !categoria || !raza || !usuario) {
+      return res.status(400).json({ mensaje: 'Información de la mascota o usuario incompleta' });
+    }
 
     if (!favoritosPorUsuario[usuario]) {
       favoritosPorUsuario[usuario] = {};
@@ -323,7 +323,7 @@ export const agregarFavorito = async (req, res) => {
 
     favoritosPorUsuario[usuario][mascotaId] = { categoria, raza };
 
-    const userModel = new User(session); //Actualiza
+    const userModel = new User(session);
     const exitoso = await userModel.agregarFavorito(usuario, mascotaId, categoria, raza);
 
     if (exitoso) {
@@ -334,8 +334,11 @@ export const agregarFavorito = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al agregar la mascota a favoritos' });
+  } finally {
+    session.close();
   }
 };
+
 
 // export const obtenerFavoritosPorUsuario = (req, res) => {
 //   try {
@@ -350,6 +353,25 @@ export const agregarFavorito = async (req, res) => {
 //     res.status(500).json({ mensaje: 'Error al obtener los favoritos por usuario' });
 //   }
 // };
+
+export const obtenerFavoritosPorUsuario = async (req, res) => {
+  const session = driver.session();
+  try {
+    const userModel = new User(session);
+    const usuario = req.params.username;
+console.log('Usuario en el controlador:', usuario);
+    const favoritos = await userModel.obtenerFavoritosPorUsuario(usuario);
+    res.status(200).json(favoritos);
+  } catch (error) {
+    console.error("Error al obtener los favoritos por usuario", error);
+    res.status(500).json({ mensaje: `Error al obtener los favoritos por usuario: ${error.message}` });
+  } finally {
+    session.close();
+  }
+}
+
+
+
 
 
 

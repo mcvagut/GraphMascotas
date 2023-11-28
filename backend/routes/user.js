@@ -10,6 +10,7 @@ import {
   agregarFavorito,
   registro,
   iniciarSesionAdmin,
+  obtenerFavoritosPorUsuario,
 } from '../controllers/user.js';
 
 
@@ -32,5 +33,7 @@ router.post('/registro', registro)
 router.post('/solicitudes-adopcion', solicitarAdopcion);
 
 router.post('/:username/favoritos', agregarFavorito);
+
+router.get('/favoritos/:username', obtenerFavoritosPorUsuario);
 
 export default router;

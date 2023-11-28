@@ -39,7 +39,7 @@ const Sidebar = () => {
         <Link to="/">Historial de Adopción</Link>
       </button>
       <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
-        <Link to="/">Favoritos</Link>
+        <Link to="/favoritos">Favoritos</Link>
       </button>
       <button
       onClick={handleLogout}

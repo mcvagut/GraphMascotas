@@ -101,10 +101,11 @@ class User {
 
     async agregarFavorito(usuario, mascotaId, categoria, raza) {
       const cypher = `
-        MATCH (u:Usuario {usuario: $usuario})
-        MERGE (f:Favorito {mascotaId: $mascotaId})
-        ON CREATE SET f.categoria = $categoria, f.raza = $raza
-        MERGE (u)-[:TIENE_FAVORITO]->(f)
+      MATCH (u:Usuario {usuario: $usuario})
+      MATCH (m:Mascota {mascotaId: $mascotaId})
+      MERGE (u)-[:TIENE_FAVORITO]->(m)
+      ON CREATE SET m.categoria = $categoria, m.raza = $raza
+      
       `;
     
       try {
@@ -115,6 +116,24 @@ class User {
         return false;
       }
     }
+    
+   
+    
+    async obtenerFavoritosPorUsuario(usuario) {
+      const result = await this.session.run('MATCH (u:Usuario {usuario: $usuario})-[:TIENE_FAVORITO]->(m:Mascota) RETURN m', {
+        usuario,
+      });
+
+      if (result.records.length > 0) {
+        return result.records.map(record => record.get('m').properties);
+      } else {
+        return [];
+      }
+    }
+    
+    
+    
+    
     
     
     

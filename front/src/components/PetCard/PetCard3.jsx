@@ -1,41 +1,37 @@
 import React from "react";
-import { BsStar } from "react-icons/bs";
 import { MdOutlinePets } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useAuth } from "../../context/AuthContexto";
-import axios from "axios";
 
-const PetCard = ({ mascota }) => {
-  const [, setAgregadoAFavoritos] = useState(false);
+
+
+const PetCard3 = ({ mascota }) => {
+
 
   const navigate = useNavigate();
 
-  const { usuario } = useAuth();
-  const us = usuario();
 
 
-  const handleAddFavorite = async () => {
-    try {
-      const { mascotaId, categoria, raza } = mascota;
+  // const handleAddFavorite = async () => {
+  //   try {
+  //     const { mascotaId, categoria, raza } = mascota;
   
-      // Verifica que la mascota tenga la información necesaria
-      if (!mascotaId || !categoria || !raza) {
-        console.error("Información de la mascota incompleta");
-        return;
-      }
+  //     // Verifica que la mascota tenga la información necesaria
+  //     if (!mascotaId || !categoria || !raza) {
+  //       console.error("Información de la mascota incompleta");
+  //       return;
+  //     }
   
-      await axios.post(
-        `http://localhost:8800/api/users/${us.usuario}/favoritos`,
-        { mascotaId, categoria, raza, usuario: us.usuario }
-      );
+  //     await axios.post(
+  //       `http://localhost:8800/api/users/${us.usuario}/favoritos`,
+  //       { mascotaId, categoria, raza, usuario: us.usuario }
+  //     );
   
-      // Actualiza el estado local
-      setAgregadoAFavoritos(true);
-    } catch (error) {
-      console.error("Error al agregar a favoritos", error);
-    }
-  };
+  //     // Actualiza el estado local
+  //     setAgregadoAFavoritos(true);
+  //   } catch (error) {
+  //     console.error("Error al agregar a favoritos", error);
+  //   }
+  // };
   
   
   
@@ -63,20 +59,20 @@ const PetCard = ({ mascota }) => {
         </p>
       </div>
       <div className="px-6 py-4 flex flex-col items-center mb-4 place-content-center ">
-        <div>
+        {/* <div>
           <button
             onClick={handleAddFavorite}
             className="bg-fav flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
           >
             <BsStar className="mr-2" /> Agregar a Favoritos
           </button>
-        </div>
+        </div> */}
         <div>
           <button
-            onClick={handleNavigate}
+            onClick={handleNavigate()}
             className="bg-fav mt-4 flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
           >
-            <MdOutlinePets className="mr-2" /> Quiero saber más!
+            <MdOutlinePets className="mr-2" /> Detalles de Mascota
           </button>
         </div>
       </div>
@@ -84,4 +80,4 @@ const PetCard = ({ mascota }) => {
   );
 };
 
-export default PetCard;
+export default PetCard3;

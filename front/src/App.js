@@ -12,6 +12,7 @@ import { useAuth } from './context/AuthContexto.js';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode as decode } from 'jwt-decode';
 import AdministrarSolicitud from './pages/AdministrarSolicitud/AdministrarSolicitud.jsx';
+import Favoritos from './pages/Favoritos/Favoritos.jsx';
 
 
 const RutaPrivadaUsuario = ({ element }) => {
@@ -59,6 +60,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<RutaPrivadaUsuario element={ <Register />} />} />
         <Route path="/pets/:mascotaId" element={<RutaPrivadaUsuario element={ <PetDetail />} />} />
+        <Route path="/favoritos" element={<RutaPrivadaUsuario element={ <Favoritos />} />} />
 
         {/* Rutas de organizaciones */}
         <Route path="/registroOrg" element={<RutaPrivadaOrganizacion element={<RegisterOrg />} />} />
