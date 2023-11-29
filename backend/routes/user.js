@@ -11,6 +11,7 @@ import {
   registro,
   iniciarSesionAdmin,
   obtenerFavoritosPorUsuario,
+  getAllUsers,
 } from '../controllers/user.js';
 
 
@@ -18,6 +19,7 @@ const router = express.Router();
 
 
 router.post('/', createUser);
+router.get('/', getAllUsers);
 router.get('/:username', getUserByUsername);
 router.put('/:username', updateUser);
 router.delete('/:username', deleteUser); 

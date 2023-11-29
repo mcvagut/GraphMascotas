@@ -26,6 +26,8 @@ class RescueOrganization {
       "CREATE (org:OrganizacionRescate $properties) RETURN org",
       {
         properties,
+        isOrganization: true,
+        isAdmin: false,
       }
     );
 
@@ -78,8 +80,8 @@ class RescueOrganization {
         ciudad,
         calle,
         telefono,
-        isOrganization,
-        isAdmin,
+        isOrganization: true,
+        isAdmin: false,
       }
     );
   }
@@ -125,7 +127,7 @@ class RescueOrganization {
 
   async deleteRescueOrganization(organizationId) {
     await this.session.run(
-      "MATCH (org:OrganizacionRescate {organizationId: $id}) DETACH DELETE org",
+      "MATCH (org:OrganizacionRescate {organizationId: $organizationId}) DETACH DELETE org",
       {
         organizationId: organizationId,
       }

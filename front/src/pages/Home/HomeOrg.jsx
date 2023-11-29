@@ -47,7 +47,7 @@ const HomeOrg = () => {
     if (socketRef.current) {
       socketRef.current.on('notificacion', (data) => {
         console.log('Notificación recibida en HomeOrg:', data);
-        toast.success(`¡Atención! ${data.usuario} ha solicitado adoptar la mascota ${data.mascotaId}.`);
+        toast.success(data.mensaje);
       });
     }
   }, []);

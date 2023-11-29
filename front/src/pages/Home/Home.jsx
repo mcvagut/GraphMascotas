@@ -5,17 +5,21 @@ import Footer from "../../components/Footer/Footer";
 import Search from "../../components/Search/Search";
 import Sorting from "../../components/Sorting/Sorting";
 import PetCard from "../../components/PetCard/PetCard";
-// import { useAuth } from "../../context/AuthContexto";
 import axios from "axios";
 import io from 'socket.io-client';
 import { useRef } from 'react';
 import {toast, Toaster} from 'react-hot-toast';
+import { useAuth } from "../../context/AuthContexto";
+
 
 
 const Home = () => {
 
 const [categorias, setCategorias] = useState([]);
 const [estadoAdopcion, setEstadoAdopcion] = useState([]);
+
+const { usuario } = useAuth();
+const us = usuario();
 
 const [, setSocket] = useState(null);
   const socketRef = useRef(null);
@@ -26,7 +30,9 @@ const [, setSocket] = useState(null);
 
     newSocket.on('connect', () => {
       console.log('Socket conectado');
-      newSocket.emit('prueba', 'Hola desde el frontend');
+      const userIdentificador = us.usuario;
+      newSocket.emit('identificador', userIdentificador); 
+
     });
 
     newSocket.on('disconnect', () => {

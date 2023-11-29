@@ -17,7 +17,9 @@ const Favoritos = () => {
   useEffect(() => {
     const fetchFavoritos = async () => {
       try {
-        const response = await axios.get(`http://localhost:8800/api/users/favoritos/${us.usuario}`);
+        const response = await axios.get(
+          `http://localhost:8800/api/users/favoritos/${us.usuario}`
+        );
         setFavoritos(response.data);
       } catch (error) {
         console.error("Error al obtener las mascotas favoritas", error);
@@ -38,11 +40,15 @@ const Favoritos = () => {
           <h1 className="text-2xl font-bold mb-4">Favoritos</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-  {favoritos.map((mascota) => (
-    <PetCard3 key={mascota.mascotaId} mascota={mascota} />
-  ))}
-</div>
-
+            {favoritos.map((mascota) => (
+              <PetCard3 key={mascota.mascotaId} mascota={mascota} />
+            ))}
+          </div>
+          {favoritos.length === 0 && (
+            <p className="text-center mt-8 text-2xl">
+              No tienes mascotas en tus favoritos
+            </p>
+          )}
         </main>
       </div>
       <Footer />

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContexto";
 import axios from "axios";
+import {toast, Toaster} from 'react-hot-toast';
 
 const PetCard = ({ mascota }) => {
   const [, setAgregadoAFavoritos] = useState(false);
@@ -29,6 +30,8 @@ const PetCard = ({ mascota }) => {
         `http://localhost:8800/api/users/${us.usuario}/favoritos`,
         { mascotaId, categoria, raza, usuario: us.usuario }
       );
+      toast.success("Mascota agregada a favoritos");
+
   
       // Actualiza el estado local
       setAgregadoAFavoritos(true);
@@ -55,11 +58,12 @@ const PetCard = ({ mascota }) => {
         onClick={handleNavigate()}
       />
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{mascota.raza}</div>
+        <div className="font-bold text-xl mb-2">{mascota.nombre}</div>
         <p>
-          <strong>Edad:</strong> {mascota.edad} <strong>|</strong>{" "}
+          <strong>Edad (a):</strong> {mascota.edad} <strong>|</strong>{" "}
           <strong>Color:</strong> {mascota.color} <strong>|</strong>{" "}
-          <strong>Tamaño:</strong> {mascota.tamaño}
+          <strong>Tamaño:</strong> {mascota.tamaño} <strong>|</strong>{" "}
+          <strong>Raza:</strong> {mascota.raza} <strong>|</strong>{" "}
         </p>
       </div>
       <div className="px-6 py-4 flex flex-col items-center mb-4 place-content-center ">
@@ -73,13 +77,14 @@ const PetCard = ({ mascota }) => {
         </div>
         <div>
           <button
-            onClick={handleNavigate}
+            onClick={handleNavigate()}
             className="bg-fav mt-4 flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
           >
             <MdOutlinePets className="mr-2" /> Quiero saber más!
           </button>
         </div>
       </div>
+      <Toaster/>
     </div>
   );
 };

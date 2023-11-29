@@ -257,20 +257,18 @@ export const solicitarAdopcion = async (req, res) => {
 
   try {
     const adoptionRequest = new AdoptionRequest(session);
+    const user = new User(session);
     const { usuario, mascotaId } = req.body;
 
     const mascotaAdoptada = await adoptionRequest.verificarMascotaAdoptada(mascotaId);
 
     if (mascotaAdoptada) {
-      // Si la mascota ya fue adoptada, retornar un error o manejar de acuerdo a tu lógica
       return res.status(400).json({ error: 'Esta mascota ya ha sido adoptada' });
     }
 
-    // Verificar si el usuario ya tiene una solicitud pendiente para esa mascota
     const existingRequest = await adoptionRequest.verificarSolicitudPendiente(usuario, mascotaId);
 
     if (existingRequest) {
-      // Si ya tiene una solicitud pendiente, retornar un error o manejar de acuerdo a tu lógica
       return res.status(400).json({ error: 'Ya existe una solicitud pendiente para esta mascota' });
     }
 
@@ -282,12 +280,15 @@ export const solicitarAdopcion = async (req, res) => {
       return res.status(400).json({ error: 'No se pudo obtener el organizationId de la mascota' });
     }
 
+    const nombreUsuario = await user.findOnlyUsername(usuario);
+    const nombreMascota = infoMascota.nombre;
     // Si no hay solicitud pendiente, proceder con la solicitud de adopción
   
     await adoptionRequest.solicitarAdopcion(usuario, mascotaId);
 
+
     io.emit('notificacion', {
-      mensaje: `¡Atención! ha solicitado adoptar la mascota.`
+      mensaje: `¡Atención! ${nombreUsuario} ha solicitado adoptar a la mascota ${nombreMascota}.`
     });
 
     console.log(`Notificación emitida a la organización ${organizationId}`);
@@ -365,6 +366,20 @@ console.log('Usuario en el controlador:', usuario);
   } catch (error) {
     console.error("Error al obtener los favoritos por usuario", error);
     res.status(500).json({ mensaje: `Error al obtener los favoritos por usuario: ${error.message}` });
+  } finally {
+    session.close();
+  }
+}
+
+export const getAllUsers = async (req, res) => {
+  const session = driver.session();
+  try {
+    const userModel = new User(session);
+    const usuarios = await userModel.getAllUsers();
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error("Error al obtener los usuarios", error);
+    res.status(500).json({ mensaje: `Error al obtener los usuarios: ${error.message}` });
   } finally {
     session.close();
   }

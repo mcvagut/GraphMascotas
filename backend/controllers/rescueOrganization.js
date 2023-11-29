@@ -6,6 +6,7 @@ import TrackAdoption from "../models/TrackAdoption.js";
 import Pet from "../models/Pet.js";
 import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
+import { socketsPorUsuario } from "../index.js";
 
 dotenv.config();
 
@@ -54,6 +55,8 @@ export const createRescueOrganization = async (req, res) => {
       descripcion,
       fechaFundacion,
       estado: "Activa",
+      isOrganization: true,
+      isAdmin: false,
     };
 
     const newOrganization = await rescueOrganization.createRescueOrganization(
@@ -145,15 +148,9 @@ export const deleteRescueOrganizationByUUID = async (req, res) => {
     const rescueOrganization = new RescueOrganization(session);
     const { organizationId } = req.params; // Suponiendo que el UUID se pasa como parámetro en la URL
 
-    const success = await rescueOrganization.deleteRescueOrganization(
-      organizationId
-    );
+    await rescueOrganization.deleteRescueOrganization(organizationId);
 
-    if (success) {
-      res.json({ message: "Organización de rescate eliminada exitosamente" });
-    } else {
-      res.status(404).json({ error: "Organización de rescate no encontrada" });
-    }
+   res.status(204).send();
   } catch (error) {
     console.error(error);
     res
@@ -286,6 +283,7 @@ export const procesarColaSolicitudes = async (io) => {
   try {
     while (colaSolicitudes.length > 0) {
       const { usuario, mascotaId, aceptar } = colaSolicitudes.shift();
+      console.log("USUARIO.USAURIO", usuario)
 
       const adoptionRequest = new AdoptionRequest(session);
       const adoptionHistory = new AdoptionHistory(session);
@@ -321,17 +319,27 @@ export const procesarColaSolicitudes = async (io) => {
         await adoptionHistory.createAdoptionRecord(usuario, mascotaId, fechaAdopcion);
         await trackingAdoption.createAdoptionTracking(usuario, mascotaId, organizationId, fechaAdopcion);
 
-        // Emitir notificación al usuario que solicitó la adopción
-        io.emit("notificacion2", {
-          mensaje: "¡Felicidades! Tu solicitud de adopción ha sido aceptada.",
-          aceptar: true,
-        });
+        // Obtener el ID de socket del usuario
+        const socketIdUsuario = socketsPorUsuario[usuario];
+
+        // Emitir notificación solo al usuario que solicitó la adopción
+        if (socketIdUsuario) {
+          io.to(socketIdUsuario).emit("notificacion2", {
+            mensaje: "¡Felicidades! Tu solicitud de adopción ha sido aceptada.",
+            aceptar: true,
+          });
+        }
       } else {
-        // Emitir notificación al usuario que solicitó la adopción
-        io.emit("notificacion2", {
-          mensaje: "Lamentablemente, tu solicitud de adopción ha sido rechazada.",
-          aceptar: false,
-        });
+        // Obtener el ID de socket del usuario
+        const socketIdUsuario = socketsPorUsuario[usuario];
+
+        // Emitir notificación solo al usuario que solicitó la adopción
+        if (socketIdUsuario) {
+          io.to(socketIdUsuario).emit("notificacion2", {
+            mensaje: "Lamentablemente, tu solicitud de adopción ha sido rechazada.",
+            aceptar: false,
+          });
+        }
       }
     }
   } catch (error) {

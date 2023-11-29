@@ -104,7 +104,7 @@ const Mascota = () => {
                       Actualizar
                     </button>
                     <button
-                      className="bg-greenP text-white py-1 px-2 rounded-md hover:bg-green1 font-bold transition-colors duration-300"
+                      className="bg-greenP text-white py-1 px-2 rounded-md mt-2 hover:bg-green1 font-bold transition-colors duration-300"
                       onClick={() => handleEliminarMascota(mascota.mascotaId)}
                     >
                       Eliminar

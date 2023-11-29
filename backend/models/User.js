@@ -24,6 +24,7 @@ class User {
     async createUser(properties) {
       const result = await this.session.run('CREATE (user:Usuario $properties) RETURN user', {
         properties,
+        isOrganization: false,
       });
   
       return result.records[0].get('user').properties;
@@ -66,7 +67,7 @@ class User {
     async create ({nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin, isOrganization} ) {
       const result = await this.session.run(
         'CREATE (user:Usuario {nombre: $nombre, apellido: $apellido, email: $email, usuario: $usuario, password: $password, pais: $pais, ciudad: $ciudad, telefono: $telefono, fecha_nacimiento: $fecha_nacimiento, isAdmin: $isAdmin, isOrganization: $isOrganization}) RETURN user',
-        { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin, isOrganization, }
+        { nombre, apellido, email, usuario, password, pais, ciudad, telefono, fecha_nacimiento, isAdmin:false, isOrganization, }
       );
   
       return result.records[0].get('user').properties;
@@ -94,7 +95,7 @@ class User {
   
   
     async deleteUser(username) {
-      await this.session.run('MATCH (user:Usuario {usuario: $username}) SET user.eliminado = true', {
+      await this.session.run('MATCH (user:Usuario {usuario: $username}) DETACH DELETE user', {
         username,
       });
     }
@@ -129,6 +130,11 @@ class User {
       } else {
         return [];
       }
+    }
+
+    async getAllUsers() {
+      const result = await this.session.run('MATCH (u:Usuario) RETURN u');
+      return result.records.map(record => record.get('u').properties);
     }
     
     

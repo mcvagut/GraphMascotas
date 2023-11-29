@@ -17,9 +17,10 @@ const PetCard = ({ mascota }) => {
     <div className="max-w-xs rounded overflow-hidden shadow-shadowp m-4 ">
       <img className="object-cover h-48 w-96 rounded-md mb-6 w-pet-image h-pet-image cursor-pointer" src={mascota.fotos[0]} alt={`Imagen de ${mascota.raza}`} onClick={handleNavigate()} />
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{mascota.raza}</div>
+        <div className="font-bold text-xl mb-2">{mascota.nombre}</div>
         <p>
-          <strong>Edad:</strong> {mascota.edad} <strong>|</strong> <strong>Color:</strong> {mascota.color} <strong>|</strong> <strong>Tamaño:</strong> {mascota.tamaño}
+          <strong>Edad:</strong> {mascota.edad} <strong>|</strong> <strong>Color:</strong> {mascota.color} <strong>|</strong> 
+        <p> <strong>Tamaño:</strong> {mascota.tamaño}</p> 
         </p>
       </div>
       <div className="px-6 py-4 flex flex-col items-center mb-4 place-content-center ">

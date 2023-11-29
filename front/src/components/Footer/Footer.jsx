@@ -28,10 +28,10 @@ const Footer = () => {
           } transition-all duration-500`}
         >
           <div>
-            <h2 className="text-2xl font-extrabold mb-4">Contáctanos</h2>
-            <p className="text-lg">Dirección: Tu Dirección</p>
-            <p className="text-lg">Correo Electrónico: tu@email.com</p>
-            <p className="text-lg">Teléfono: +123 456 789</p>
+            <h2 className="text-2xl font-extrabold mb-4">Contáctame</h2>
+            <p className="text-lg">Dirección: La Paz, Bolivia</p>
+            <p className="text-lg">Correo Electrónico: mcvagut@gmail.com</p>
+            <p className="text-lg">Teléfono: (+591) 72516557</p>
           </div>
           <div>
             <h2 className="text-2xl font-extrabold mb-4">

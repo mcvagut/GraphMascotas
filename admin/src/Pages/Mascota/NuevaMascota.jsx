@@ -58,7 +58,6 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
         console.error('Error al obtener organizaciones:', error);
       }
     };
-
     obtenerOrganizaciones();
   }, []);
 

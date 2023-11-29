@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { MenuIcon } from "@heroicons/react/outline";
 import "./navbar.css";
+import { useAuth } from "../../context/AuthContexto";
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const { usuario } = useAuth();
+  const us = usuario();
+
+  
 
   return (
     <nav className="bg-purple2 p-4">
@@ -14,6 +19,9 @@ const Navbar = () => {
             src="https://th.bing.com/th/id/OIG.y11hK2O_HSD9zpkbThlu?w=1024&h=1024&rs=1&pid=ImgDetMain"
             alt="Logo Mascota"
           />
+        </div>
+        <div className="text-white text-2xl font-extrabold tracking-wider">
+          Bienvenido {us.usuario}
         </div>
 
         {/* Botón de hamburguesa */}

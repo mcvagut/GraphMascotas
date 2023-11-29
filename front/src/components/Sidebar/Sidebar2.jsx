@@ -27,6 +27,14 @@ const Sidebar2 = () => {
       </h1>
 
       <ul className="space-y-7 w-full">
+      <li>
+          <Link
+            to="/homeOrg"
+            className="w-full block p-3 text-lg text-center font-bold hover:bg-purple2 transition-colors duration-300"
+          >
+            Inicio
+          </Link>
+        </li>
         <li>
           <Link
             to="/"
@@ -35,6 +43,7 @@ const Sidebar2 = () => {
             Seguimiento de Mascotas Adoptadas
           </Link>
         </li>
+        
         <li>
           <Link
             onClick={handleLogout}

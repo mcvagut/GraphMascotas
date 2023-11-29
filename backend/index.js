@@ -31,12 +31,33 @@ const driver = neo4j.driver(
   neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 );
 
+const socketsPorUsuario = {};
 
 io.on("connection", (socket) => {
   console.log(`Usuario conectado con ID: ${socket.id}`);
   
   socket.emit('prueba', 'Hola desde el backend');
+
+  // Manejar el evento 'usuarioConectado'
+  socket.on('identificador', (userIdentificador) => {
+    console.log(`Usuario ${userIdentificador} conectado con el socket ${socket.id}`);
+    
+    // Mapear el ID del socket al identificador único del usuario
+    socketsPorUsuario[userIdentificador] = socket.id;
+  });
+
+  // Resto del código de manejo de conexiones y eventos
+
+  socket.on('disconnect', () => {
+    // Eliminar el mapeo cuando un usuario se desconecta
+    const usuario = Object.keys(socketsPorUsuario).find(key => socketsPorUsuario[key] === socket.id);
+    if (usuario) {
+      console.log(`Usuario ${usuario} desconectado`);
+      delete socketsPorUsuario[usuario];
+    }
+  });
 });
+export { socketsPorUsuario };
 
 // Asociar io al objeto app
 app.set('io', io);
