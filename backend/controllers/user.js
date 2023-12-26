@@ -385,6 +385,68 @@ export const getAllUsers = async (req, res) => {
   }
 }
 
+export const obtenerSolicitudPendientesesPorUsuario = async (req, res) => {
+  const session = driver.session();
+
+  try {
+    const usuario = req.params.username;
+
+    const adoptionRequest = new AdoptionRequest(session);
+    const pendientes = await adoptionRequest.obtenerPendientesPorUsuario(usuario);
+
+    res.status(200).json(
+      pendientes
+);
+  } catch (error) {
+    console.error("Error al obtener las solicitudes por usuario", error);
+    res.status(500).json({ mensaje: `Error al obtener las solicitudes por usuario: ${error.message}` });
+  } finally {
+    session.close();
+  }
+}
+
+export const obtenerAdopcionesPorUsuario = async (req, res) => {
+  const session = driver.session();
+
+  try {
+    const usuario = req.params.username;
+
+    const adoptionRequest = new AdoptionRequest(session);
+    const solicitudes = await adoptionRequest.obtenerAdopcionesPorUsuario(usuario);
+
+    res.status(200).json(
+      solicitudes
+);
+  } catch (error) {
+    console.error("Error al obtener las solicitudes por usuario", error);
+    res.status(500).json({ mensaje: `Error al obtener las solicitudes por usuario: ${error.message}` });
+  } finally {
+    session.close();
+  }
+}
+
+export const obtenerRechazadosPorUsuario = async (req, res) => {
+  const session = driver.session();
+
+  try {
+    const usuario = req.params.username;
+
+    const adoptionRequest = new AdoptionRequest(session);
+    const rechazados = await adoptionRequest.obtenerRechazadosPorUsuario(usuario);
+
+    res.status(200).json(
+      rechazados
+);
+  } catch (error) {
+    console.error("Error al obtener las solicitudes por usuario", error);
+    res.status(500).json({ mensaje: `Error al obtener las solicitudes por usuario: ${error.message}` });
+  } finally {
+    session.close();
+  }
+}
+
+
+
 
 
 

@@ -12,6 +12,9 @@ import {
   iniciarSesionAdmin,
   obtenerFavoritosPorUsuario,
   getAllUsers,
+  obtenerSolicitudPendientesesPorUsuario,
+  obtenerAdopcionesPorUsuario,
+  obtenerRechazadosPorUsuario
 } from '../controllers/user.js';
 
 
@@ -37,5 +40,11 @@ router.post('/solicitudes-adopcion', solicitarAdopcion);
 router.post('/:username/favoritos', agregarFavorito);
 
 router.get('/favoritos/:username', obtenerFavoritosPorUsuario);
+
+router.get('/solicitudes-pendientes/:username', obtenerSolicitudPendientesesPorUsuario);
+
+router.get('/solicitudes-adopcion/:username', obtenerAdopcionesPorUsuario);
+
+router.get('/solicitudes-rechazadas/:username', obtenerRechazadosPorUsuario);
 
 export default router;

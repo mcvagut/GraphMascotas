@@ -16,6 +16,8 @@ const AdministrarSolicitud = () => {
   const { getOrganizationId } = useAuth();
   const organizationId = getOrganizationId();
 
+  console.log("Qué recibo en solicitudes?", solicitudes);
+
   useEffect(() => {
     const newSocket = io("http://localhost:8800");
     socketRef.current = newSocket;

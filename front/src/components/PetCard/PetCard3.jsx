@@ -50,12 +50,13 @@ const PetCard3 = ({ mascota }) => {
         alt={`Imagen de ${mascota.raza}`}
         onClick={handleNavigate()}
       />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{mascota.raza}</div>
+       <div className="px-6 py-4">
+        <div className="font-bold text-xl mb-2">{mascota.nombre}</div>
         <p>
-          <strong>Edad:</strong> {mascota.edad} <strong>|</strong>{" "}
+          <strong>Edad (años):</strong> {mascota.edad} <strong>|</strong>{" "}
           <strong>Color:</strong> {mascota.color} <strong>|</strong>{" "}
-          <strong>Tamaño:</strong> {mascota.tamaño}
+          <strong>Tamaño:</strong> {mascota.tamaño} <strong>|</strong>{" "}
+          <strong>Raza:</strong> {mascota.raza} <strong>|</strong>{" "}
         </p>
       </div>
       <div className="px-6 py-4 flex flex-col items-center mb-4 place-content-center ">

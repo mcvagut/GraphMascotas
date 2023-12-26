@@ -13,7 +13,10 @@ export default {
       'fav':'#64ad6b',
       'bluefav':'#435585',
       'redfav':'#CE5A67',
-      'orangefav':'#EC8F5E'
+      'orangefav':'#EC8F5E',
+      'redHover': '#B40101',
+      'orangeHover':'#C67200',
+      'greenfav': '#2CDC57'
     },
     extend: {
       spacing: {

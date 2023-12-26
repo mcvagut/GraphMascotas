@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContexto";
 import { toast, Toaster } from "react-hot-toast";
@@ -140,20 +140,19 @@ const Login = () => {
         <div className="bg-white p-8 rounded-lg text-center">
           <p className="text-lg font-semibold mb-4">¿Cómo quieres registrarte?</p>
           <button
-            className="bg-redfav font-bold text-white px-4 py-2 rounded mr-2"
+            className="bg-redfav font-bold text-white px-4 py-2 rounded mr-2 hover:bg-redHover transition duration-300"
             onClick={() => handleRegistrationChoice('user')}
           >
             Registrarse como Usuario
           </button>
           <button
-            className="bg-orangefav font-bold text-white px-4 py-2 rounded"
+            className="bg-orangefav font-bold text-white px-4 py-2 rounded hover:bg-orangeHover transition duration-300"
             onClick={() => handleRegistrationChoice('organization')}
           >
             Registrarse como Organización
           </button>
         </div>
       </div>
-      
       )}
       </div>
       <Toaster />

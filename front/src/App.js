@@ -13,6 +13,7 @@ import { Navigate } from 'react-router-dom';
 import { jwtDecode as decode } from 'jwt-decode';
 import AdministrarSolicitud from './pages/AdministrarSolicitud/AdministrarSolicitud.jsx';
 import Favoritos from './pages/Favoritos/Favoritos.jsx';
+import Solicitudes from './pages/SolicitudesAdopcion/Solicitudes.jsx';
 
 
 const RutaPrivadaUsuario = ({ element }) => {
@@ -55,15 +56,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/*Rutas Generales*/}
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={ <Register/> } />
+        <Route path="/registroOrg" element={ <RegisterOrg />} />
+
         {/* Rutas de usuario */}
         <Route path="/" element={<RutaPrivadaUsuario element={ <Home />} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<RutaPrivadaUsuario element={ <Register />} />} />
         <Route path="/pets/:mascotaId" element={<RutaPrivadaUsuario element={ <PetDetail />} />} />
         <Route path="/favoritos" element={<RutaPrivadaUsuario element={ <Favoritos />} />} />
+        <Route path="/solicitudes" element={<RutaPrivadaUsuario element={<Solicitudes />} />} />
 
         {/* Rutas de organizaciones */}
-        <Route path="/registroOrg" element={<RutaPrivadaOrganizacion element={<RegisterOrg />} />} />
         <Route path="/homeOrg" element={<RutaPrivadaOrganizacion element={<HomeOrg />} />} />
         <Route path="/pets2/:mascotaId" element={<RutaPrivadaOrganizacion element={<PetDetail2 />} />} />
         <Route path="/administrarSolicitud" element={<RutaPrivadaOrganizacion element={<AdministrarSolicitud />} />} />

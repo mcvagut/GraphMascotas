@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const RegisterOrg = () => {
   const [formData, setFormData] = useState({
@@ -212,6 +213,15 @@ const RegisterOrg = () => {
             Registrarse
           </button>
         </form>
+        <p className="mt-5 text-xl text-gray-600">
+          ¿Ya tienes una cuenta?
+          <Link
+            to="/login"
+            className="text-purple ml-1 hover:underline"
+          >
+            Inicia sesión aquí
+          </Link>
+        </p>
       </div>
       <Toaster />
     </div>

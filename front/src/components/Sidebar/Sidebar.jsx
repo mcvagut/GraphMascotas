@@ -6,7 +6,6 @@ import { toast, Toaster } from 'react-hot-toast';
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  
   const handleLogout = async () => {
     try {
 
@@ -31,7 +30,7 @@ const Sidebar = () => {
         <Link to="/">Organizaciones/Albergues</Link>
       </button>
       <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
-        <Link to="/">Solicitudes de Adopción</Link>
+        <Link to="/solicitudes">Solicitudes de Adopción</Link>
       </button>
       <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Seguimiento de Adopción</Link>
@@ -44,7 +43,7 @@ const Sidebar = () => {
       </button>
       <button
         onClick={handleLogout}
-        className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300"
+        className="block text-lg mb-2 p-2 hover:border hover:font-bold hover:rounded-lg dark:md:hover:bg-redfav focus:outline-none focus:text-gray-300"
       >
         Cerrar Sesión
       </button>
