@@ -23,32 +23,35 @@ const Sidebar = () => {
     }
   };
   return (
-    <nav className=" bg-purple w-64 h-full p-4 text-white ">
-      <h1 className="text-2xl font-extrabold mb-8">Adopción de Mascotas</h1>
-      
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+    <nav className="bg-purple w-64 h-full p-4 text-white flex flex-col items-center">
+    <h1 className="text-2xl font-extrabold mb-8 mx-8 text-center">Adopción de Mascotas</h1>
+  
+    <div className="flex flex-col items-center">
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Organizaciones/Albergues</Link>
       </button>
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Solicitudes de Adopción</Link>
       </button>
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Seguimiento de Adopción</Link>
       </button>
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Historial de Adopción</Link>
       </button>
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/favoritos">Favoritos</Link>
       </button>
       <button
-      onClick={handleLogout}
-      className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300"
-    >
-      Cerrar Sesión
-    </button>
-      <Toaster />
-    </nav>
+        onClick={handleLogout}
+        className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300"
+      >
+        Cerrar Sesión
+      </button>
+    </div>
+    <Toaster />
+  </nav>
+  
   );
 };
 
