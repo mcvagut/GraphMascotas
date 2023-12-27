@@ -7,7 +7,8 @@ import {
   getPetsByCategory,
   getAllPetsByUUID,
   getAllPetsByOrganizationId,
-  getPetsByAdoptionStatus
+  getPetsByAdoptionStatus,
+  searchPets
 } from '../controllers/pet.js';
 import {verificar} from '../extra/verificarToken.js';
 
@@ -25,6 +26,8 @@ router.delete('/:id', deletePet);
 router.get('/categoria/:categoria', getPetsByCategory);
 
 router.get('/mascotas/:organizationId', getAllPetsByOrganizationId)
+
+router.get('/buscar/:query', searchPets)
 
 
 export default router;

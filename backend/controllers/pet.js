@@ -273,6 +273,27 @@ export const createPet = async (req, res) => {
       session.close();
     }
   };
+
+  export const searchPets = async (req, res) => {
+    const session = driver.session();
+    try {
+      const pet = new Pet(session);
+      const { query } = req.params;
+      console.log('Valor de query:', query);
+      const foundPets = await pet.searchPetsCypher(query);
+  
+      if (foundPets.length > 0) {
+        res.status(200).json(foundPets);
+      } else {
+        res.status(404).json({ error: 'No se encontraron mascotas' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al buscar mascotas' });
+    } finally {
+      session.close();
+    }
+  }
   
   
 

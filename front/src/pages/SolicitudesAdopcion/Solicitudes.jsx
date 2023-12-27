@@ -167,7 +167,6 @@ const Solicitudes = () => {
               mascotasAdoptadas.length > 0 ? (
                 mascotasAdoptadas.map(
                   (adoptadas) => (
-                    console.log("Renderizando mascota:", adoptadas),
                     (
                       <tr key={adoptadas.id}>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
@@ -216,7 +215,6 @@ const Solicitudes = () => {
               solicitudesPendientes.length > 0 ? (
                 solicitudesPendientes.map(
                   (pendientes) => (
-                    console.log("Renderizando mascota:", pendientes),
                     (
                       <tr key={pendientes.id}>
                         <td className="px-8 py-4 whitespace-nowrap text-center">

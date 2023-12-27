@@ -212,10 +212,20 @@ async findPetByInfo({ nombre, categoria, edad, sexo, color, tamaño, ubicacion }
       return result.records.map((record) => record.get('pet').properties);
     }
     
-    
-    
+    async searchPetsCypher(query) {
+      try {
+        const result = await this.session.run(
+          'MATCH (m:Mascota) WHERE toLower(m.nombre) CONTAINS toLower($query) RETURN m',
+          { query }
+        );
   
-    
+        const foundPets = result.records.map((record) => record.get('m').properties);
+        return foundPets;
+      } catch (error) {
+        console.error('Error al buscar mascotas:', error);
+        throw error;
+      }
+    }    
   }
 
   
