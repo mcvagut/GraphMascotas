@@ -29,19 +29,20 @@ const Sidebar = () => {
       {/* <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Organizaciones/Albergues</Link>
       </button> */}
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button id="solicitudes" className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/solicitudes">Solicitudes de Adopción</Link>
       </button>
       {/* <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Seguimiento de Adopción</Link>
       </button> */}
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button id="historial" className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/historial">Historial de Adopción</Link>
       </button>
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      <button id="favoritos" className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/favoritos">Favoritos</Link>
       </button>
       <button
+        id='logoutButton'
         onClick={handleLogout}
         className="block text-lg mb-2 p-2 hover:border hover:font-bold hover:rounded-lg dark:md:hover:bg-redfav focus:outline-none focus:text-gray-300"
       >

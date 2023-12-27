@@ -138,6 +138,7 @@ const AdministrarSolicitud = () => {
             <td className="border p-2">{solicitud.mascotaId}</td>
             <td className="border p-2 flex space-x-2">
               <button
+                id="acceptButton"
                 className="bg-orangefav hover:bg-greenP text-white py-1 px-2 rounded transition duration-300"
                 onClick={() =>
                   handleAceptar(solicitud.mascotaId, solicitud.usuario)
@@ -146,6 +147,7 @@ const AdministrarSolicitud = () => {
                 Aceptar
               </button>
               <button
+                id="rejectButton"
                 className="bg-redfav hover:bg-red-600 text-white py-1 px-2 rounded transition duration-300"
                 onClick={() =>
                   handleRechazar(solicitud.mascotaId, solicitud.usuario)

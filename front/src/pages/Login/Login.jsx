@@ -77,7 +77,7 @@ const Login = () => {
           src="https://th.bing.com/th/id/OIG.y11hK2O_HSD9zpkbThlu?w=1024&h=1024&rs=1&pid=ImgDetMain"
           alt="Logo Mascota"
         />
-        <h2 className="text-3xl font-bold text-purple-500 mb-8">
+        <h2 className="text-3xl font-bold text-purple-500 mb-8" >
           Iniciar Sesión
         </h2>
         <form className="w-full" onSubmit={handleLogin}>
@@ -118,6 +118,7 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-purple text-lg text-white py-3 rounded hover:bg-purple2 transition duration-300 focus:outline-none"
+            id="loginButton"
           >
             Ingresar
           </button>
@@ -126,6 +127,7 @@ const Login = () => {
           ¿Aún no tienes una cuenta?
           <a
             href="/"
+            id="registerModalLink"
             onClick={(e) => {
               e.preventDefault();
               setShowRegistrationModal(true);
@@ -141,12 +143,14 @@ const Login = () => {
           <p className="text-lg font-semibold mb-4">¿Cómo quieres registrarte?</p>
           <button
             className="bg-redfav font-bold text-white px-4 py-2 rounded mr-2 hover:bg-redHover transition duration-300"
+            id="registerUserButton"
             onClick={() => handleRegistrationChoice('user')}
           >
             Registrarse como Usuario
           </button>
           <button
             className="bg-orangefav font-bold text-white px-4 py-2 rounded hover:bg-orangeHover transition duration-300"
+            id="registerOrganizationButton"
             onClick={() => handleRegistrationChoice('organization')}
           >
             Registrarse como Organización

@@ -37,6 +37,7 @@ const Search = ({ onSearch }) => {
       <div className="w-auto rounded-md shadow-shadowp p-1 flex">
         <input
           type="text"
+          id='searchBar'
           placeholder="Buscar mascotas por nombre..."
           value={searchTerm}
           onChange={handleInputChange}

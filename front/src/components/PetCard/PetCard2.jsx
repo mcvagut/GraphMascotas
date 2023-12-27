@@ -26,6 +26,7 @@ const PetCard = ({ mascota }) => {
       <div className="px-6 py-4 flex flex-col items-center mb-4 place-content-center ">
         <div>
         <button
+          id="btnAdminRequest"
           onClick={handleNavigate()}
           className="bg-fav flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
         >

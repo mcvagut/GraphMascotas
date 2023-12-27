@@ -171,27 +171,28 @@ const HistorialAdopcion = () => {
                       <tr key={adoptadas.id}>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
                           <img
+                            id="imgMascotaAdoptada"
                             src={adoptadas.fotos[0]}
                             alt={adoptadas.nombre}
                             className="object-cover rounded-md w-full h-32"
                           />
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center">
+                        <td className="px-8 py-4 whitespace-nowrap text-center" id="namePet">
                           {adoptadas.nombre}
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center">
+                        <td className="px-8 py-4 whitespace-nowrap text-center"  id="agePet">
                           {adoptadas.edad}
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center">
+                        <td className="px-8 py-4 whitespace-nowrap text-center"  id="colorPet">
                           {adoptadas.color}
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center">
+                        <td className="px-8 py-4 whitespace-nowrap text-center"  id="sizePet">
                           {adoptadas.tamaño}
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center">
+                        <td className="px-8 py-4 whitespace-nowrap text-center"  id="racePet">
                           {adoptadas.raza}
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center font-extrabold text-xl text-greenfav">
+                        <td className="px-8 py-4 whitespace-nowrap text-center font-extrabold text-xl text-greenfav"  id="stateAdoptionPet">
                           {adoptadas.estadoAdopcion}
                         </td>
                       </tr>

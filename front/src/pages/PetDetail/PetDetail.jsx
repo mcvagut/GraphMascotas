@@ -107,7 +107,7 @@ const PetDetail = () => {
         if(response.data){
           toast.success("Solicitud de adopción enviada!, espere la respuesta de la organización");
           setTimeout(() => {
-            navigate("/home");
+            navigate("/");
           }
           , 2000);
         }
@@ -193,6 +193,7 @@ const PetDetail = () => {
                 </p>
               </div>
               <button
+                id="adoptionRequestButton"
                 onClick={handleAdoptionRequest}
                 className="w-96 bg-purple2 text-white font-extrabold px-4 py-2 rounded-md hover:bg-purple focus:outline-none focus:ring focus:border-blue-300 mx-auto block"
               >

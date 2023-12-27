@@ -244,6 +244,7 @@ const Register = () => {
           <button
             type="submit"
             className="w-full bg-purple text-white py-3 rounded hover:bg-purple2 transition duration-300 focus:outline-none mt-6"
+            id="submit"
           >
             Registrarse
           </button>

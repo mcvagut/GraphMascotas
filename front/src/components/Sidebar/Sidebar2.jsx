@@ -44,7 +44,7 @@ const Sidebar2 = () => {
           </Link>
         </li>
         
-        <li>
+        <li id="logoutOrg">
           <Link
             onClick={handleLogout}
             className="w-full block p-3 text-lg text-center font-bold hover:bg-purple2 transition-colors duration-300"

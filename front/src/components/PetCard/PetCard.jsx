@@ -70,6 +70,7 @@ const PetCard = ({ mascota }) => {
         <div>
           <button
             onClick={handleAddFavorite}
+            id="btnFav"
             className="bg-fav flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
           >
             <BsStar className="mr-2" /> Agregar a Favoritos
@@ -78,6 +79,7 @@ const PetCard = ({ mascota }) => {
         <div>
           <button
             onClick={handleNavigate()}
+            id="btnVerMas"
             className="bg-fav mt-4 flex items-center text-white font-bold p-2 rounded hover:bg-purple focus:outline-none "
           >
             <MdOutlinePets className="mr-2" /> Quiero saber más!
