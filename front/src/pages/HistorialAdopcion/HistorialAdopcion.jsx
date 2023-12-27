@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 import { useAuth } from "../../context/AuthContexto";
 
-const Solicitudes = () => {
+const HistorialAdopcion = () => {
   const { usuario } = useAuth();
   const us = usuario();
   const [solicitudesPendientes, setSolicitudesPendientes] = useState([]);
@@ -161,38 +161,38 @@ const Solicitudes = () => {
                 </th>
               </tr>
             </thead>
-            {/** Solicitudes Pendientes */}
+            {/** Mascotas Adoptadas */}
             <tbody className="bg-white divide-y divide-gray-200">
-              {Array.isArray(solicitudesPendientes) &&
-              solicitudesPendientes.length > 0 ? (
-                solicitudesPendientes.map(
-                  (pendientes) => (
+              {Array.isArray(mascotasAdoptadas) &&
+              mascotasAdoptadas.length > 0 ? (
+                mascotasAdoptadas.map(
+                  (adoptadas) => (
                     (
-                      <tr key={pendientes.id}>
+                      <tr key={adoptadas.id}>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
                           <img
-                            src={pendientes.fotos[0]}
-                            alt={pendientes.nombre}
+                            src={adoptadas.fotos[0]}
+                            alt={adoptadas.nombre}
                             className="object-cover rounded-md w-full h-32"
                           />
                         </td>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
-                          {pendientes.nombre}
+                          {adoptadas.nombre}
                         </td>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
-                          {pendientes.edad}
+                          {adoptadas.edad}
                         </td>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
-                          {pendientes.color}
+                          {adoptadas.color}
                         </td>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
-                          {pendientes.tamaño}
+                          {adoptadas.tamaño}
                         </td>
                         <td className="px-8 py-4 whitespace-nowrap text-center">
-                          {pendientes.raza}
+                          {adoptadas.raza}
                         </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-center font-extrabold text-xl text-orangefav">
-                          {pendientes.estadoAdopcion}
+                        <td className="px-8 py-4 whitespace-nowrap text-center font-extrabold text-xl text-greenfav">
+                          {adoptadas.estadoAdopcion}
                         </td>
                       </tr>
                     )
@@ -204,13 +204,57 @@ const Solicitudes = () => {
                     colSpan="7"
                     className="px-8 py-4 whitespace-nowrap text-center"
                   >
-                    No tienes solicitudes de adopción pendientes.
+                    No tienes solicitudes de adopción aceptadas.
                   </td>
                 </tr>
               )}
             </tbody>
-
-           
+            {/** Mascotas Rechazadas */}
+            <tbody className="bg-white divide-y divide-gray-200">
+              {Array.isArray(mascotasRechazadas) &&
+              mascotasRechazadas.length > 0 ? (
+                mascotasRechazadas.map((historial) => (
+                  <tr key={historial.mascotaId}>
+                    <td className="px-8 py-4 whitespace-nowrap text-center">
+                      {/* Puedes mostrar la información de la mascota utilizando las propiedades */}
+                      <img
+                        src={historial.detallesMascota.fotos[0]}
+                        alt={historial.detallesMascota.nombre}
+                        className="object-cover rounded-md w-full h-32"
+                      />
+                    </td>
+                    <td className="px-8 py-4 whitespace-nowrap text-center">
+                      {historial.detallesMascota.nombre}
+                    </td>
+                    <td className="px-8 py-4 whitespace-nowrap text-center">
+                      {historial.detallesMascota.edad}
+                    </td>
+                    <td className="px-8 py-4 whitespace-nowrap text-center">
+                      {historial.detallesMascota.color}
+                    </td>
+                    <td className="px-8 py-4 whitespace-nowrap text-center">
+                      {historial.detallesMascota.tamaño}
+                    </td>
+                    <td className="px-8 py-4 whitespace-nowrap text-center">
+                      {historial.detallesMascota.raza}
+                    </td>
+                    <td className="px-8 py-4 whitespace-nowrap text-center font-extrabold text-xl text-redfav">
+                      <span>{historial.estadoAdopcion}</span>
+                    </td>
+                    {/* Agrega más columnas según sea necesario para mostrar la información */}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="px-8 py-4 whitespace-nowrap text-center"
+                  >
+                    No tienes solicitudes de adopción rechazadas.
+                  </td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </main>
       </div>
@@ -220,4 +264,4 @@ const Solicitudes = () => {
   );
 };
 
-export default Solicitudes;
+export default HistorialAdopcion;

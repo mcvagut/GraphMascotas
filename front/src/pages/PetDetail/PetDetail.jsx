@@ -9,6 +9,8 @@ import { IoCloseCircle, IoChevronBack, IoChevronForward } from "react-icons/io5"
 import { useRef } from "react";
 import io from "socket.io-client";
 import { toast,Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 
 const PetDetail = () => {
   const [petDetails, setPetDetails] = useState("");
@@ -26,6 +28,8 @@ const PetDetail = () => {
 
   const [, setSocket] = useState(null);
   const socketRef = useRef(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const newSocket = io('http://localhost:8800');
@@ -100,6 +104,13 @@ const PetDetail = () => {
         });
         console.log("Respuesta del servidor:", response.data);
         setAdoptionStatus(response.data.message);
+        if(response.data){
+          toast.success("Solicitud de adopción enviada!, espere la respuesta de la organización");
+          setTimeout(() => {
+            navigate("/home");
+          }
+          , 2000);
+        }
       } catch (error) {
         console.error("Error al solicitar adopción:", error);
         // Manejar errores
@@ -183,7 +194,7 @@ const PetDetail = () => {
               </div>
               <button
                 onClick={handleAdoptionRequest}
-                className="w-96 bg-purple2 text-white font-extrabold px-4 py-2 rounded-md hover:bg-purple focus:outline-none focus:ring focus:border-blue-300"
+                className="w-96 bg-purple2 text-white font-extrabold px-4 py-2 rounded-md hover:bg-purple focus:outline-none focus:ring focus:border-blue-300 mx-auto block"
               >
                 Adoptar
               </button>

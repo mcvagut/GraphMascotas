@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContexto";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar2 from "../../components/Sidebar/Sidebar2";
 import Footer from "../../components/Footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 const AdministrarSolicitud = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -15,6 +16,8 @@ const AdministrarSolicitud = () => {
 
   const { getOrganizationId } = useAuth();
   const organizationId = getOrganizationId();
+
+  const navigate = useNavigate();
 
   console.log("Qué recibo en solicitudes?", solicitudes);
 
@@ -76,6 +79,10 @@ const AdministrarSolicitud = () => {
           aceptar: true,
         }
       );
+      toast.success("Solicitud de adopción aceptada correctamente.");
+      setTimeout(() => {
+        navigate("/homeOrg");
+      }, 2000);
       console.log("Solicitud de aceptar enviada correctamente.");
     } catch (error) {
       console.error("Error al aceptar la solicitud de adopción:", error);
@@ -94,6 +101,10 @@ const AdministrarSolicitud = () => {
           aceptar: false,
         }
       );
+      toast.success("Solicitud de adopción rechazada correctamente.");
+      setTimeout(() => {
+        navigate("/homeOrg");
+      }, 2000);
       console.log("Solicitud de rechazar enviada correctamente.");
     } catch (error) {
       console.error("Error al rechazar la solicitud de adopción:", error);

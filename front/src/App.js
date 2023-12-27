@@ -14,6 +14,7 @@ import { jwtDecode as decode } from 'jwt-decode';
 import AdministrarSolicitud from './pages/AdministrarSolicitud/AdministrarSolicitud.jsx';
 import Favoritos from './pages/Favoritos/Favoritos.jsx';
 import Solicitudes from './pages/SolicitudesAdopcion/Solicitudes.jsx';
+import HistorialAdopcion from './pages/HistorialAdopcion/HistorialAdopcion.jsx';
 
 
 const RutaPrivadaUsuario = ({ element }) => {
@@ -66,6 +67,7 @@ function App() {
         <Route path="/pets/:mascotaId" element={<RutaPrivadaUsuario element={ <PetDetail />} />} />
         <Route path="/favoritos" element={<RutaPrivadaUsuario element={ <Favoritos />} />} />
         <Route path="/solicitudes" element={<RutaPrivadaUsuario element={<Solicitudes />} />} />
+        <Route path="/historial" element={<RutaPrivadaUsuario element={<HistorialAdopcion />} />} />
 
         {/* Rutas de organizaciones */}
         <Route path="/homeOrg" element={<RutaPrivadaOrganizacion element={<HomeOrg />} />} />

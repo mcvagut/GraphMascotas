@@ -26,17 +26,17 @@ const Sidebar = () => {
     <h1 className="text-2xl font-extrabold mb-8 mx-8 text-center">Adopción de Mascotas</h1>
   
     <div className="flex flex-col items-center">
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      {/* <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Organizaciones/Albergues</Link>
-      </button>
+      </button> */}
       <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/solicitudes">Solicitudes de Adopción</Link>
       </button>
-      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
+      {/* <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Seguimiento de Adopción</Link>
-      </button>
+      </button> */}
       <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
-        <Link to="/">Historial de Adopción</Link>
+        <Link to="/historial">Historial de Adopción</Link>
       </button>
       <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/favoritos">Favoritos</Link>
