@@ -10,8 +10,8 @@ const Solicitudes = () => {
   const { usuario } = useAuth();
   const us = usuario();
   const [solicitudesPendientes, setSolicitudesPendientes] = useState([]);
-  const [mascotasAdoptadas, setMascotasAdoptadas] = useState([]);
-  const [mascotasRechazadas, setMascotasRechazadas] = useState([]);
+  const [, setMascotasAdoptadas] = useState([]);
+  const [, setMascotasRechazadas] = useState([]);
 
   useEffect(() => {
     const obtenerSolicitudesPendientes = async () => {

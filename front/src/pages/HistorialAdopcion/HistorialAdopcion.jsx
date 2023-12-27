@@ -9,7 +9,7 @@ import { useAuth } from "../../context/AuthContexto";
 const HistorialAdopcion = () => {
   const { usuario } = useAuth();
   const us = usuario();
-  const [solicitudesPendientes, setSolicitudesPendientes] = useState([]);
+  const [, setSolicitudesPendientes] = useState([]);
   const [mascotasAdoptadas, setMascotasAdoptadas] = useState([]);
   const [mascotasRechazadas, setMascotasRechazadas] = useState([]);
 

@@ -66,7 +66,7 @@ const AdministrarSolicitud = () => {
     };
 
     fetchData();
-  }, []);
+  }, [organizationId]);
 
   const handleAceptar = async (mascotaId, usuario) => {
     try {
