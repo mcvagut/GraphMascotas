@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContexto";
+import { IoMdClose } from "react-icons/io";
 
 const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
   const [nombre, setNombre] = useState("");
@@ -71,7 +72,11 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
   };
 
   return (
-    <div className="mx-auto p-4 max-w-screen-md">
+    <div className="max-w-md mx-auto bg-white p-8 border rounded shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">Nuevo Usuario</h2>
+      <button className="ml-96 text-gray-600" onClick={closeModal}>
+        <IoMdClose className="mr-1  " />
+      </button>
       <form className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -183,21 +188,20 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           />
         </div>
         <div>
-  <label className="block text-sm font-medium text-gray-700">
-    Administrador
-  </label>
-  <select
-    required
-    className="mt-1 p-2 border border-gray-300 rounded-md w-full text-black"
-    value={isAdmin}  
-    onChange={(e) => setAdmin(e.target.value === "true" ? true : false)}
-  >
-    <option value="">El usuario es Administrador?</option>
-    <option value="true">Si</option>
-    <option value="false">No</option>
-  </select>
-</div>
-
+          <label className="block text-sm font-medium text-gray-700">
+            Administrador
+          </label>
+          <select
+            required
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full text-black"
+            value={isAdmin}
+            onChange={(e) => setAdmin(e.target.value === "true" ? true : false)}
+          >
+            <option value="">Opción...</option>
+            <option value="true">Si</option>
+            <option value="false">No</option>
+          </select>
+        </div>
 
         {/* <div>
           <label className="block text-sm font-medium text-gray-700">Organizacion</label>
@@ -220,13 +224,6 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
         >
           Agregar Usuario
         </button>
-        {/* <button
-          type="button"
-          onClick={handleClose()}
-          className="col-span-2 border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors duration-300"
-        >
-          Cerrar
-        </button> */}
       </form>
     </div>
   );
