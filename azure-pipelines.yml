@@ -13,3 +13,5 @@ jobs:
     displayName: 'Levantar Backend'
   - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
     displayName: 'Levantar Admin'
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptSelenium.cmd'
+    displayName: 'Ejecutar Prueba Selenium'
