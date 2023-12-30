@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContexto';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContexto";
 
-
-const NuevaMascota = ({closeModal, actualizarMascotas }) => {
+const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
   const [files, setFiles] = useState([]);
-  const [nombre, setNombre] = useState('');
-  const [raza, setRaza] = useState('');
-  const [categoria, setCategoria] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [edad, setEdad] = useState('');
-  const [sexo, setSexo] = useState('');
-  const [color, setColor] = useState('');
-  const [tamaño, setTamaño] = useState('');
-  const [ubicacion, setUbicacion] = useState('');
+  const [nombre, setNombre] = useState("");
+  const [raza, setRaza] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [edad, setEdad] = useState("");
+  const [sexo, setSexo] = useState("");
+  const [color, setColor] = useState("");
+  const [tamaño, setTamaño] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
   const [organizacion, setOrganizacion] = useState(null);
 
   const [organizaciones, setOrganizaciones] = useState([]);
@@ -22,8 +21,8 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
 
   const [imagenPrevia, setImagenPrevia] = useState([]);
 
-    const { token } = useAuth();
-    const navigate = useNavigate();
+  const { token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
@@ -31,17 +30,16 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
     }
   }, [token, navigate]);
 
-
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:8800/api/categorias'); // Ajusta la URL según tu ruta
+        const response = await fetch("http://localhost:8800/api/categorias"); // Ajusta la URL según tu ruta
         const data = await response.json();
 
         // Actualiza el estado con las categorías obtenidas
         setCategorias(data);
       } catch (error) {
-        console.error('Error al obtener categorías:', error);
+        console.error("Error al obtener categorías:", error);
       }
     };
 
@@ -51,11 +49,13 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
   useEffect(() => {
     const obtenerOrganizaciones = async () => {
       try {
-        const response = await fetch('http://localhost:8800/api/rescueOrganizations/'); // Ajusta la URL según tu ruta
+        const response = await fetch(
+          "http://localhost:8800/api/rescueOrganizations/"
+        ); // Ajusta la URL según tu ruta
         const data = await response.json();
         setOrganizaciones(data);
       } catch (error) {
-        console.error('Error al obtener organizaciones:', error);
+        console.error("Error al obtener organizaciones:", error);
       }
     };
     obtenerOrganizaciones();
@@ -71,20 +71,22 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
 
   const handleSeleccionImagenes = (e) => {
     setFiles([...files, ...e.target.files]);
-    setImagenPrevia([...imagenPrevia, ...Object.values(e.target.files).map((file) => URL.createObjectURL(file))]);
+    setImagenPrevia([
+      ...imagenPrevia,
+      ...Object.values(e.target.files).map((file) => URL.createObjectURL(file)),
+    ]);
   };
-
 
   const handleSubmit = async () => {
     try {
       const promesasSubida = await Promise.all(
         Object.values(files).map(async (file) => {
           const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', 'upload');
-  
+          formData.append("file", file);
+          formData.append("upload_preset", "upload");
+
           const responseCloudinary = await axios.post(
-            'https://api.cloudinary.com/v1_1/dwwj8mhse/image/upload',
+            "https://api.cloudinary.com/v1_1/dwwj8mhse/image/upload",
             formData
           );
 
@@ -102,40 +104,44 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
         edad,
         sexo,
         color,
-        tamaño,        
+        tamaño,
         fotos: promesasSubida,
         ubicacion,
         organizationId: organizacion.organizationId,
-
       };
-  
-      const responseNeo4j = await axios.post('http://localhost:8800/api/pets/', nuevaMascota, {
-  headers: {
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-  }
-});
-  
+
+      const responseNeo4j = await axios.post(
+        "http://localhost:8800/api/pets/",
+        nuevaMascota,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
       if (responseNeo4j.status === 201) {
-        console.log('Mascota creada exitosamente');
+        console.log("Mascota creada exitosamente");
         actualizarMascotas();
         closeModal();
       } else {
-        console.error('Error al crear la mascota en Neo4j:', responseNeo4j.statusText);
+        console.error(
+          "Error al crear la mascota en Neo4j:",
+          responseNeo4j.statusText
+        );
       }
-  
     } catch (error) {
-      console.error('Error al procesar la solicitud:', error.message);
+      console.error("Error al procesar la solicitud:", error.message);
     }
   };
-  
-  
-  
 
   return (
     <div className="mx-auto p-4 max-w-screen-md">
       <form className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Nombre</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Nombre
+          </label>
           <input
             type="text"
             required
@@ -145,7 +151,9 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Raza</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Raza
+          </label>
           <input
             type="text"
             required
@@ -155,7 +163,9 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Categoría</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Categoría
+          </label>
           <select
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full text-black"
@@ -171,31 +181,37 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Descripción</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Descripción
+          </label>
           <textarea
-          required
+            required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Edad</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Edad
+          </label>
           <input
-          required
+            required
             type="number"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={edad}
             onChange={(e) => {
-                const nuevoValor = Math.max(0, parseInt(e.target.value, 10));
-                setEdad(nuevoValor);
-              }}
+              const nuevoValor = Math.max(0, parseInt(e.target.value, 10));
+              setEdad(nuevoValor);
+            }}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Sexo</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Sexo
+          </label>
           <select
-          required
+            required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={sexo}
             onChange={(e) => setSexo(e.target.value)}
@@ -206,9 +222,11 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Color</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Color
+          </label>
           <input
-          required
+            required
             type="text"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={color}
@@ -216,9 +234,11 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Tamaño</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Tamaño
+          </label>
           <select
-          required
+            required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={tamaño}
             onChange={(e) => setTamaño(e.target.value)}
@@ -230,33 +250,37 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           </select>
         </div>
         <div>
-  <label className="block text-sm font-medium text-gray-700">Fotos</label>
-  <input
-    required
-    type="file"
-    id='fotos'
-    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-    onChange={handleSeleccionImagenes}
-    multiple
-  />
-  {imagenPrevia.length > 0 && (
-    <div className="mt-2 flex space-x-2">
-      {imagenPrevia.map((url, index) => (
-        <img
-          key={index}
-          src={url}
-          alt={`Previsualización ${index + 1}`}
-          className="w-16 h-16 object-cover rounded-md"
-        />
-      ))}
-    </div>
-  )}
-</div>
+          <label className="block text-sm font-medium text-gray-700">
+            Fotos
+          </label>
+          <input
+            required
+            type="file"
+            id="fotos"
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            onChange={handleSeleccionImagenes}
+            multiple
+          />
+          {imagenPrevia.length > 0 && (
+            <div className="mt-2 flex space-x-2">
+              {imagenPrevia.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Previsualización ${index + 1}`}
+                  className="w-16 h-16 object-cover rounded-md"
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Ubicación</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Ubicación
+          </label>
           <input
-          required
+            required
             type="text"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={ubicacion}
@@ -264,25 +288,29 @@ const NuevaMascota = ({closeModal, actualizarMascotas }) => {
           />
         </div>
         <div>
-  <label className="block text-sm font-medium text-gray-700">Organización</label>
-  <select
-  required
-  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-  value={organizacion ? organizacion.organizationId : ''}
-  onChange={(e) => {
-    const selectedOrganization = organizaciones.find(org => org.organizationId === e.target.value);
-    handleSeleccionOrganizacion(selectedOrganization);
-  }}
->
-  <option value="">Selecciona una organización</option>
-  {organizaciones.map((org) => (
-    <option key={org.organizationId} value={org.organizationId}>
-      {org.nombre}
-    </option>
-  ))}
-</select>
-</div>
-
+          <label className="block text-sm font-medium text-gray-700">
+            Organización
+          </label>
+          <select
+            required
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            value={organizacion ? organizacion.organizationId : ""}
+            onChange={(e) => {
+              const selectedOrganization = organizaciones.find(
+                (org) => org.organizationId === e.target.value
+              );
+              handleSeleccionOrganizacion(selectedOrganization);
+            }}
+          >
+            <option value="">Selecciona una organización</option>
+            {Array.isArray(organizaciones) &&
+              organizaciones.map((org) => (
+                <option key={org.organizationId} value={org.organizationId}>
+                  {org.nombre}
+                </option>
+              ))}
+          </select>
+        </div>
 
         <button
           type="button"
