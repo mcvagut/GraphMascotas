@@ -8,7 +8,9 @@ jobs:
   displayName: 'Levantar Frontend'
   steps:
   - script: |
-      start cmd /k "cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front && npm start"
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
+      npm install pm2 -g
+      pm2 start npm --name "frontend" -- start
     displayName: 'Levantar Frontend'
 
 - job: LevantarBackend
@@ -16,7 +18,9 @@ jobs:
   dependsOn: LevantarFrontend
   steps:
   - script: |
-      start cmd /k "cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend && npm start"
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
+      npm install pm2 -g
+      pm2 start npm --name "backend" -- start
     displayName: 'Levantar Backend'
 
 - job: LevantarAdmin
@@ -24,7 +28,9 @@ jobs:
   dependsOn: LevantarBackend
   steps:
   - script: |
-      start cmd /k "cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin && npm start"
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
+      npm install pm2 -g
+      pm2 start npm --name "admin" -- start
     displayName: 'Levantar Admin'
 
 - job: EjecutarPruebas
