@@ -4,11 +4,22 @@ trigger:
 pool: proyecto
 
 jobs:
-- job: LevantarFrontend
-  displayName: 'Levantar Frontend'
+- job: LevantarAplicacion
+  displayName: 'Levantar Aplicación Completa'
   steps:
   - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\frontend
       npm start
     displayName: 'Levantar Frontend en Local'
+
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
+      npm start
+    displayName: 'Levantar Backend en Local'
+
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
+      npm start
+    displayName: 'Levantar Admin en Local'
+
 
