@@ -9,17 +9,18 @@ jobs:
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      npm start
+      start /B npm start
     displayName: 'Levantar Frontend en Local'
 
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      npm start
+      start /B npm start
     displayName: 'Levantar Backend en Local'
 
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      npm start
+      start /B npm start
     displayName: 'Levantar Admin en Local'
+
 
 
