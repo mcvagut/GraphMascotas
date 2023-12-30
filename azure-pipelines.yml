@@ -9,6 +9,12 @@ jobs:
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph
-      ./script.cmd
+      ./scriptFront.cmd
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph
+      ./scriptBack.cmd
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph
+      ./scriptAdmin.cmd        
     displayName: 'Iniciar Aplicaciones'
 
