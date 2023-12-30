@@ -4,39 +4,20 @@ trigger:
 pool: proyecto
 
 jobs:
-- job: LevantarServicios
-  displayName: 'Levantar Servicios'
+- job: LevantarAplicacion
+  displayName: 'Levantar Aplicación Completa'
   steps:
-  - task: UseNode@1
-    inputs:
-      version: '14.x'
-      checkLatest: true
-  - script: 'start /B cmd /C "npm start" & echo %time% > start_time.txt'
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptFront.cmd'
     displayName: 'Levantar Frontend'
-    workingDirectory: 'C:\Users\MoisesC\Desktop\Adop Masc con graph\front'
-  - script: 'start /B cmd /C "npm start" & echo %time% > start_time.txt'
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptBack.cmd'
     displayName: 'Levantar Backend'
-    workingDirectory: 'C:\Users\MoisesC\Desktop\Adop Masc con graph\backend'
-  - script: 'start /B cmd /C "npm start" & echo %time% > start_time.txt'
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
     displayName: 'Levantar Admin'
-    workingDirectory: 'C:\Users\MoisesC\Desktop\Adop Masc con graph\admin'
-  - script: 'timeout /t 60 /nobreak'
-    displayName: 'Esperar que los servicios se inicien'
 
-- job: EjecutarPruebas
-  displayName: 'Ejecutar Pruebas Selenium con Maven'
-  dependsOn: LevantarServicios
-  steps:
+  # Utilizar la tarea Maven proporcionada por Azure Pipelines
   - task: Maven@3
     inputs:
       mavenPomFile: 'C:\Users\MoisesC\Desktop\ProyFinalDipAutomation\pom.xml'
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
-
-- job: DetenerServicios
-  displayName: 'Detener Servicios'
-  dependsOn: EjecutarPruebas
-  steps:
-  - script: 'taskkill /IM node.exe /F'
-    displayName: 'Detener todos los servicios'
