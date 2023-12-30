@@ -1,20 +1,29 @@
-# Node.js with React
-# Build a Node.js project that uses React.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - main
 
 pool: proyecto
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+jobs:
+  - job: RunIntegratedTests
+    displayName: 'Run Integrated Tests'
+    steps:
+      - checkout: self
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+      # Disparar el pipeline de pruebas de Selenium
+      - task: TriggerBuild@3
+        inputs:
+          queueType: 'build'
+          definitionIsInCurrentTeamProject: true
+          projectName: '<Nombre del Proyecto Selenium>'
+          pipeline: '<Nombre del Pipeline Selenium>'
+          waitForCompletion: 'true'
+
+      # Disparar el pipeline de pruebas de API
+      - task: TriggerBuild@3
+        inputs:
+          queueType: 'build'
+          definitionIsInCurrentTeamProject: true
+          projectName: '<Nombre del Proyecto REST API>'
+          pipeline: '<Nombre del Pipeline REST API>'
+          waitForCompletion: 'true'
+
