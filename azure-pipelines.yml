@@ -1,8 +1,7 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'windows-latest'
+pool: proyecto
 
 jobs:
 - job: LevantarAplicacion
