@@ -4,26 +4,11 @@ trigger:
 pool: proyecto
 
 jobs:
-  - job: RunIntegratedTests
-    displayName: 'Run Integrated Tests'
-    steps:
-      - checkout: self
-
-      # Disparar el pipeline de pruebas de Selenium
-      - task: TriggerBuild@3
-        inputs:
-          queueType: 'build'
-          definitionIsInCurrentTeamProject: true
-          projectName: '<Nombre del Proyecto Selenium>'
-          pipeline: '<Nombre del Pipeline Selenium>'
-          waitForCompletion: 'true'
-
-      # Disparar el pipeline de pruebas de API
-      - task: TriggerBuild@3
-        inputs:
-          queueType: 'build'
-          definitionIsInCurrentTeamProject: true
-          projectName: '<Nombre del Proyecto REST API>'
-          pipeline: '<Nombre del Pipeline REST API>'
-          waitForCompletion: 'true'
+- job: LevantarFrontend
+  displayName: 'Levantar Frontend'
+  steps:
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
+      npm start
+    displayName: 'Levantar Frontend en Local'
 
