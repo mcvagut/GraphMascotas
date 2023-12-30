@@ -8,8 +8,7 @@ jobs:
   displayName: 'Levantar Frontend'
   steps:
   - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      start /B npm start
+      start cmd /k "cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front && npm start"
     displayName: 'Levantar Frontend'
 
 - job: LevantarBackend
@@ -17,8 +16,7 @@ jobs:
   dependsOn: LevantarFrontend
   steps:
   - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      start /B npm start
+      start cmd /k "cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend && npm start"
     displayName: 'Levantar Backend'
 
 - job: LevantarAdmin
@@ -26,8 +24,7 @@ jobs:
   dependsOn: LevantarBackend
   steps:
   - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      start /B npm start
+      start cmd /k "cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin && npm start"
     displayName: 'Levantar Admin'
 
 - job: EjecutarPruebas
