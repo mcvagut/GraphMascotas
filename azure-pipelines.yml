@@ -9,6 +9,6 @@ jobs:
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph
-      ./start.sh
+      ./script.cmd
     displayName: 'Iniciar Aplicaciones'
 
