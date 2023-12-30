@@ -1,0 +1,15 @@
+trigger:
+- main
+
+pool: proyecto
+
+jobs:
+- job: LevantarAplicacion
+  displayName: 'Levantar Aplicación Completa'
+  steps:
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptFront.cmd'
+    displayName: 'Levantar Frontend'
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptBack.cmd'
+    displayName: 'Levantar Backend'
+  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
+    displayName: 'Levantar Admin'
