@@ -9,18 +9,23 @@ jobs:
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      start /B npm start
+      npm start
     displayName: 'Levantar Frontend en Local'
 
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      start /B npm start
+      npm start
     displayName: 'Levantar Backend en Local'
 
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      start /B npm start
+      npm start
     displayName: 'Levantar Admin en Local'
 
-
+- job: BucleInfinito
+  displayName: 'Bucle Infinito'
+  steps:
+  - script: |
+      timeout /t -1
+    displayName: 'Bucle Infinito'
 
