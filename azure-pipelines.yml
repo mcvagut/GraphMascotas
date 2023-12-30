@@ -9,25 +9,25 @@ jobs:
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      npm start
+      npm start &
     displayName: 'Levantar Frontend'
 
 - job: LevantarBackend
   displayName: 'Levantar Backend'
-  dependsOn: LevantarFrontend  # Este trabajo depende del trabajo anterior
+  dependsOn: LevantarFrontend
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      npm start
+      npm start &
     displayName: 'Levantar Backend'
 
 - job: LevantarAdmin
   displayName: 'Levantar Admin'
-  dependsOn: LevantarBackend  # Este trabajo depende del trabajo anterior
+  dependsOn: LevantarBackend
   steps:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      npm start
+      npm start &
     displayName: 'Levantar Admin'
 
 - job: EjecutarPruebas
@@ -35,7 +35,7 @@ jobs:
   dependsOn: 
     - LevantarFrontend
     - LevantarBackend
-    - LevantarAdmin  # Este trabajo depende de los tres trabajos anteriores
+    - LevantarAdmin
   steps:
   - task: Maven@3
     inputs:
@@ -43,4 +43,3 @@ jobs:
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
-
