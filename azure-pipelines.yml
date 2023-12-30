@@ -11,15 +11,10 @@ jobs:
     inputs:
       version: '14.x'
       checkLatest: true
-  - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      npm start &
-
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      npm start &
-
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      npm start &
+  - powershell: |
+      Start-Process "npm" -ArgumentList "start" -WorkingDirectory "C:\Users\MoisesC\Desktop\Adop Masc con graph\front" -NoNewWindow
+      Start-Process "npm" -ArgumentList "start" -WorkingDirectory "C:\Users\MoisesC\Desktop\Adop Masc con graph\backend" -NoNewWindow
+      Start-Process "npm" -ArgumentList "start" -WorkingDirectory "C:\Users\MoisesC\Desktop\Adop Masc con graph\admin" -NoNewWindow
     displayName: 'Levantar Servicios'
 
 - job: EjecutarPruebas
@@ -37,6 +32,6 @@ jobs:
   displayName: 'Detener Servicios'
   dependsOn: EjecutarPruebas
   steps:
-  - script: |
-      taskkill /IM node.exe /F
+  - powershell: |
+      Stop-Process -Name "node" -Force
     displayName: 'Detener todos los servicios'
