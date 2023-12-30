@@ -4,8 +4,8 @@ trigger:
 pool: proyecto
 
 jobs:
-- job: LevantarFrontend
-  displayName: 'Levantar Frontend'
+- job: LevantarServicios
+  displayName: 'Levantar Servicios'
   steps:
   - task: UseNode@1
     inputs:
@@ -13,47 +13,18 @@ jobs:
       checkLatest: true
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      npm install -g pm2
-      pm2 start npm --name "frontend" -- start --no-daemon
-      wait -t 0
-    displayName: 'Levantar Frontend'
+      npm start &
 
-- job: LevantarBackend
-  displayName: 'Levantar Backend'
-  dependsOn: LevantarFrontend
-  steps:
-  - task: UseNode@1
-    inputs:
-      version: '14.x'
-      checkLatest: true
-  - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      npm install -g pm2
-      pm2 start npm --name "backend" -- start --no-daemon
-      wait -t 0
-    displayName: 'Levantar Backend'
+      npm start &
 
-- job: LevantarAdmin
-  displayName: 'Levantar Admin'
-  dependsOn: LevantarBackend
-  steps:
-  - task: UseNode@1
-    inputs:
-      version: '14.x'
-      checkLatest: true
-  - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      npm install -g pm2
-      pm2 start npm --name "admin" -- start --no-daemon
-      wait -t 0
-    displayName: 'Levantar Admin'
+      npm start &
+    displayName: 'Levantar Servicios'
 
 - job: EjecutarPruebas
   displayName: 'Ejecutar Pruebas Selenium con Maven'
-  dependsOn: 
-    - LevantarFrontend
-    - LevantarBackend
-    - LevantarAdmin
+  dependsOn: LevantarServicios
   steps:
   - task: Maven@3
     inputs:
@@ -67,6 +38,5 @@ jobs:
   dependsOn: EjecutarPruebas
   steps:
   - script: |
-      pm2 stop all
-      pm2 delete all
+      taskkill /IM node.exe /F
     displayName: 'Detener todos los servicios'
