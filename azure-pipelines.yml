@@ -8,7 +8,7 @@ jobs:
   displayName: 'Levantar Aplicación Completa'
   steps:
   - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\frontend
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
       npm start
     displayName: 'Levantar Frontend en Local'
 
