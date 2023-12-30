@@ -15,3 +15,12 @@ jobs:
     displayName: 'Levantar Admin'
   - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptSelenium.cmd'
     displayName: 'Ejecutar Prueba Selenium'
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'C:\Users\MoisesC\Desktop\ProyFinalDipAutomation'  # Ajusta la ruta correcta al archivo pom.xml
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
+      goals: 'clean test'
+    displayName: 'Ejecutar Pruebas Selenium con Maven'
