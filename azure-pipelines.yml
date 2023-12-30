@@ -1,7 +1,8 @@
 trigger:
 - main
 
-pool: proyecto
+pool:
+  vmImage: 'windows-latest'
 
 jobs:
 - job: LevantarFrontend
@@ -14,7 +15,8 @@ jobs:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
       npm install -g pm2
-      pm2 start npm --name "frontend" -- start
+      pm2 start npm --name "frontend" -- start --no-daemon
+      wait -t 0
     displayName: 'Levantar Frontend'
 
 - job: LevantarBackend
@@ -28,7 +30,8 @@ jobs:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
       npm install -g pm2
-      pm2 start npm --name "backend" -- start
+      pm2 start npm --name "backend" -- start --no-daemon
+      wait -t 0
     displayName: 'Levantar Backend'
 
 - job: LevantarAdmin
@@ -42,7 +45,8 @@ jobs:
   - script: |
       cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
       npm install -g pm2
-      pm2 start npm --name "admin" -- start
+      pm2 start npm --name "admin" -- start --no-daemon
+      wait -t 0
     displayName: 'Levantar Admin'
 
 - job: EjecutarPruebas
@@ -58,3 +62,12 @@ jobs:
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
+
+- job: DetenerServicios
+  displayName: 'Detener Servicios'
+  dependsOn: EjecutarPruebas
+  steps:
+  - script: |
+      pm2 stop all
+      pm2 delete all
+    displayName: 'Detener todos los servicios'
