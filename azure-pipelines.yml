@@ -17,7 +17,7 @@ jobs:
   # Agregar un nuevo paso para ejecutar las pruebas de Selenium con Maven
   - task: Maven@3
     inputs:
-      mavenPomFile: 'pom.xml'  # Ajusta la ruta correcta al archivo pom.xml
+      mavenPomFile: 'C:\Users\MoisesC\Desktop\ProyFinalDipAutomation\pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.11'
