@@ -13,5 +13,14 @@ jobs:
     displayName: 'Levantar Backend'
   - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
     displayName: 'Levantar Admin'
-  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptSelenium.cmd'
-    displayName: 'Ejecutar Prueba Selenium'
+
+  # Agregar un nuevo paso para ejecutar las pruebas de Selenium con Maven
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'  # Ajusta la ruta correcta al archivo pom.xml
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
+      goals: 'clean test'
+    displayName: 'Ejecutar Pruebas Selenium con Maven'
