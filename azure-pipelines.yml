@@ -11,30 +11,21 @@ jobs:
     inputs:
       version: '14.x'
       checkLatest: true
-  - script: |
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
-      start /B cmd /C call npm start
-      cd ..
-
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
-      start /B cmd /C call npm start
-      cd ..
-
-      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
-      start /B cmd /C call npm start
-    displayName: 'Levantar Servicios'
-    
-- job: EsperarServicios
-  displayName: 'Esperar Servicios'
-  dependsOn: LevantarServicios
-  steps:
-  - script: |
-      timeout /t 60 /nobreak
+  - script: 'start /B cmd /C "npm start" & echo %time% > start_time.txt'
+    displayName: 'Levantar Frontend'
+    workingDirectory: 'C:\Users\MoisesC\Desktop\Adop Masc con graph\front'
+  - script: 'start /B cmd /C "npm start" & echo %time% > start_time.txt'
+    displayName: 'Levantar Backend'
+    workingDirectory: 'C:\Users\MoisesC\Desktop\Adop Masc con graph\backend'
+  - script: 'start /B cmd /C "npm start" & echo %time% > start_time.txt'
+    displayName: 'Levantar Admin'
+    workingDirectory: 'C:\Users\MoisesC\Desktop\Adop Masc con graph\admin'
+  - script: 'timeout /t 60 /nobreak'
     displayName: 'Esperar que los servicios se inicien'
 
 - job: EjecutarPruebas
   displayName: 'Ejecutar Pruebas Selenium con Maven'
-  dependsOn: EsperarServicios
+  dependsOn: LevantarServicios
   steps:
   - task: Maven@3
     inputs:
