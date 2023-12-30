@@ -11,11 +11,13 @@ jobs:
     inputs:
       version: '14.x'
       checkLatest: true
-  - powershell: |
-      Start-Process "npm" -ArgumentList "start" -WorkingDirectory "C:\Users\MoisesC\Desktop\Adop Masc con graph\front" -NoNewWindow
-      Start-Process "npm" -ArgumentList "start" -WorkingDirectory "C:\Users\MoisesC\Desktop\Adop Masc con graph\backend" -NoNewWindow
-      Start-Process "npm" -ArgumentList "start" -WorkingDirectory "C:\Users\MoisesC\Desktop\Adop Masc con graph\admin" -NoNewWindow
+  - script: |
+      start cmd /c "npm start" /d "C:\Users\MoisesC\Desktop\Adop Masc con graph\front"
+      start cmd /c "npm start" /d "C:\Users\MoisesC\Desktop\Adop Masc con graph\backend"
+      start cmd /c "npm start" /d "C:\Users\MoisesC\Desktop\Adop Masc con graph\admin"
     displayName: 'Levantar Servicios'
+    env:
+      MAVEN_TERMINATE_CMD: 'taskkill /IM node.exe /F'
 
 - job: EjecutarPruebas
   displayName: 'Ejecutar Pruebas Selenium con Maven'
@@ -27,11 +29,12 @@ jobs:
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
+  - script: '$(MAVEN_TERMINATE_CMD)'
+    displayName: 'Detener Servicios'
 
 - job: DetenerServicios
   displayName: 'Detener Servicios'
   dependsOn: EjecutarPruebas
   steps:
-  - powershell: |
-      Stop-Process -Name "node" -Force
+  - script: '$(MAVEN_TERMINATE_CMD)'
     displayName: 'Detener todos los servicios'
