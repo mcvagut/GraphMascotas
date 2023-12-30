@@ -1,26 +1,35 @@
 trigger:
 - main
 
-pool: proyecto
+pool:
+  vmImage: 'windows-latest'
 
 jobs:
 - job: LevantarAplicacion
   displayName: 'Levantar Aplicación Completa'
   steps:
-  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptFront.cmd'
+  # Levantar Frontend
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\front
+      npm start
     displayName: 'Levantar Frontend'
-  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptBack.cmd'
+
+  # Levantar Backend (Asumiendo que usas Express.js)
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\backend
+      npm start
     displayName: 'Levantar Backend'
-  - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
+
+  # Levantar Admin (Asumiendo que es otra aplicación Node.js/Express)
+  - script: |
+      cd C:\Users\MoisesC\Desktop\Adop Masc con graph\admin
+      npm start
     displayName: 'Levantar Admin'
 
-  # Agregar un nuevo paso para ejecutar las pruebas de Selenium con Maven
+  # Agregar tareas para ejecutar pruebas Selenium con Maven
   - task: Maven@3
     inputs:
       mavenPomFile: 'C:\Users\MoisesC\Desktop\ProyFinalDipAutomation\pom.xml'
       mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x64'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
