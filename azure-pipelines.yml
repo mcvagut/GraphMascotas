@@ -36,8 +36,10 @@ jobs:
     - LevantarFrontend
     - LevantarBackend
     - LevantarAdmin
-  continueOnError: true  # Permitir que este trabajo siga ejecutándose incluso si falla
   steps:
-  - script: |
-      # Aquí colocas el comando de Maven para ejecutar las pruebas
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'C:\Users\MoisesC\Desktop\ProyFinalDipAutomation\pom.xml'
+      mavenOptions: '-Xmx3072m'
+      goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
