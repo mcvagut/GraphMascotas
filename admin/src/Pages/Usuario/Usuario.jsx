@@ -43,7 +43,11 @@ const Usuario = () => {
 
   const actualizarUsuarios = async () => {
     try {
-      const response = await axios.get("http://localhost:8800/api/users/");
+      const response = await axios.get("http://localhost:8800/api/users/", {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       setUsuarios(response.data);
     } catch (error) {
       console.error("Error al obtener las mascotas:", error);
@@ -52,7 +56,11 @@ const Usuario = () => {
 
   const handleEliminarUsuarios = async (usuario) => {
     try {
-      await axios.delete(`http://localhost:8800/api/users/${usuario}`);
+      await axios.delete(`http://localhost:8800/api/users/${usuario}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       const response = await axios.get("http://localhost:8800/api/users/");
       setUsuarios(response.data);
     } catch (error) {

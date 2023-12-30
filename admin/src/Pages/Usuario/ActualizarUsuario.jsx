@@ -62,7 +62,11 @@ const ActualizarUsuario = ({ closeModal, actualizarUsuarios, usuarioSeleccionado
         isAdmin: usuarioData.isAdmin,
       };
 
-      await axios.put(`http://localhost:8800/api/users/${usuarioSeleccionado.usuario}`, datosActualizados);
+      await axios.put(`http://localhost:8800/api/users/${usuarioSeleccionado.usuario}`, datosActualizados, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
       await actualizarUsuarios();
 

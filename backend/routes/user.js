@@ -17,15 +17,17 @@ import {
   obtenerRechazadosPorUsuario
 } from '../controllers/user.js';
 
+import {verificar} from '../extra/verificarToken.js';
+
 
 const router = express.Router();
 
 
-router.post('/', createUser);
+router.post('/',verificar, createUser);
 router.get('/', getAllUsers);
 router.get('/:username', getUserByUsername);
-router.put('/:username', updateUser);
-router.delete('/:username', deleteUser); 
+router.put('/:username',verificar, updateUser);
+router.delete('/:username',verificar, deleteUser); 
 
 router.post('/loginAdmin', iniciarSesionAdmin)
 
