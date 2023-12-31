@@ -17,7 +17,7 @@ jobs:
   - task: Gradle@2
     inputs:
       workingDirectory: 'C:/Users/MoisesC/Desktop/ProyFinalRESTAPI/'
-      gradleWrapperFile: 'gradlew'
+      gradleWrapperFile: 'gradlew.bat'
       gradleOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.11'
