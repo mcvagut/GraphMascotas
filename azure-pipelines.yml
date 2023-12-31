@@ -21,3 +21,9 @@ jobs:
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
+  - task: Gradle@2
+    inputs:
+      workingDirectory: 'C:\Users\MoisesC\Desktop\ProyFinalRESTAPI'
+      options: '-Xmx3072m'
+      tasks: 'cucumber'
+    displayName: 'Ejecutar Pruebas Cucumber con Gradle'
