@@ -24,7 +24,7 @@ jobs:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'cucumber'
+      tasks: 'build'
     displayName: 'Ejecutar Pruebas Cucumber con Gradle'
 
   # Utilizar la tarea Maven proporcionada por Azure Pipelines
