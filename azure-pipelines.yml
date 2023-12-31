@@ -14,6 +14,13 @@ jobs:
   - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
     displayName: 'Levantar Admin'
 
+  - task: Gradle@2
+    inputs:
+      workingDirectory: 'C:\Users\MoisesC\Desktop\ProyFinalRESTAPI\'
+      options: '-Xmx3072m'
+      tasks: 'clean cucumber'
+    displayName: 'Ejecutar Pruebas Cucumber con Gradle'
+
   # Utilizar la tarea Maven proporcionada por Azure Pipelines
   - task: Maven@3
     inputs:
@@ -21,9 +28,4 @@ jobs:
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
-  - task: Gradle@2
-    inputs:
-      workingDirectory: 'C:\Users\MoisesC\Desktop\ProyFinalRESTAPI'
-      options: '-Xmx3072m'
-      tasks: 'cucumber'
-    displayName: 'Ejecutar Pruebas Cucumber con Gradle'
+
