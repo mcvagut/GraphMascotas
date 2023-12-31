@@ -13,18 +13,9 @@ jobs:
     displayName: 'Levantar Backend'
   - script: 'cd C:\Users\MoisesC\Desktop\Adop Masc con graph && start scriptAdmin.cmd'
     displayName: 'Levantar Admin'
-
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'build'
+  - script: |
+      cd C:\Users\MoisesC\Desktop\ProyFinalRESTAPI\
+      ./gradlew cucumber
     displayName: 'Ejecutar Pruebas Cucumber con Gradle'
 
   # Utilizar la tarea Maven proporcionada por Azure Pipelines
