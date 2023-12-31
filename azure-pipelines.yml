@@ -18,15 +18,9 @@ jobs:
     inputs:
       workingDirectory: 'C:/Users/MoisesC/Desktop/ProyFinalRESTAPI/'
       gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
+      options: '-Xmx3072m'
       tasks: 'cucumber'
     displayName: 'Ejecutar Pruebas Cucumber con Gradle'
-
 
   # Utilizar la tarea Maven proporcionada por Azure Pipelines
   - task: Maven@3
