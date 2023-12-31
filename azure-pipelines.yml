@@ -16,7 +16,7 @@ jobs:
 
   - task: Gradle@2
     inputs:
-      workingDirectory: 'C:/Users/MoisesC/Desktop/ProyFinalRESTAPI/'
+      workingDirectory: ''
       gradleWrapperFile: 'gradlew'
       options: '-Xmx3072m'
       tasks: 'cucumber'
