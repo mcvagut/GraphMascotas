@@ -28,48 +28,45 @@ const Sidebar = () => {
 
       {/* Enlaces del Sidebar */}
       <nav className="flex-1 flex flex-col items-center justify-center">
-      <ul className="space-y-7 w-full">
-      <li>
-    <Link
-      to="/"
-      className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
-    >
-      Inicio
-    </Link>
-  </li>
-  <li>
-    <Link
-      to="/mascotas"
-      className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
-    >
-      Mascotas
-    </Link>
-  </li>
-  <li>
-    <Link
-      to="/organizaciones"
-      className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
-    >
-      Organizaciones
-    </Link>
-  </li>
-  <li>
-    <Link
-      to="/usuarios"
-      className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
-    >
-      Usuarios
-    </Link>
-  </li>
-  <li>
-    <button
-      onClick={handleLogout}
-      className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
-    >
-      Cerrar Sesión
-    </button>
-  </li>
-</ul>
+        <ul className="space-y-7 w-full">
+          <li>
+            <Link
+              to="/"
+              className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
+            >
+              Inicio
+            </Link>
+          </li>
+          <button
+            id="mascotas"
+            className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
+          >
+            <Link to="/mascotas">Mascotas</Link>
+          </button>
+          <li>
+            <Link
+              to="/organizaciones"
+              className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
+            >
+              Organizaciones
+            </Link>
+          </li>
+          <button
+            id="usuarios"
+            className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
+          >
+            <Link to="/usuarios">Usuarios</Link>
+          </button>
+          <li>
+            <button
+              id="cerrarSesion"
+              onClick={handleLogout}
+              className="w-full block p-3 text-lg text-center hover:bg-greenP transition-colors duration-300"
+            >
+              Cerrar Sesión
+            </button>
+          </li>
+        </ul>
         <Toaster />
       </nav>
     </aside>

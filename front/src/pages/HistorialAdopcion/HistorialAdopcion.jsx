@@ -100,7 +100,6 @@ const HistorialAdopcion = () => {
         setMascotasRechazadas(mascotasRechazadas);
       } catch (error) {
         console.error(error);
-        toast.error("Error al obtener las mascotas rechazadas");
       }
     };
 

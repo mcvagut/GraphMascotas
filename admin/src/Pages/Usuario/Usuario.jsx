@@ -95,6 +95,7 @@ const Usuario = () => {
             <button
               className="bg-greenP text-white py-2 px-4 rounded-md hover:bg-green1 font-bold transition-colors duration-300"
               onClick={handleAgregarUsuario}
+              id="agregarUsuario"
             >
               Agregar Usuario
             </button>
@@ -151,6 +152,7 @@ const Usuario = () => {
                     <button
                       className="bg-greenP text-white py-1 px-2 rounded-md mt-2 hover:bg-green1 font-bold transition-colors duration-300"
                       onClick={() => handleEliminarUsuarios(usuario.usuario)}
+                      id={`eliminar_${usuario.usuario}`}
                     >
                       Eliminar
                     </button>

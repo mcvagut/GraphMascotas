@@ -75,6 +75,7 @@ const Mascota = () => {
           <div className="flex justify-between mb-6">
             <button className="bg-greenP text-white py-2 px-4 rounded-md hover:bg-green1 font-bold transition-colors duration-300"
             onClick={handleAgregarMascota}
+            id = "agregarMascota"
             >
               Agregar Mascota
             </button>
@@ -100,12 +101,14 @@ const Mascota = () => {
                   <td className="py-2 px-4 text-center">
                     <button
                       className="bg-greenP text-white py-1 px-2 rounded-md mr-2 hover:bg-green1 font-bold transition-colors duration-300"
+                      id={`actualizar_${mascota.nombre}`}
                     >
                       Actualizar
                     </button>
                     <button
                       className="bg-greenP text-white py-1 px-2 rounded-md mt-2 hover:bg-green1 font-bold transition-colors duration-300"
                       onClick={() => handleEliminarMascota(mascota.mascotaId)}
+                      id={`eliminar_${mascota.nombre}`}
                     >
                       Eliminar
                     </button>
@@ -118,10 +121,10 @@ const Mascota = () => {
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Agregar Mascota"
+            className="Modal mx-96 my-24 rounded-xl"
           >
-            <h2>Agregar Mascota</h2>
             <NuevaMascota closeModal={closeModal} actualizarMascotas={actualizarMascotas}/>
-            <button onClick={closeModal}>Cerrar</button>
+
           </Modal>
         </main>
       </div>

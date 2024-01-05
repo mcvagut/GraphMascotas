@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContexto";
+import { toast, Toaster } from "react-hot-toast";
 
 const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
   const [files, setFiles] = useState([]);
@@ -79,6 +80,11 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
 
   const handleSubmit = async () => {
     try {
+      if (!nombre || !raza || !categoria || !descripcion || !edad || !sexo) {
+        console.error("Por favor, complete todos los campos obligatorios.");
+        toast.error("Por favor, complete todos los campos obligatorios.");
+        return;
+      }
       const promesasSubida = await Promise.all(
         Object.values(files).map(async (file) => {
           const formData = new FormData();
@@ -136,7 +142,14 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
   };
 
   return (
-    <div className="mx-auto p-4 max-w-screen-md">
+    <div className="w-full mx-auto bg-white p-8 border rounded shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">Nuevo Usuario</h2>
+      <button className="bg-greenP text-white py-2 px-4 rounded-md hover:bg-green1 font-bold transition-colors duration-300"
+        onClick={closeModal}
+        id="cerrarModal"
+        >
+        Cerrar Modal
+      </button>
       <form className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -144,6 +157,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <input
             type="text"
+            id = "nombre"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={nombre}
@@ -156,6 +170,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <input
             type="text"
+            id="raza"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={raza}
@@ -168,6 +183,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <select
             required
+            id="categoria"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full text-black"
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
@@ -186,6 +202,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <textarea
             required
+            id="descripcion"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
@@ -197,6 +214,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <input
             required
+            id="edad"
             type="number"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={edad}
@@ -212,6 +230,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <select
             required
+            id="sexo"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={sexo}
             onChange={(e) => setSexo(e.target.value)}
@@ -227,6 +246,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <input
             required
+            id="color"
             type="text"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={color}
@@ -239,6 +259,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <select
             required
+            id="tamaño"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={tamaño}
             onChange={(e) => setTamaño(e.target.value)}
@@ -281,6 +302,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <input
             required
+            id="ubicacion"
             type="text"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={ubicacion}
@@ -293,6 +315,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           </label>
           <select
             required
+            id="organizacion"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={organizacion ? organizacion.organizationId : ""}
             onChange={(e) => {
@@ -314,6 +337,7 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
 
         <button
           type="button"
+          id="agregarMascotaButton"
           onClick={handleSubmit}
           className="col-span-2 bg-greenP text-white py-2 px-4 rounded-md hover:bg-green3 transition-colors duration-300"
         >
@@ -327,7 +351,9 @@ const NuevaMascota = ({ closeModal, actualizarMascotas }) => {
           Cerrar
         </button> */}
       </form>
+      <Toaster/>
     </div>
+
   );
 };
 

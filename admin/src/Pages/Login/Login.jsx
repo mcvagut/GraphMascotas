@@ -58,6 +58,7 @@ const Login = () => {
           <label className="block text-lg text-black mb-2">Usuario</label>
           <input
             type="text"
+            id='username'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="w-full p-3 border border-black rounded-md focus:outline-none focus:border-greenP"
@@ -68,6 +69,7 @@ const Login = () => {
           <label className="block text-lg text-black mb-2">Contraseña</label>
           <input
             type="password"
+            id='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-3 border border-black rounded-md focus:outline-none focus:border-greenP"
@@ -76,6 +78,7 @@ const Login = () => {
         </div>
         <button
           type="submit"
+          id='loginButton'
           className="w-full p-3 bg-black text-white font-bold rounded-md hover:bg-green1 transition-colors duration-300"
         >
           Iniciar Sesión

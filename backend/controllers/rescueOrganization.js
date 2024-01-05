@@ -193,6 +193,9 @@ export const addPetToAdoptionList = async (req, res) => {
       .status(500)
       .json({ error: "Error al agregar la mascota a la lista de adopción" });
   }
+  finally {
+    session.close();
+  }
 };
 
 // export const gestionarSolicitudesAdopcion = async (req, res) => {

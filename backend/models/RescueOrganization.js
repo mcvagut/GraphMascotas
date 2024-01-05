@@ -107,6 +107,7 @@ class RescueOrganization {
     );
 
     return result.records.map((record) => record.get("org").properties);
+    
   }
 
   async updateRescueOrganization(id, updatedProperties) {

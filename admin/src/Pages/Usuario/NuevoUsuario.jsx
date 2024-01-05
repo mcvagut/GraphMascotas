@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContexto";
-import { IoMdClose } from "react-icons/io";
+import { toast, Toaster } from "react-hot-toast";
 
 const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
   const [nombre, setNombre] = useState("");
@@ -31,7 +31,12 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
   }
 
   const handleSubmit = async () => {
+    
     try {
+      if (!nombre || !apellido || !email || !usuario || !password) {
+        toast.error("Por favor, ingrese todos los campos");
+        return;
+      }
       const nuevoUsuario = {
         nombre,
         apellido,
@@ -74,8 +79,11 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
   return (
     <div className="max-w-md mx-auto bg-white p-8 border rounded shadow-lg">
       <h2 className="text-2xl font-bold mb-4">Nuevo Usuario</h2>
-      <button className="ml-96 text-gray-600" onClick={closeModal}>
-        <IoMdClose className="mr-1  " />
+      <button className="bg-greenP text-white py-2 px-4 rounded-md hover:bg-green1 font-bold transition-colors duration-300"
+        onClick={closeModal}
+        id="cerrarModal"
+        >
+        Cerrar Modal
       </button>
       <form className="grid grid-cols-2 gap-4">
         <div>
@@ -84,6 +92,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="text"
+            id = "nombre"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={nombre}
@@ -96,6 +105,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="text"
+            id="apellido"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={apellido}
@@ -108,6 +118,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="email"
+            id="email"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={email}
@@ -120,6 +131,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="text"
+            id="usuario"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={usuario}
@@ -132,6 +144,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="password"
+            id="password"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={password}
@@ -144,6 +157,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="text"
+            id="pais"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={pais}
@@ -156,6 +170,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="text"
+            id="ciudad"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={ciudad}
@@ -168,6 +183,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="phone"
+            id="telefono"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={telefono}
@@ -181,6 +197,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <input
             type="date"
+            id="fechaNacimiento"
             required
             className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             value={fechaNacimiento}
@@ -193,6 +210,7 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
           </label>
           <select
             required
+            id="rol"
             className="mt-1 p-2 border border-gray-300 rounded-md w-full text-black"
             value={isAdmin}
             onChange={(e) => setAdmin(e.target.value === "true" ? true : false)}
@@ -219,12 +237,14 @@ const NuevoUsuario = ({ closeModal, actualizarUsuarios }) => {
 
         <button
           type="button"
+          id="agregarUsuarioButton"
           onClick={handleSubmit}
           className="col-span-2 bg-greenP text-white py-2 px-4 rounded-md hover:bg-green3 transition-colors duration-300"
         >
           Agregar Usuario
         </button>
       </form>
+      <Toaster />
     </div>
   );
 };

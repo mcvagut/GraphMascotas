@@ -34,78 +34,78 @@ const Solicitudes = () => {
     obtenerSolicitudesPendientes(); // Mover esta línea fuera del bloque try-catch
   }, [us.usuario]);
 
-  useEffect(() => {
-    const obtenerMascotasAdoptadas = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/users/solicitudes-adopcion/${us.usuario}`
-        );
+  // useEffect(() => {
+  //   const obtenerMascotasAdoptadas = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:8800/api/users/solicitudes-adopcion/${us.usuario}`
+  //       );
 
-        // Extraer la información de cada mascota adoptada
-        const mascotasAdoptadas = res.data.map(
-          (item) => item.mascota.properties
-        );
+  //       // Extraer la información de cada mascota adoptada
+  //       const mascotasAdoptadas = res.data.map(
+  //         (item) => item.mascota.properties
+  //       );
 
-        // Actualizar el estado con las mascotas adoptadas extraídas
-        setMascotasAdoptadas(mascotasAdoptadas);
-      } catch (error) {
-        console.error(error);
-        toast.error("Error al obtener las mascotas adoptadas");
-      }
-    };
+  //       // Actualizar el estado con las mascotas adoptadas extraídas
+  //       setMascotasAdoptadas(mascotasAdoptadas);
+  //     } catch (error) {
+  //       console.error(error);
+  //       toast.error("Error al obtener las mascotas adoptadas");
+  //     }
+  //   };
 
-    obtenerMascotasAdoptadas(); // Mover esta línea fuera del bloque try-catch
-  }, [us.usuario]);
+  //   obtenerMascotasAdoptadas(); // Mover esta línea fuera del bloque try-catch
+  // }, [us.usuario]);
 
-  useEffect(() => {
-    const obtenerRechazados = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/users/solicitudes-rechazadas/${us.usuario}`
-        );
+  // useEffect(() => {
+  //   const obtenerRechazados = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:8800/api/users/solicitudes-rechazadas/${us.usuario}`
+  //       );
 
-        console.log("Respuesta de mascotas rechazadas:", res.data);
+  //       console.log("Respuesta de mascotas rechazadas:", res.data);
 
-        // Verificar si res.data es un array antes de mapear
-        const mascotasRechazadas = Array.isArray(res.data)
-          ? await Promise.all(
-              res.data
-                .filter((item) => item.historial) // Filtrar elementos con historial definido
-                .map(async (item) => {
-                  // Acceder a las propiedades de historial
-                  const { estadoAdopcion, fechaRechazo, mascotaId, usuario } =
-                    item.historial;
+  //       // Verificar si res.data es un array antes de mapear
+  //       const mascotasRechazadas = Array.isArray(res.data)
+  //         ? await Promise.all(
+  //             res.data
+  //               .filter((item) => item.historial) // Filtrar elementos con historial definido
+  //               .map(async (item) => {
+  //                 // Acceder a las propiedades de historial
+  //                 const { estadoAdopcion, fechaRechazo, mascotaId, usuario } =
+  //                   item.historial;
 
-                  // Hacer otra solicitud para obtener más detalles de la mascota
-                  const respuestaDetalles = await axios.get(
-                    `http://localhost:8800/api/pets/${mascotaId}`
-                  );
-                  console.log(
-                    "Respuesta de mascotas rechazadassss:",
-                    respuestaDetalles.data
-                  );
-                  // Devolver un objeto combinado con detalles adicionales
-                  return {
-                    estadoAdopcion,
-                    fechaRechazo,
-                    mascotaId,
-                    usuario,
-                    detallesMascota: respuestaDetalles.data, // Aquí asumo que la respuesta contiene detalles adicionales
-                  };
-                })
-            )
-          : [];
+  //                 // Hacer otra solicitud para obtener más detalles de la mascota
+  //                 const respuestaDetalles = await axios.get(
+  //                   `http://localhost:8800/api/pets/${mascotaId}`
+  //                 );
+  //                 console.log(
+  //                   "Respuesta de mascotas rechazadassss:",
+  //                   respuestaDetalles.data
+  //                 );
+  //                 // Devolver un objeto combinado con detalles adicionales
+  //                 return {
+  //                   estadoAdopcion,
+  //                   fechaRechazo,
+  //                   mascotaId,
+  //                   usuario,
+  //                   detallesMascota: respuestaDetalles.data, // Aquí asumo que la respuesta contiene detalles adicionales
+  //                 };
+  //               })
+  //           )
+  //         : [];
 
-        // Actualizar el estado con las mascotas rechazadas extraídas
-        setMascotasRechazadas(mascotasRechazadas);
-      } catch (error) {
-        console.error(error);
-        toast.error("Error al obtener las mascotas rechazadas");
-      }
-    };
+  //       // Actualizar el estado con las mascotas rechazadas extraídas
+  //       setMascotasRechazadas(mascotasRechazadas);
+  //     } catch (error) {
+  //       console.error(error);
+  //       toast.error("Error al obtener las mascotas rechazadas");
+  //     }
+  //   };
 
-    obtenerRechazados(); // Mover esta línea fuera del bloque try-catch
-  }, [us.usuario]);
+  //   obtenerRechazados(); // Mover esta línea fuera del bloque try-catch
+  // }, [us.usuario]);
 
   return (
     <div className="flex flex-col h-screen">
