@@ -21,38 +21,35 @@ const Sidebar2 = () => {
     }
   };
   return (
-    <nav className=" bg-purple w-64 h-full p-4 text-white ">
+    <nav className="bg-purple w-64 h-full p-4 text-white flex flex-col items-center">
       <h1 className="text-2xl font-extrabold mb-8 text-center">
         Adopción de Mascotas
       </h1>
+      <div className="flex flex-col items-center">
 
-      <ul className="space-y-7 w-full">
-      <li>
+      <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
           <Link
             to="/homeOrg"
-            className="w-full block p-3 text-lg text-center font-bold hover:bg-purple2 transition-colors duration-300"
           >
             Inicio
           </Link>
-        </li>
-        <li>
+        </button>
+        <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg hover:font-bold dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
           <Link
             to="/"
-            className="w-full block p-3 text-lg text-center font-bold hover:bg-purple2 transition-colors duration-300"
           >
             Seguimiento de Mascotas Adoptadas
           </Link>
-        </li>
+        </button>
         
-        <li id="logoutOrg">
-          <Link
-            onClick={handleLogout}
-            className="w-full block p-3 text-lg text-center font-bold hover:bg-purple2 transition-colors duration-300"
-          >
-            Cerrar Sesión
-          </Link>
-        </li>
-      </ul>
+        <button
+        id='logoutOrg'
+        onClick={handleLogout}
+        className="block text-lg mb-2 p-2 hover:border hover:font-bold hover:rounded-lg dark:md:hover:bg-redfav focus:outline-none focus:text-gray-300"      >
+        Cerrar Sesión
+      </button>
+      </div>
+
       {/* <button className="block text-lg mb-2 p-2 hover:border hover:rounded-lg dark:md:hover:bg-purple focus:outline-none focus:text-gray-300">
         <Link to="/">Solicitudes de Adopción</Link>
       </button>
