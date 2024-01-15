@@ -25,4 +25,21 @@ jobs:
       mavenOptions: '-Xmx3072m'
       goals: 'clean test'
     displayName: 'Ejecutar Pruebas Selenium con Maven'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'C:\Users\MoisesC\Desktop\ProyFinalDipAutomation\Reports'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Informe'
+    displayName: 'Copiar Informe'
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/Informe'
+      artifactName: 'Informe'
+    displayName: 'Publicar Informe'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/Informe'
+      artifact: 'Informe'
+    displayName: 'Desplegar Informe en Azure DevOps'
