@@ -17,6 +17,12 @@ jobs:
       cd C:\Users\MoisesC\Desktop\ProyFinalRESTAPI\
       ./gradlew cucumber
     displayName: 'Ejecutar Pruebas Cucumber con Gradle'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'C:\Users\MoisesC\Desktop\ProyFinalRESTAPI\target'
+      Contents: 'cucumber-report.html'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Informe'
+    displayName: 'Copiar Informe Cucumber'
 
   # Utilizar la tarea Maven proporcionada por Azure Pipelines
   - task: Maven@3
