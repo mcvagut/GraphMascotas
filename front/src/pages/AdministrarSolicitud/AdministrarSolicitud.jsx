@@ -12,14 +12,14 @@ import { useNavigate } from "react-router-dom";
 const AdministrarSolicitud = () => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [, setSocket] = useState(null);
+  const [mascotaInfo, setMascotasInfo] = useState(null);
+  const [usuariosInfo, setUsuariosInfo] = useState(null);
   const socketRef = useRef(null);
 
   const { getOrganizationId } = useAuth();
   const organizationId = getOrganizationId();
 
   const navigate = useNavigate();
-
-  console.log("Qué recibo en solicitudes?", solicitudes);
 
   useEffect(() => {
     const newSocket = io("http://localhost:8800");
@@ -50,6 +50,57 @@ const AdministrarSolicitud = () => {
       });
     }
   }, []);
+
+  // Antes del componente, puedes realizar la solicitud al servidor para obtener la información de todas las mascotas
+  useEffect(() => {
+    const obtenerInformacionDeMascotas = async () => {
+      try {
+        const mascotaIds = solicitudes.map((solicitud) => solicitud.mascotaId);
+
+        // Enviar la lista de mascotaIds al servidor y obtener información de las mascotas
+        const response = await axios.get(
+          `http://localhost:8800/api/pets/${mascotaIds}`
+        );
+        const mascotasInfo = response.data; // Supongamos que el servidor devuelve la información de las mascotas
+
+        // Actualizar el estado con la información de las mascotas
+        setMascotasInfo(mascotasInfo);
+
+        // Aquí puedes manejar la respuesta del servidor
+        console.log("Respuesta del servidor para mascotas:", response.data);
+      } catch (error) {
+        // Manejar errores en caso de que la solicitud falle
+        console.error("Error al obtener información de mascotas:", error);
+      }
+    };
+
+    obtenerInformacionDeMascotas();
+  }, [solicitudes]); // Dependencia para que la solicitud se realice cada vez que cambie el array de solicitudes
+
+  // Antes del componente, puedes realizar la solicitud al servidor para obtener la información de todas las mascotas
+  useEffect(() => {
+    const obtenerInformacionDeUsuarios = async () => {
+      try {
+        const usuarios = solicitudes.map((solicitud) => solicitud.usuario);
+
+        // Enviar la lista de usuarios al servidor y obtener información de las mascotas
+        const response = await axios.get(
+          `http://localhost:8800/api/users/${usuarios}`
+        );
+        const usuariosInfo = response.data; // Supongamos que el servidor devuelve la información de las mascotas
+
+        // Actualizar el estado con la información de las mascotas
+        setUsuariosInfo(usuariosInfo);
+
+        // Aquí puedes manejar la respuesta del servidor
+        console.log("Respuesta del servidor para usuarios:", response.data);
+      } catch (error) {
+        // Manejar errores en caso de que la solicitud falle
+        console.error("Error al obtener información de usuario:", error);
+      }
+    };
+    obtenerInformacionDeUsuarios();
+  }, [solicitudes]); // Dependencia para que la solicitud se realice cada vez que cambie el array de solicitudes
 
   useEffect(() => {
     // Realiza la solicitud al backend para obtener las solicitudes de adopción
@@ -118,52 +169,100 @@ const AdministrarSolicitud = () => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar2 />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-8">
-        <h1 className="text-2xl font-bold mb-4">
-  Administrar Solicitudes de Adopción
-</h1>
-{
-  solicitudes.length > 0 ? (
-    <table className="min-w-full border border-collapse border-gray-300">
-      <thead>
-        <tr>
-          <th className="border p-2">Usuario</th>
-          <th className="border p-2">Mascota ID</th>
-          <th className="border p-2">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {solicitudes.map((solicitud) => (
-          <tr key={solicitud.mascotaId}>
-            <td className="border p-2">{solicitud.usuario}</td>
-            <td className="border p-2">{solicitud.mascotaId}</td>
-            <td className="border p-2 flex space-x-2">
-              <button
-                id="acceptButton"
-                className="bg-orangefav hover:bg-greenP text-white py-1 px-2 rounded transition duration-300"
-                onClick={() =>
-                  handleAceptar(solicitud.mascotaId, solicitud.usuario)
-                }
-              >
-                Aceptar
-              </button>
-              <button
-                id="rejectButton"
-                className="bg-redfav hover:bg-red-600 text-white py-1 px-2 rounded transition duration-300"
-                onClick={() =>
-                  handleRechazar(solicitud.mascotaId, solicitud.usuario)
-                }
-              >
-                Rechazar
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  ) : (
-    <p className="mt-4">No hay solicitudes de adopción pendientes.</p>
-  )
-}
+          <h1 className="text-3xl font-bold mb-4 text-center">
+            Administrar Solicitudes de Adopción
+          </h1>
+          {solicitudes.length > 0 ? (
+            <table className="min-w-full bg-white border border-collapse border-gray-300 shadow-md rounded-md overflow-hidden">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="border p-2 w-1/6 text-xl text-purple2">
+                    Usuario Solicitante
+                  </th>
+                  <th className="border p-4 text-xl text-purple2">
+                    Información sobre la Mascota
+                  </th>
+                  <th className="border p-4 w-1/6 text-xl text-purple2">
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {solicitudes.map((solicitud) => (
+                  <tr key={solicitud.mascotaId} className="hover:bg-gray-50">
+                    <td className="border p-4">
+                      {usuariosInfo && (
+                        <div>
+                          <p className="mt-2">
+                            <strong>Nombre: </strong>
+                            {usuariosInfo.nombre} {usuariosInfo.apellido}
+                          </p>
+                          <p>
+                            <strong>Telefono: </strong>
+                            {usuariosInfo.telefono}
+                          </p>
+                          <p>
+                            <strong>Email: </strong>
+                            {usuariosInfo.email}
+                          </p>
+                          <p>
+                            <strong>Ciudad: </strong>
+                            {usuariosInfo.ciudad}
+                          </p>
+                        </div>
+                      )}
+                    </td>
+                    <td className="border p-4">
+                      {mascotaInfo &&
+                        mascotaInfo.fotos &&
+                        mascotaInfo.fotos[0] && (
+                          <div>
+                            <img
+                              src={mascotaInfo.fotos[0]}
+                              alt={mascotaInfo.nombre}
+                              className="object-cover rounded-md w-full h-32"
+                            />
+                            <p className="mt-2">
+                              <strong>Nombre: </strong>
+                              {mascotaInfo.nombre}
+                            </p>
+                            <p>
+                              <strong>Raza: </strong>
+                              {mascotaInfo.raza}
+                            </p>
+                          </div>
+                        )}
+                    </td>
+
+                    <td className="mt-12 flex items-center justify-center space-y-2 flex-col">
+                      <button
+                        id="acceptButton"
+                        className="bg-orangefav hover:bg-orangeHover font-bold text-white py-2 px-4 rounded transition duration-300"
+                        onClick={() =>
+                          handleAceptar(solicitud.mascotaId, solicitud.usuario)
+                        }
+                      >
+                        Aceptar
+                      </button>
+                      <div className="h-2"></div>{" "}
+                      {/* Espacio vertical entre los botones */}
+                      <button
+                        id="rejectButton"
+                        className="bg-redfav hover:bg-redHover font-bold text-white py-2 px-4 rounded transition duration-300"
+                        onClick={() =>
+                          handleRechazar(solicitud.mascotaId, solicitud.usuario)
+                        }
+                      >
+                        Rechazar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="mt-4">No hay solicitudes de adopción pendientes.</p>
+          )}
         </main>
       </div>
       <Footer />
@@ -173,4 +272,3 @@ const AdministrarSolicitud = () => {
 };
 
 export default AdministrarSolicitud;
-
