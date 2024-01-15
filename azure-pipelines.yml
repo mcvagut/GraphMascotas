@@ -41,5 +41,5 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)/Informe'
-      artifact: 'Informe'
+      artifact: 'Informe-$(Build.BuildId)'
     displayName: 'Desplegar Informe en Azure DevOps'
